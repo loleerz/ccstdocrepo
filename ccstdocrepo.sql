@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2024 at 07:47 AM
+-- Generation Time: Jun 12, 2024 at 08:53 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -182,7 +182,7 @@ CREATE TABLE `core_sub_grades` (
 --
 
 INSERT INTO `core_sub_grades` (`ID`, `student_no`, `strand`, `grade_level`, `section`, `sem`, `subject_name`, `1st`, `status1`, `2nd`, `final`, `remarks`, `status`, `school_year`) VALUES
-(21, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Oral Communication', '90', 'Graded', '', '', '', '', '2023-2024');
+(21, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Oral Communication', '95', 'Graded', '', '', '', '', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -250,11 +250,19 @@ CREATE TABLE `grade_level` (
 CREATE TABLE `grade_revision` (
   `ID` int(11) NOT NULL,
   `student_no` varchar(7) NOT NULL,
+  `grade_level` int(2) NOT NULL,
+  `quarter` varchar(3) NOT NULL,
+  `sem` varchar(15) NOT NULL,
+  `subject_name` varchar(255) NOT NULL,
+  `subject_category` varchar(15) NOT NULL,
   `initial_grade` varchar(3) NOT NULL,
-  `revised_grade` varchar(3) NOT NULL,
+  `revised_grade` int(3) NOT NULL,
   `date_revision` date NOT NULL,
+  `reason` varchar(255) NOT NULL,
   `subject_teacher` varchar(255) NOT NULL,
-  `proof` varchar(255) NOT NULL
+  `proof` varchar(255) NOT NULL,
+  `school_year` varchar(11) NOT NULL,
+  `status` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -44246,6 +44254,47 @@ INSERT INTO `refprovince` (`id`, `psgcCode`, `provDesc`, `regCode`, `provCode`) 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `revision_history`
+--
+
+CREATE TABLE `revision_history` (
+  `ID` int(11) NOT NULL,
+  `student_no` varchar(7) NOT NULL,
+  `grade_level` int(2) NOT NULL,
+  `quarter` varchar(3) NOT NULL,
+  `sem` varchar(15) NOT NULL,
+  `subject_name` varchar(255) NOT NULL,
+  `subject_category` varchar(25) NOT NULL,
+  `initial_grade` varchar(3) NOT NULL,
+  `revised_grade` varchar(3) NOT NULL,
+  `date_revision` date NOT NULL,
+  `reason` varchar(255) NOT NULL,
+  `subject_teacher` varchar(255) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `school_year` varchar(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `revision_reason`
+--
+
+CREATE TABLE `revision_reason` (
+  `ID` int(11) NOT NULL,
+  `reason` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `revision_reason`
+--
+
+INSERT INTO `revision_reason` (`ID`, `reason`) VALUES
+(1, 'Late Compliance of Activities, Quizzes, and Examination');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `school_year`
 --
 
@@ -44569,6 +44618,18 @@ ALTER TABLE `refprovince`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `revision_history`
+--
+ALTER TABLE `revision_history`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `revision_reason`
+--
+ALTER TABLE `revision_reason`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `school_year`
 --
 ALTER TABLE `school_year`
@@ -44672,7 +44733,7 @@ ALTER TABLE `grade_level`
 -- AUTO_INCREMENT for table `grade_revision`
 --
 ALTER TABLE `grade_revision`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `guardian_info`
@@ -44709,6 +44770,18 @@ ALTER TABLE `refcitymun`
 --
 ALTER TABLE `refprovince`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+
+--
+-- AUTO_INCREMENT for table `revision_history`
+--
+ALTER TABLE `revision_history`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `revision_reason`
+--
+ALTER TABLE `revision_reason`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `school_year`
