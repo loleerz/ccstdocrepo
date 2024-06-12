@@ -208,6 +208,21 @@
     <div class="content">
         <div class="container-fluid">
 
+            <?php
+                if(isset($_GET['revisionreq_sub']))
+                {
+                    echo "
+                    <script src='plugins/sweetalert2/sweetalert2.min.js'></script>
+                    <script>
+                        Swal.fire({
+                        icon: 'success',
+                        title: 'Revision request submitted successfully!',
+                        });
+                    </script>
+                    ";
+                }
+            ?>
+
             <!-- ./row -->
         <div class="row">
           <div class="col-12">
@@ -1080,7 +1095,22 @@
                                                                         <input type="number" class="form-control" disabled placeholder="<?= $row['1st'] ?>">
                                                                     </td>
                                                                     <td>
-                                                                        <a type="button" data-bs-toggle="modal" data-bs-target="#reviseGrade" class="btn btn-warning"><i class="fas fa-pencil-alt"></i> Revise</a>
+                                                                        <a type="button" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#reviseGrade" 
+                                                                            class="btn btn-warning" 
+                                                                            data-subject-name="<?= $row['subject_name'] ?>" 
+                                                                            data-subject-category="core" 
+                                                                            data-iGrade="<?= $row['1st'] ?>"
+                                                                            data-grade-level="<?= $row['grade_level'] ?>"
+                                                                            data-quarter="1st"
+                                                                            data-semester="<?= $row['sem'] ?>"
+                                                                            data-schoolYear="<?= $row['school_year'] ?>"
+                                                                            data-student-no="<?= $row['student_no'] ?>"
+                                                                            data-status="Pending"
+                                                                            >
+                                                                            <i class="fas fa-pencil-alt"></i> Revise
+                                                                        </a>
                                                                     </td>
                                                                 </tr>
                                                     <?php
@@ -1786,72 +1816,112 @@
 
                             <!-- Modal Revise -->
                             <div class="modal fade" id="reviseGrade" tabindex="-1" aria-labelledby="reviseGrade" aria-hidden="true">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="reviseGrade">Grade Revision</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <!-- .row -->
-                                            <div class="row mt-3 mb-3">
-                                                <div class="col-md-6">
-                                                <div class="card card-primary collapsed-card">
-                                                    <div class="card-header">
-                                                    <h3 class="card-title fw-semibold">Select Reason for Grade Revision</h3>
-                                                    <div class="card-tools">
-                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                                    </button>
-                                                    </div>
-                                                    <!-- /.card-tools -->
-                                                    </div>
-                                                    <!-- /.card-header -->
-                                                    <div class="card-body">
-                                                    <!-- row -->
-                                                    <?php
-                                                        $sql = "SELECT DISTINCT strand_name FROM strand";
-                                                        $stmt = $conn->prepare($sql);
-                                                        $stmt->execute();
-                                                        $result = $stmt->get_result();
-
-                                                        if($result->num_rows > 0)
-                                                        {
-                                                            while($row = $result->fetch_assoc())
-                                                            {
-                                                                echo "
-                                                                    <div class='row mb-2'>
-                                                                        <!-- checkbox -->
-                                                                            <div class='col-12'>
-                                                                                <div class='input-group'>
-                                                                                    <div class='input-group-prepend'>
-                                                                                        <span class='input-group-text'>
-                                                                                            <input type='radio' name='strands[]' id='".$row['strand_name']."' value = '".$row['strand_name']."'>
-                                                                                        </span>
-                                                                                    </div>
-                                                                                    <input type='text' class='form-control text-wrap' value='".$row['strand_name']."' disabled>
-                                                                                </div>
-                                                                            </div>
-                                                                            <!-- /.col-lg-6 -->
-                                                                        <!-- checkbox -->
-                                                                    </div>
-                                                                ";
-                                                            }
-                                                        }
-                                                    ?>
-                                                    <!-- .row -->
-                                                    </div>
-                                                    <!-- /.card-body -->
+                                        <form action="input.php" method="post" enctype="multipart/form-data">
+                                            <div class="row">
+                                                <div class="col col-6">
+                                                    <label for="initialGrade" class="col-form-label">Initial Grade</label>
+                                                    <input type="text" class="form-control" id="initialGrade" name="initialGrade" disabled>
                                                 </div>
-                                                <!-- /.card -->
+                                                <div class="col col-6">
+                                                    <label for="reviseGrades" class="col-form-label">Revised Grade</label>
+                                                    <input type="number" class="form-control" min="60" max="100" id="reviseGrades" name="reviseGrades" required>
                                                 </div>
-                                                <!-- /.col -->
                                             </div>
-                                        <!-- .row -->
+                                            <div class="row">
+                                                <div class="col col-12">
+                                                    <label for="subjTeacher" class="col-form-label">Subject Teacher</label>
+                                                    <input type="text" class="form-control" id="subjTeacher" name="subjTeacher">
+                                                </div>
+                                            </div>
+
+                                            <!-- Hidden fields -->
+                                            <input type="hidden" id="initialGradeH" name="initialGradeH">
+                                            <input type="hidden" id="subject_category" name="subject_category">
+                                            <input type="hidden" id="subject_name" name="subject_name">
+                                            <input type="hidden" id="grade_level" name="grade_level">
+                                            <input type="hidden" id="quarter" name="quarter">
+                                            <input type="hidden" id="semester" name="semester">
+                                            <input type="hidden" id="school_year" name="school_year">
+                                            <input type="hidden" id="rstudent_no" name="rstudent_no">
+                                            <input type="hidden" id="status" name="status">
+
+                                            <!-- .row -->
+                                                <div class="row mt-3 mb-3">
+                                                    <div class="col-md-12">
+                                                    <div class="card card-primary collapsed-card">
+                                                        <div class="card-header">
+                                                        <h3 class="card-title fw-semibold">Select Reason for Grade Revision</h3>
+                                                        <div class="card-tools">
+                                                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                                                        </button>
+                                                        </div>
+                                                        <!-- /.card-tools -->
+                                                        </div>
+                                                        <!-- /.card-header -->
+                                                        <div class="card-body">
+                                                        <!-- row -->
+                                                        <?php
+                                                            $sql = "SELECT * FROM revision_reason";
+                                                            $stmt = $conn->prepare($sql);
+                                                            $stmt->execute();
+                                                            $result = $stmt->get_result();
+
+                                                            if($result->num_rows > 0)
+                                                            {
+                                                                while($row = $result->fetch_assoc())
+                                                                {
+                                                                    echo "
+                                                                        <div class='row mb-2'>
+                                                                            <!-- checkbox -->
+                                                                                <div class='col-12'>
+                                                                                    <div class='input-group'>
+                                                                                        <div class='input-group-prepend'>
+                                                                                            <span class='input-group-text'>
+                                                                                                <input type='radio' name='reason' id='reason' value = '".$row['reason']."'>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        <input type='text' class='form-control text-wrap' value='".$row['reason']."' disabled>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!-- /.col-lg-6 -->
+                                                                            <!-- checkbox -->
+                                                                        </div>
+                                                                    ";
+                                                                }
+                                                            }
+                                                        ?>
+                                                        <!-- .row -->
+                                                        </div>
+                                                        <!-- /.card-body -->
+                                                    </div>
+                                                    <!-- /.card -->
+                                                    </div>
+                                                    <!-- /.col -->
+                                                </div>
+                                            <!-- .row -->
+                                            
+                                            <!-- PROOF UPLOAD -->
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label for="proof" class="col-form-label">Revision Form <i class="text-danger" style="font-size: 8pt;">(Maximum file size is 3MB)</i></label> <br>
+                                                    <input type="file" name="proof" id = "proof" accept=".jpg, .jpeg, .png" value="">
+                                                </div>
+                                            </div>
+                                            <!-- PROOF UPLOAD -->
+                                                    
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-info">Revise Grade</button>
+                                        <input type="submit" name="reviseG" class="btn btn-primary" value="Revise Grade">
                                     </div>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
@@ -1917,6 +1987,59 @@
 <script src="dist/js/pages/dashboard3.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var reviseGradeModal = document.getElementById('reviseGrade');
+    reviseGradeModal.addEventListener('show.bs.modal', function (event) {
+        // Button that triggered the modal
+        var button = event.relatedTarget;
+
+        // Extract info from data-* attributes
+        var subjectName = button.getAttribute('data-subject-name');
+        var subjectCategory = button.getAttribute('data-subject-category');
+        var initialGrade = button.getAttribute('data-iGrade');
+        var gradeLevel = button.getAttribute('data-grade-level');
+        var quarter = button.getAttribute('data-quarter');
+        var semester = button.getAttribute('data-semester');
+        var school_year = button.getAttribute('data-schoolYear');
+        var student_no = button.getAttribute('data-student-no');
+        var status = button.getAttribute('data-status');
+
+        // Update the modal's content
+        var modalBodyInputSubject = document.getElementById('subject_name');
+        var modalBodyInputSubjectCategory = document.getElementById('subject_category');
+        var modalBodyInputInitialGrade = document.getElementById('initialGrade');
+        var modalBodyInputInitialGradeH = document.getElementById('initialGradeH');
+        var modalBodyInputGradeLevel = document.getElementById('grade_level');
+        var modalBodyInputSemester = document.getElementById('semester');
+        var modalBodyInputQuarter = document.getElementById('quarter');
+        var modalBodyInputSchoolYear = document.getElementById('school_year');
+        var modalBodyInputStudentNo = document.getElementById('rstudent_no');
+        var modalBodyInputStatus = document.getElementById('status');
+
+        modalBodyInputSubject.value = subjectName;
+        modalBodyInputSubjectCategory.value = subjectCategory;
+        modalBodyInputInitialGrade.placeholder = initialGrade;
+        modalBodyInputInitialGradeH.value = initialGrade;
+        modalBodyInputGradeLevel.value = gradeLevel;
+        modalBodyInputQuarter.value = quarter;
+        modalBodyInputSemester.value = semester;
+        modalBodyInputSchoolYear.value = school_year;
+        modalBodyInputStudentNo.value = student_no;
+        modalBodyInputStatus.value = status;
+
+        console.log(subjectName);
+        console.log(initialGrade);
+        console.log(gradeLevel);
+        console.log(quarter);
+        console.log(semester);
+        console.log(school_year);
+        console.log(student_no);
+    });
+});
+</script>
+
 <script>
         $(document).ready(function() 
         {

@@ -541,4 +541,166 @@
             echo "No strands selected.";
         }
     }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //CODE FOR GRADES REVISIONS
+    if (isset($_POST['reviseG'])) 
+    {
+        $today = date("Y-m-d");
+        $rstudent_no = $_POST['rstudent_no'];
+        $grade_level = $_POST['grade_level'];
+        $quarter = $_POST['quarter'];
+        $semester = $_POST['semester'];
+        $subject_name = $_POST['subject_name'];
+        $subject_category = $_POST['subject_category'];
+        $school_year = $_POST['school_year'];
+        $initialGrade = $_POST['initialGradeH'];
+        $revisedGrade = $_POST['reviseGrades'];
+        $subjTeacher = $_POST['subjTeacher'];
+        $reason = $_POST['reason'];
+        $status = $_POST['status'];
+        $uploadOk = 1;
+
+        echo $rstudent_no."<br>"; 
+        echo $grade_level."<br>";
+        echo $semester."<br>";
+        echo "Initial Grade: ".$initialGrade."<br>";
+        echo $revisedGrade."<br>";
+        echo $reason."<br>";
+        echo $subjTeacher;
+    
+        // File upload
+        $target_dir = "proofs/";
+        $target_file = $target_dir . basename($_FILES["proof"]["name"]);
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    
+        // Check if file is an image
+        $check = getimagesize($_FILES["proof"]["tmp_name"]);
+        if ($check === false) 
+        {
+            echo "File is not an image.";
+            $uploadOk = 0;
+        }
+    
+        // Check file size
+        if ($_FILES["proof"]["size"] > 3000000) 
+        { // 3MB limit
+            echo "Sorry, your file is too large.";
+            $uploadOk = 0;
+        }
+    
+        // Allow certain file formats
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") 
+        {
+            echo "Sorry, only JPG, JPEG, & PNG files are allowed.";
+            $uploadOk = 0;
+        }
+    
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) 
+        {
+            echo "Sorry, your file was not uploaded.";
+        } 
+        else 
+        {
+            if (move_uploaded_file($_FILES["proof"]["tmp_name"], $target_file)) 
+            {
+                echo "The file ". htmlspecialchars(basename($_FILES["proof"]["name"])) . " has been uploaded.";
+    
+                // Insert data into the database
+                $stmt = $conn->prepare("INSERT INTO grade_revision (student_no, grade_level, quarter, sem, subject_name, subject_category, initial_grade, revised_grade, date_revision, subject_teacher, reason, proof, school_year, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("sisssssissssss", $rstudent_no, $grade_level, $quarter, $semester, $subject_name, $subject_category, $initialGrade, $revisedGrade, $today, $subjTeacher, $reason, $target_file, $school_year, $status);
+    
+                if ($stmt->execute()) 
+                {
+                    header('Location: teacherStudInfo.php?student_no='.$rstudent_no.'&revisionreq_sub');
+                } 
+                else 
+                {
+                    echo "Error: " . $stmt->error;
+                }
+    
+                $stmt->close();
+            } 
+            else 
+            {
+                echo "Sorry, there was an error uploading your file.";
+            }
+        }
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ //CODE FOR GRADE REVISION APPROVAL OR REJECTION
+ if(isset($_POST['approve']))
+ {
+    $today = date("Y-m-d");
+    $rstudent_no = $_POST['rstudent_no'];
+    $grade_level = $_POST['grade_levelH'];
+    $quarter = $_POST['quarterH'];
+    $semester = $_POST['semesterH'];
+    $subject_name = $_POST['subject_nameH'];
+    $subject_category = $_POST['subject_category'];
+    $school_year = $_POST['school_yearH'];
+    $initialGrade = $_POST['initialGradeH'];
+    $revisedGrade = $_POST['revisedGradeH'];
+    $subjTeacher = $_POST['subjTeacherH'];
+    $reason = $_POST['reasonH'];
+    $status = "Approved";
+
+    $query = "UPDATE ".$subject_category."_sub_grades SET $quarter = ? WHERE student_no = ? AND subject_name = ? AND sem = ? AND school_year = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("sssss", $revisedGrade, $rstudent_no, $subject_name, $semester, $school_year);
+    
+    if($stmt->execute())
+    {
+        $stmt->close();
+        $query1 = "INSERT INTO revision_history (student_no, grade_level, quarter, sem, subject_name, subject_category, initial_grade, revised_grade, date_revision, subject_teacher, reason, status, school_year) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($query1);
+        $stmt->bind_param("sisssssisssss", $rstudent_no, $grade_level, $quarter, $semester, $subject_name, $subject_category, $initialGrade, $revisedGrade, $today, $subjTeacher, $reason, $status, $school_year);
+        if ($stmt->execute()) 
+        {
+            $stmt->close();
+            // Fetch the image details from the database
+            $sql = "SELECT * FROM grade_revision WHERE student_no = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $rstudent_no);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) 
+            {
+                $row = $result->fetch_assoc();
+
+                // Delete the image file from the local folder
+                if (file_exists($row['proof'])) {
+                    unlink($row['proof']);
+                }
+
+                // Delete the image record from the database
+                $sql = "DELETE FROM grade_revision WHERE student_no = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("s", $rstudent_no);
+
+                if ($stmt->execute()) 
+                {
+                    header('Location: gradeRevisions.php?revisionreq_app');
+                } else {
+                    echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+            } 
+            else 
+            {
+                echo "No image found with the given ID.";
+            }
+        } 
+        else 
+        {
+            echo "Error: " . $stmt->error;
+        }
+    }
+ }
+ elseif(isset($_POST['reject']))
+ {
+
+ }
 ?>
