@@ -356,7 +356,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 fw-bold fs-4">Grades Revision</h1>
+                    <h1 class="m-0 fw-bold fs-4">Grade Revisions Requests</h1>
                 </div>
                 <!-- /.col -->
             </div><!-- /.row -->
@@ -439,29 +439,29 @@
                                     <?=$row1['strand']." - ".$row1['grade_level'].$row1['section']?>
                                 </td>
                                 <td>
-                                <a type="button" 
-                                                                            data-bs-toggle="modal" 
-                                                                            data-bs-target="#approval" 
-                                                                            class="btn btn-primary" 
-                                                                            data-student-no="<?= $row['student_no'] ?>"
-                                                                            data-student-name="<?=$row1['Lname']."".$row1['Suffix'].", ".$row1['Fname']." ".$minitial?>"
-                                                                            data-strand="<?= $row1['strand'] ?>" 
-                                                                            data-grade-level="<?= $row1['grade_level']?>"
-                                                                            data-section="<?= $row1['section'] ?>"
-                                                                            data-quarter="<?= $row['quarter'] ?>"
-                                                                            data-semester="<?= $row['sem'] ?>"
-                                                                            data-subject-name="<?= $row['subject_name'] ?>" 
-                                                                            data-subject-category="<?= $row['subject_category'] ?>" 
-                                                                            data-iGrade="<?= $row['initial_grade'] ?>"
-                                                                            data-rGrade="<?= $row['revised_grade'] ?>"
-                                                                            data-rDate="<?= $row['date_revision'] ?>"
-                                                                            data-reason="<?= $row['reason'] ?>"
-                                                                            data-sTeacher="<?= $row['subject_teacher'] ?>"
-                                                                            data-schoolYear="<?= $row['school_year'] ?>"
-                                                                            data-proof="<?= $row['proof'] ?>"
-                                                                            >
-                                                                            <i class="fas fa-eye"></i> View
-                                                                        </a>
+                                  <a type="button" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#approval" 
+                                    class="btn btn-primary" 
+                                    data-student-no="<?= $row['student_no'] ?>"
+                                    data-student-name="<?=$row1['Lname']."".$row1['Suffix'].", ".$row1['Fname']." ".$minitial?>"
+                                    data-strand="<?= $row1['strand'] ?>" 
+                                    data-grade-level="<?= $row1['grade_level']?>"
+                                    data-section="<?= $row1['section'] ?>"
+                                    data-quarter="<?= $row['quarter'] ?>"
+                                    data-semester="<?= $row['sem'] ?>"
+                                    data-subject-name="<?= $row['subject_name'] ?>" 
+                                    data-subject-category="<?= $row['subject_category'] ?>" 
+                                    data-iGrade="<?= $row['initial_grade'] ?>"
+                                    data-rGrade="<?= $row['revised_grade'] ?>"
+                                    data-rDate="<?= $row['date_revision'] ?>"
+                                    data-reason="<?= $row['reason'] ?>"
+                                    data-sTeacher="<?= $row['subject_teacher'] ?>"
+                                    data-schoolYear="<?= $row['school_year'] ?>"
+                                    data-proof="<?= $row['proof'] ?>"
+                                    >
+                                    <i class="fas fa-eye"></i> View
+                                  </a>
                                 </td>
                             </tr>
                             

@@ -654,6 +654,95 @@
     if($stmt->execute())
     {
         $stmt->close();
+
+        //CODE FOR UPDATING FINAL GRADES
+        $query = "SELECT * FROM ".$subject_category."_sub_grades WHERE student_no = ? AND subject_name= ? AND grade_level = ? AND sem = ? AND school_year = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("sssss", $rstudent_no, $subject_name, $grade_level, $semester, $school_year);
+        if ($stmt->execute())
+        {
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            $fQuarter = $row['1st'];
+            $sQuarter = $row['2nd'];
+            $newFinal = ($fQuarter + $sQuarter)/2;
+            $nFinal = number_format($newFinal);
+            $stmt->close();
+
+            $query = "UPDATE ".$subject_category."_sub_grades SET final = ? WHERE student_no = ? AND grade_level = ? AND subject_name = ? AND sem = ? AND school_year = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("ssssss", $nFinal, $rstudent_no, $grade_level, $subject_name, $semester, $school_year);
+            if ($stmt->execute())
+            {
+                $stmt->close();
+            }
+
+            $subject_types = ['core', 'applied', 'specialized', 'other'];
+
+            $total_final_grades = 0;
+            $num_subjects = 0;
+
+            // Retrieve all final grades for the student to calculate the general average
+            foreach ($subject_types as $category) 
+            {
+                $query4 = "SELECT final FROM ".$category."_sub_grades WHERE student_no = ? AND grade_level = ? AND sem = ? AND school_year = ?";
+                $stmt = $conn->prepare($query4);
+                $stmt->bind_param("ssss", $rstudent_no, $grade_level, $semester, $school_year);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                
+                while ($row = $result->fetch_assoc()) 
+                {
+                    $total_final_grades += $row['final'];
+                    $num_subjects++;
+                }
+                $stmt->close();
+            }
+            // Calculate the general average
+            if ($num_subjects > 0) 
+            {
+                $general_average = $total_final_grades / $num_subjects;
+                $gen_ave = number_format($general_average);
+
+                if($semester == "1st Semester")
+                {
+                    $semester = "1stSem";
+                    $rsem = "1";
+                }
+                elseif($semester == "2nd Semester")
+                {
+                    $semester = "2ndSem";
+                    $rsem = "2";
+                }
+
+                if($grade_level == 11)
+                {
+                    $grade_level = "g".$grade_level;
+                }
+                elseif($grade_level == 12)
+                {
+                    $grade_level = "g".$grade_level;
+                }
+
+                if($gen_ave > 74)
+                {
+                    $remarks = "PASSED";
+                }
+                elseif($gen_ave < 75)
+                {
+                    $remarks = "FAILED";
+                }
+
+                // Update the general average in the student's record
+                $query5 = "UPDATE gen_aves SET ". $grade_level."_".$semester." = ?, ". $grade_level."_".$rsem."remarks = ?  WHERE student_no = ? AND school_year = ?";
+                $stmt = $conn->prepare($query5);
+                $stmt->bind_param("ssss", $gen_ave, $remarks, $rstudent_no, $school_year);
+                $stmt->execute();
+                $stmt->close();
+            }
+            
+        }
+
         $query1 = "INSERT INTO revision_history (student_no, grade_level, quarter, sem, subject_name, subject_category, initial_grade, revised_grade, date_revision, subject_teacher, reason, status, school_year) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query1);
         $stmt->bind_param("sisssssisssss", $rstudent_no, $grade_level, $quarter, $semester, $subject_name, $subject_category, $initialGrade, $revisedGrade, $today, $subjTeacher, $reason, $status, $school_year);
