@@ -268,10 +268,6 @@
                     <?php
                         while($row = $result->fetch_assoc())
                         {
-                            if($row['strand'] == "STEM")
-                            {
-                              $strand = "Science, Technology, Engineering, and Mathematics";
-                            } 
                           ?>
 
                             <tr>
@@ -279,7 +275,7 @@
                                   <?= $row['row_number'] ?>
                                 </td>
                                 <td>
-                                    <?=$strand." - ".$row['grade_level'].$row['section']?>
+                                    <?=$row['strand']." - ".$row['grade_level'].$row['section']?>
                                 </td>
                                 <td>
                                     <a href='teacherSection.php?section=<?=$row['strand'].$row['grade_level']."-".$row['section']?>'>

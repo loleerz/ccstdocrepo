@@ -208,7 +208,8 @@
         }
         $stmt->close(); // Ensure the statement is closed if student already exists
     }
-    // Adding Teacher
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // CODE FOR ADDING TEACHER
     elseif (!empty($_POST['employee_no'])) 
     {
         $employee_no = $_POST['employee_no'];
@@ -218,6 +219,8 @@
         $provname = $_POST['provname'] ?? '';
         $citymunname = $_POST['citymunname'] ?? '';
         $brgyname = $_POST['brgyname'] ?? '';
+        $school_year = $_POST['school_year'];
+
 
         // Checkboxes
 
@@ -255,15 +258,15 @@
         if ($result->num_rows == 0) {
             $stmt->close();
             // Insert new teacher
-            $sql1 = "INSERT INTO teachers_info (employeenumber, lname, fname, mname, suffix, bdate, age, sex, contactnumber, email, street, barangay, city, province) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql1 = "INSERT INTO teachers_info (employeenumber, lname, fname, mname, suffix, bdate, age, sex, contactnumber, email, street, barangay, city, province, school_year) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql1);
             if ($stmt === false) {
                 die("Prepare failed: " . $conn->error);
             }
 
-            $stmt->bind_param("ssssssisisssss", 
-                $employee_no, $lname, $fname, $mname, $suffix, $birthday, $age, $sex, $contact_no, $email, $house_num, $brgyname, $citymunname, $provname);
+            $stmt->bind_param("ssssssisissssss", 
+                $employee_no, $lname, $fname, $mname, $suffix, $birthday, $age, $sex, $contact_no, $email, $house_num, $brgyname, $citymunname, $provname, $school_year);
             if (!$stmt->execute()) {
                 die("Execute failed: " . $stmt->error);
             }
@@ -383,6 +386,113 @@
         else 
         {
             echo "No subject selected.";
+        }
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //CODE FOR ADDING SUBJECT TEACHER
+    if(isset($_POST['addsubj_teacher']))
+    {
+        $subj_teacher = $_POST['subj_teacher'];
+        $subject = $_POST['subject'];
+        $grade_level = $_POST['selected_grade_level'];
+        $term = $_POST['selected_term'];
+        $category = $_POST['selected_category'];
+        $school_year = $_POST['school_year'];
+
+        // Code for adding sections
+        if (isset($_POST['sections'])) {
+
+            foreach ($_POST['sections'] as $section) {
+                // Debugging statement to check section value
+                echo "Processing section: $section<br>";
+
+                $pattern = '/^([A-Za-z, ]+)(\d{2})-(\w)$/';
+                if (preg_match($pattern, $section, $matches)) 
+                {
+                    $strand = $matches[1];
+                    $grade_level = $matches[2];
+                    $section = $matches[3];
+
+                    // Debugging statement to check parsed values
+                    echo "Strand: $strand, Grade Level: $grade_level, Section: $section<br>";
+
+                    $check_query = "SELECT * FROM subject_teachers WHERE subject_name = ? AND subj_teacher = ? AND strand = ? AND grade_level = ? AND section = ? AND semester = ? AND school_year = ?";
+                    $stmt_check = $conn->prepare($check_query);
+                    $stmt_check->bind_param("sssisss", $subjectname, $subj_teacher, $strand, $grade_level, $section, $semester, $school_year);
+                    $stmt_check->execute();
+                    $result = $stmt_check->get_result();
+        
+                    if($result->num_rows == 0)
+                    {
+                        $sql3 = "INSERT INTO subject_teachers (subj_teacher, subject_name, section, grade_level, strand, semester, school_year) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                        $stmt = $conn->prepare($sql3);
+                        if ($stmt === false) 
+                        {
+                            die("Prepare failed: " . $conn->error);
+                        }
+
+                        $stmt->bind_param("sssisss", $subj_teacher, $subject, $section, $grade_level, $strand, $term, $school_year);
+                        if (!$stmt->execute()) 
+                        {
+                            die("Execute failed: " . $stmt->error);
+                        }
+
+                        // Debugging statement to confirm successful insert
+                        header('Location: subjectTeacher.php?added');
+
+                        $stmt->close();
+                    } 
+                    else 
+                    {
+                        header('Location: subjectTeacher.php?existing');
+                    }
+                } 
+
+                    
+            }
+        } 
+        else {
+            echo "No subjects selected<br>";
+        }
+    }
+
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //CODE FOR ADDING SECTION
+    if(isset($_POST['addsection'])) {
+        $section = $_POST['sectionname'];
+        $grade_level = $_POST['grade_level'];
+        $strand = $_POST['strand'];
+        $tname = $_POST['adviser'];
+        $school_year = $_POST['school_year'];
+
+        $check_query = "SELECT * FROM section WHERE strand = ? AND grade_level = ? AND section = ? and school_year = ?";
+        $stmt = $conn->prepare($check_query);
+        $stmt->bind_param("siss", $strand, $grade_level, $section, $school_year);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if($result->num_rows == 0) 
+        {
+            $sql3 = "INSERT INTO section (strand, grade_level, section, adviser, school_year) VALUES (?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql3);
+            if ($stmt === false) {
+                die("Prepare failed: " . $conn->error);
+            }
+
+            $stmt->bind_param("sisss", $strand, $grade_level, $section, $tname, $school_year);
+            if (!$stmt->execute()) {
+                die("Execute failed: " . $stmt->error);
+            }
+
+            // Debugging statement to confirm successful insert
+            header('Location: Section.php?added');
+
+            $stmt->close();
+        } 
+        else 
+        {
+            header('Location: Section.php?existing');
         }
     }
 

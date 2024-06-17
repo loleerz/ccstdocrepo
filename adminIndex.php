@@ -240,6 +240,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="subjectTeacher.php" class="nav-link">
+                  <i class="fas fa-user-tie nav-icon"></i>
+                  <p>Subject Teacher</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="addcoordinator.php" class="nav-link">
                   <i class="fas fa-user-tie nav-icon"></i>
                   <p>Coordinator</p>
@@ -260,6 +266,12 @@
                 <a href="Strand.php" class="nav-link">
                   <i class="fas fa-book-open nav-icon"></i>
                   <p>Strand</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="Section.php" class="nav-link">
+                  <i class="fas fa-book-open nav-icon"></i>
+                  <p>Section</p>
                 </a>
               </li>
               <li class="nav-item">

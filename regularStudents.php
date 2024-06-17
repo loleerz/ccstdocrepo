@@ -374,7 +374,7 @@
                                     <?=$row['Lname']."".$row['Suffix'].", ".$row['Fname']." ".$minitial?>
                                 </td>
                                 <td>
-                                    <?=$row['strand']." - ".$row['section']?>
+                                    <?=$row['strand']." - ".$row['grade_level'].$row['section']?>
                                 </td>
                                 <td>
                                     <a href='studentInfo.php?student_no=<?=$row['student_no']?>'>

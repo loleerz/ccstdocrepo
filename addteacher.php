@@ -7,6 +7,36 @@
     }
     include ('connection.php');
 
+    // Function to get the school year based on start and end dates
+    function getSchoolYear($startDate, $endDate) 
+    {
+      $currentDate = date('Y-m-d'); // Get current date
+      
+      if ($currentDate >= $startDate && $currentDate <= $endDate) {
+          return date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate)); // Format as "YYYY-YYYY"
+      } else {
+          return false; // Return false if not within a school year
+      }
+    }
+
+    // Example usage:
+    $startYear = 2016; // Starting year when school started accepting students
+    $currentYear = date('Y'); // Current year
+    $schoolYears = array();
+    $currentSchoolYear = false;
+
+    for ($year = $startYear; $year <= $currentYear; $year++) {
+        $startDate = $year . '-09-01'; // Start date of the school year
+        $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate) - 1)); // End date of the school year (1 year from start date minus 1 day)
+        
+        $schoolYear = getSchoolYear($startDate, $endDate);
+        if ($schoolYear) {
+            $currentSchoolYear = $schoolYear;
+        }
+        // Store all possible school years for the dropdown
+        $schoolYears[] = date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate));
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -303,6 +333,12 @@
                     </div>
                 </div>
                   <form action="input.php" method="post">
+                  <?php
+                      $currentSchoolYear = "2023-2024";
+                  ?>
+
+                  <input type="hidden" value="<?=$currentSchoolYear?>" name="school_year">
+
                     <div class="row g-3">
                         <div class="col-md-2">
                             <label for="employee_no" class="form-label">Employee Number</label>
@@ -400,66 +436,6 @@
                         </div>
                     </div>
                 
-                    <div class="row">
-                        <div class="col mt-3 mb-3">
-                            <span class="fs-5 fw-semibold">Advisory/ies</span>
-                        </div>
-                    </div>
-                    <!-- Advisories Card -->
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="card card-primary collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-semibold">STEM</h3>
-
-                                <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                </button>
-                                </div>
-                                <!-- /.card-tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- row -->
-                                <div class="row">
-                                    <!-- checkbox -->
-                                        <div class="col-4">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <input type="checkbox" name="advisories[]" value="STEM11-A">
-                                                    </span>
-                                                </div>
-                                                <input type="text" class="form-control" value="STEM11-A" disabled>
-                                            </div>
-                                        </div>
-                                        <!-- /.col-lg-6 -->
-                                    <!-- checkbox -->
-                                    <!-- checkbox -->
-                                        <div class="col-4">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <input type="checkbox" name="advisories[]" value="STEM11-A">
-                                                    </span>
-                                                </div>
-                                                <input type="text" class="form-control" value="STEM11-B" disabled>
-                                            </div>
-                                        </div>
-                                        <!-- /.col-lg-6 -->
-                                    <!-- checkbox -->
-                                </div>
-                                <!-- .row -->
-                            </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
-                        <!-- Hidden input to store selected advisories -->
-                    </div>
-                    
-                        
                     <div class="row">
                         <div class="col mt-3 mb-3">
                             <span class="fs-5 fw-semibold">Guardian Information</span>

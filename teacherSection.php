@@ -35,18 +35,12 @@ for ($year = $startYear; $year <= $currentYear; $year++) {
 }
 
 $sections = isset($_GET['section']) ? $_GET['section'] : '';
-$pattern = '/^([A-Za-z]+)(\d{2})-(\w)$/';
+$pattern = '/^([A-Za-z, ]+)(\d{2})-(\w)$/';
 $result = null;
 if (preg_match($pattern, $sections, $matches)) {
     $strand = $matches[1];
     $gradeLevel = $matches[2];
     $section = $matches[3];
-
-    if($strand == "STEM")
-      {
-        $strand = "Science, Technology, Engineering, and Mathematics";
-      } 
-    
 
     // Fetching data for outputting student info
     $sql = "SELECT (@row_number:=@row_number + 1) AS row_number, student_info.* 
@@ -291,7 +285,7 @@ $conn->close();
                           <td><?= htmlspecialchars($row['row_number']) ?></td>
                           <td><?= htmlspecialchars($row['student_no']) ?></td>
                           <td><?= htmlspecialchars($row['Lname'] . ' ' . $row['Suffix'] . ', ' . $row['Fname'] . ' ' . $minitial) ?></td>
-                          <td><?= htmlspecialchars($row['strand'] . ' - ' . $row['section']) ?></td>
+                          <td><?= htmlspecialchars($row['strand'] . ' - ' . $row['grade_level'].$row['section']) ?></td>
                           <td>
                             <a href='teacherStudInfo.php?student_no=<?= htmlspecialchars($row['student_no']) ?>'>
                               <button class="btn btn-primary">View</button>
