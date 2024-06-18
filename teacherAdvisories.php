@@ -278,8 +278,8 @@
                                     <?=$row['strand']." - ".$row['grade_level'].$row['section']?>
                                 </td>
                                 <td>
-                                    <a href='teacherSection.php?section=<?=$row['strand'].$row['grade_level']."-".$row['section']?>'>
-                                        <button>View</button>
+                                    <a href='teacherSection.php?section=<?=$row['strand'].$row['grade_level']."-".$row['section']?>' class="btn btn-primary">
+                                        View
                                     </a>
                                 </td>
                             </tr>

@@ -52,7 +52,7 @@
         justify-content: center;
         align-items: flex-start;
         width: 500px;
-        height: 450px;
+        height: 480px;
         
         background-color: #e9ecef;
         
@@ -296,6 +296,14 @@
                         </p>
                         <div class="input-field">
                             <input type="submit" class="submit" name="signin" value="Sign In">
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <figcaption>Don't have an account yet?</figcaption>
+                                <span>
+                                    <a href="">Register here!</a>
+                                </span>
+                            </div>
                         </div> 
                     </form>
                 </div>  
