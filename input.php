@@ -658,15 +658,15 @@
     {
         $today = date("Y-m-d");
         $rstudent_no = $_POST['rstudent_no'];
-        $grade_level = $_POST['grade_level'];
+        $grade_level = $_POST['grade_levelH'];
         $quarter = $_POST['quarter'];
         $semester = $_POST['semester'];
         $subject_name = $_POST['subject_name'];
         $subject_category = $_POST['subject_category'];
-        $school_year = $_POST['school_year'];
+        $school_year = $_POST['school_yearH'];
         $initialGrade = $_POST['initialGradeH'];
         $revisedGrade = $_POST['reviseGrades'];
-        $subjTeacher = $_POST['subjTeacher'];
+        $subjTeacher = $_POST['subj_teacherH'];
         $reason = $_POST['reason'];
         $status = $_POST['status'];
         $uploadOk = 1;
@@ -676,6 +676,7 @@
         echo $semester."<br>";
         echo "Initial Grade: ".$initialGrade."<br>";
         echo $revisedGrade."<br>";
+        echo $school_year."<br>";
         echo $reason."<br>";
         echo $subjTeacher;
     
@@ -803,6 +804,11 @@
                 
                 while ($row = $result->fetch_assoc()) 
                 {
+                    if($row['final'] == "INC")
+                    {
+                        $row['final'] = 0;
+                    }
+
                     $total_final_grades += $row['final'];
                     $num_subjects++;
                 }

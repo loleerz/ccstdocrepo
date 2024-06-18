@@ -1,748 +1,1360 @@
-<div class="card">
-  <div class="card-header">
-    Add Strand
-  </div>
-  <div class="card-body">
-    <h5 class="card-title">Strand Details</h5>
+                            <!-- G11 2ND SEM MODALSZ STARTSSASDAFSAOFAS -->
 
-        <div class="row">
-            <div class="col mb-3">
-                <span class="fs-5 fw-semibold">Strand Information</span>
-            </div>
-        </div>
-        <form action="input.php" method="post">
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label for="strandname" class="form-label">Strand Name</label>
-                    <input type="text" name="strandname" class="form-control" id="strandname" placeholder="Enter strand name" required>
-                </div>
-            </div>
-        
-            <div class="row">
-                <div class="col-6 mt-3 mb-3">
-                    <span class="fs-5 fw-semibold">Grade 11 Subjects</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6 border-end border-dark">
-                    <div class="row">
-                        <div class="col-12 mb-3">
-                            <span class="fs-5 fw-semibold">First Semester</span>
-                        </div>
-                    </div>
-                    <!-- Advisories Card -->
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card card-primary collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-semibold">Core Subjects</h3>
-                                <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                </button>
+                            <!-- Modal 1st Quarter-->
+                            <div class="modal fade" id="111stQuarterModal" tabindex="-1" aria-labelledby="121stQuarterModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="121stQuarterModalLabel">2nd Semester - 1st Quarter</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    
+                                    <table cellspacing="0" class="table table-sm table-bordered table-striped text-center align-middle">
+                                        <thead>
+                                            <tr>
+                                                <td bgcolor="#BEBEBE" class="justify-content-center">
+                                                    <p class="fw-semibold">Indicate if Subject is CORE, APPLIED, or SPECIALIZED</p>
+                                                </td>
+                                                <td bgcolor="#BEBEBE" class="justify-content-center">
+                                                    <p class="fw-semibold">SUBJECTS</p>
+                                                </td>
+                                                <td bgcolor="#BEBEBE" class="justify-content-center">
+                                                    <p class="fw-semibold">1st Quarter</p>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <!-- CORE SUBJECTS -->
+                                            <?php
+                                                $query = "SELECT * FROM core_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                $stmt = $conn->prepare($query);
+                                                $stmt->bind_param("s", $student_no);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
+
+                                                if($result->num_rows > 0)
+                                                {
+                                                    while($row = $result->fetch_assoc())
+                                                    { ?>
+
+                                                        
+                                                        <tr>
+                                                            <td>
+                                                            <p class="s8">Core</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="s8 text-start"><?=$row['subject_name']?></p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-danger"><?=$row['1st']?></p>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                   <?php }
+                                                }
+                                                else
+                                                {?>
+                                                    
+                                                        <tr>
+                                                            <td>
+                                                                Student has no Core Subject to take!
+                                                            </td>
+                                                        </tr>
+                                                        
+                                              <?php  }
+                                            ?>
+                                            <!-- APPLIED SUBJECTS -->
+                                            <?php
+                                                $query = "SELECT * FROM applied_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                $stmt = $conn->prepare($query);
+                                                $stmt->bind_param("s", $student_no);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
+
+                                                if($result->num_rows > 0)
+                                                {
+                                                    while($row = $result->fetch_assoc())
+                                                    { ?>
+
+                                                        
+                                                        <tr>
+                                                            <td>
+                                                            <p class="s8">Applied</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="s8 text-start"><?=$row['subject_name']?></p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-danger"><?=$row['1st']?></p>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                   <?php }
+                                                }
+                                                else
+                                                {?>
+                                                    
+                                                        <tr>
+                                                            <td>
+                                                                Student has no Applied Subject to take!
+                                                            </td>
+                                                        </tr>
+                                                        
+                                              <?php  }
+                                            ?>
+                                            <!-- SPECIALIZED SUBJECTS -->
+                                            <?php
+                                                $query = "SELECT * FROM specialized_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                $stmt = $conn->prepare($query);
+                                                $stmt->bind_param("s", $student_no);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
+
+                                                if($result->num_rows > 0)
+                                                {
+                                                    while($row = $result->fetch_assoc())
+                                                    { ?>
+
+                                                        
+                                                        <tr>
+                                                            <td>
+                                                            <p class="s8">Specialized</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="s8 text-start"><?=$row['subject_name']?></p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-danger"><?=$row['1st']?></p>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                   <?php }
+                                                }
+                                                else
+                                                {?>
+                                                    
+                                                        <tr>
+                                                            <td>
+                                                                Student has no Specialized Subject to take!
+                                                            </td>
+                                                        </tr>
+                                                        
+                                              <?php  }
+                                            ?>
+                                            <!-- OTHER SUBJECTS -->
+                                            <?php
+                                                $query = "SELECT * FROM other_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                $stmt = $conn->prepare($query);
+                                                $stmt->bind_param("s", $student_no);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
+
+                                                if($result->num_rows > 0)
+                                                {
+                                                    while($row = $result->fetch_assoc())
+                                                    { ?>
+
+                                                        
+                                                        <tr>
+                                                            <td>
+                                                            <p class="s8">Other</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="s8 text-start"><?=$row['subject_name']?></p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-danger"><?=$row['1st']?></p>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                   <?php }
+                                                }
+                                                else
+                                                {?>
+                                                    
+                                                        <tr>
+                                                            <td>
+                                                                Student has no Other Subject to take!
+                                                            </td>
+                                                        </tr>
+                                                        
+                                              <?php  }
+                                            ?>
+
+                                            <tr>
+                                                <td>
+                                                    <p>&nbsp;</p>
+                                                </td>
+                                                <td>
+                                                    <p>&nbsp;</p>
+                                                </td>
+                                                <td>
+                                                    <p>&nbsp;</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <p>&nbsp;</p>
+                                                </td>
+                                                <td>
+                                                    <p>&nbsp;</p>
+                                                </td>
+                                                <td>
+                                                    <p>&nbsp;</p>
+                                                </td>
+                                            </tr>
+                                            <!-- <tr>
+                                                <td colspan="2" bgcolor="#BEBEBE" class="justify-content-center">
+                                                    <p class="fw-semibold text-end">General Ave. for the Quarter:</p>
+                                                </td>
+                                                <td>
+                                                    <p>99</p>
+                                                </td>
+                                                <td>
+                                                    <p>Promoted</p>
+                                                </td>
+                                            </tr> -->
+                                        </tbody>
+                                      </table>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                    </div>
                                 </div>
-                                <!-- /.card-tools -->
                             </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- row -->
-                                <input type="hidden" name="c111grade_level" value="11">
-                                <input type="hidden" name="c111semester" value="1st Semester">
-                                <?php
-                                    $sql = "SELECT DISTINCT subject_name FROM core_subjects WHERE grade_level = '11' AND semester = '1st Semester'";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
+                            <!-- Modal -->
 
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        {
-                                            echo "
-                                                <div class='row mb-2'>
-                                                    <!-- checkbox -->
-                                                        <div class='col-12'>
-                                                            <div class='input-group'>
-                                                                <div class='input-group-prepend'>
-                                                                    <span class='input-group-text'>
-                                                                        <input type='checkbox' name='c111subjects[]' id='".$row['subject_name']."' value = '".$row['subject_name']."'>
-                                                                    </span>
-                                                                </div>
-                                                                <input type='text' class='form-control text-wrap' value='".$row['subject_name']."' disabled>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-lg-6 -->
-                                                    <!-- checkbox -->
-                                                </div>
-                                            ";
-                                        }
-                                    }
-                                ?>
-                                <!-- .row -->
+                            <!-- Modal Edit-->
+                            <div class="modal fade" id="111stQuarterEModal" tabindex="-1" aria-labelledby="111stQuarterEModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="111stQuarterEModalLabel">1st Semester - 1st Quarter</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                <form action="update.php?student_no=<?= htmlspecialchars($student_no)?>" method="post">
+                                    <div class="modal-body">
+                                    
+                                        <table cellspacing="0" class="table table-sm table-bordered table-striped text-center align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <td bgcolor="#BEBEBE" class="justify-content-center">
+                                                        <p class="fw-semibold">Indicate if Subject is CORE, APPLIED, or SPECIALIZED</p>
+                                                    </td>
+                                                    <td bgcolor="#BEBEBE" class="justify-content-center">
+                                                        <p class="fw-semibold">SUBJECTS</p>
+                                                    </td>
+                                                    <td bgcolor="#BEBEBE" class="justify-content-center">
+                                                        <p class="fw-semibold">1st Quarter</p>
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                                <!-- CORE SUBJECTS -->
+                                                <?php
+                                                    //FETCHING SUBJECTS INFO
+                                                    $query = "SELECT * FROM core_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                    $stmt = $conn->prepare($query);
+                                                    $stmt->bind_param("s", $student_no);
+                                                    $stmt->execute();
+                                                    $result = $stmt->get_result();
+                                                    
+                                                    if ($result->num_rows > 0) 
+                                                    {
+                                                        while ($row = $result->fetch_assoc()) 
+                                                        {
+                                                            //FETCHING SUBJECT TEACHER INFO
+                                                            $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
+                                                            $stmt1 = $conn->prepare($query1);
+                                                            $stmt1->bind_param("siss", $row['strand'], $row['grade_level'], $row['section'], $row['subject_name']);
+                                                            $stmt1->execute();
+                                                            $result1 = $stmt1->get_result();
+                                                            $row1 = $result1->fetch_assoc();
+
+                                                            //FETCHING SUBJECT TEACHER NAME
+                                                            $query2 = "SELECT * FROM teachers_info WHERE employeenumber = ? ";
+                                                            $stmt2 = $conn->prepare($query2);
+                                                            $stmt2->bind_param("s", $row1['subj_teacher']);
+                                                            $stmt2->execute();
+                                                            $result2 = $stmt2->get_result();
+                                                            $row2 = $result2->fetch_assoc();
+
+                                                            $STmname = $row2['mname'];
+                                                            $STminitial = strtoupper(substr($STmname, 0, 1)); 
+
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
+                                                                ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Core</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" disabled placeholder="<?= $row['1st'] ?>">
+                                                                    </td>
+                                                                    <td>
+                                                                        <a type="button" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#reviseGrade" 
+                                                                            class="btn btn-warning" 
+                                                                            data-subject-name="<?= $row['subject_name'] ?>" 
+                                                                            data-subject-teacher="<?= $row2['fname']." ".$STminitial.". ".$row2['lname']." ".$row2['suffix'] ?>" 
+                                                                            data-subject-category="core" 
+                                                                            data-iGrade="<?= $row['1st'] ?>"
+                                                                            data-grade-level="<?= $row['grade_level'] ?>"
+                                                                            data-quarter="1st"
+                                                                            data-semester="<?= $row['sem'] ?>"
+                                                                            data-schoolYear="<?= $row['school_year'] ?>"
+                                                                            data-student-no="<?= $row['student_no'] ?>"
+                                                                            data-status="Pending"
+                                                                            >
+                                                                            <i class="fas fa-pencil-alt"></i> Revise
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            } 
+                                                            else 
+                                                            {
+                                                    ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Core</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" min="0" max="100" name="marks[core][<?= $row['subject_name'] . '__' . $row['sem'] ?>]" id="">
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {?>
+                                                        
+                                                            <tr>
+                                                                <td>
+                                                                    Student has no Core Subject to take!
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                <?php  }
+                                                ?>
+                                                <!-- APPLIED SUBJECTS -->
+                                                <?php
+                                                    //FETCHING SUBJECTS INFO
+                                                    $query = "SELECT * FROM applied_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                    $stmt = $conn->prepare($query);
+                                                    $stmt->bind_param("s", $student_no);
+                                                    $stmt->execute();
+                                                    $result = $stmt->get_result();
+                                                    
+                                                    if ($result->num_rows > 0) 
+                                                    {
+                                                        while ($row = $result->fetch_assoc()) 
+                                                        {
+                                                            //FETCHING SUBJECT TEACHER INFO
+                                                            $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
+                                                            $stmt1 = $conn->prepare($query1);
+                                                            $stmt1->bind_param("siss", $row['strand'], $row['grade_level'], $row['section'], $row['subject_name']);
+                                                            $stmt1->execute();
+                                                            $result1 = $stmt1->get_result();
+                                                            $row1 = $result1->fetch_assoc();
+
+                                                            //FETCHING SUBJECT TEACHER NAME
+                                                            $query2 = "SELECT * FROM teachers_info WHERE employeenumber = ? ";
+                                                            $stmt2 = $conn->prepare($query2);
+                                                            $stmt2->bind_param("s", $row1['subj_teacher']);
+                                                            $stmt2->execute();
+                                                            $result2 = $stmt2->get_result();
+                                                            $row2 = $result2->fetch_assoc();
+
+                                                            $STmname = $row2['mname'];
+                                                            $STminitial = strtoupper(substr($STmname, 0, 1)); 
+
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
+                                                                ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Applied</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" disabled placeholder="<?= $row['1st'] ?>">
+                                                                    </td>
+                                                                    <td>
+                                                                        <a type="button" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#reviseGrade" 
+                                                                            class="btn btn-warning" 
+                                                                            data-subject-name="<?= $row['subject_name'] ?>" 
+                                                                            data-subject-teacher="<?= $row2['fname']." ".$STminitial.". ".$row2['lname']." ".$row2['suffix'] ?>" 
+                                                                            data-subject-category="applied" 
+                                                                            data-iGrade="<?= $row['1st'] ?>"
+                                                                            data-grade-level="<?= $row['grade_level'] ?>"
+                                                                            data-quarter="1st"
+                                                                            data-semester="<?= $row['sem'] ?>"
+                                                                            data-schoolYear="<?= $row['school_year'] ?>"
+                                                                            data-student-no="<?= $row['student_no'] ?>"
+                                                                            data-status="Pending"
+                                                                            >
+                                                                            <i class="fas fa-pencil-alt"></i> Revise
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            } 
+                                                            else 
+                                                            {
+                                                    ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Applied</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" min="0" max="100" name="marks[applied][<?= $row['subject_name'] . '__' . $row['sem'] ?>]" id="">
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {?>
+                                                        
+                                                            <tr>
+                                                                <td>
+                                                                    Student has no Core Subject to take!
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                <?php  }
+                                                ?>
+                                                <!-- SPECIALIZED SUBJECTS -->
+                                                <?php
+                                                    //FETCHING SUBJECTS INFO
+                                                    $query = "SELECT * FROM specialized_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                    $stmt = $conn->prepare($query);
+                                                    $stmt->bind_param("s", $student_no);
+                                                    $stmt->execute();
+                                                    $result = $stmt->get_result();
+                                                    
+                                                    if ($result->num_rows > 0) 
+                                                    {
+                                                        while ($row = $result->fetch_assoc()) 
+                                                        {
+                                                            //FETCHING SUBJECT TEACHER INFO
+                                                            $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
+                                                            $stmt1 = $conn->prepare($query1);
+                                                            $stmt1->bind_param("siss", $row['strand'], $row['grade_level'], $row['section'], $row['subject_name']);
+                                                            $stmt1->execute();
+                                                            $result1 = $stmt1->get_result();
+                                                            $row1 = $result1->fetch_assoc();
+
+                                                            //FETCHING SUBJECT TEACHER NAME
+                                                            $query2 = "SELECT * FROM teachers_info WHERE employeenumber = ? ";
+                                                            $stmt2 = $conn->prepare($query2);
+                                                            $stmt2->bind_param("s", $row1['subj_teacher']);
+                                                            $stmt2->execute();
+                                                            $result2 = $stmt2->get_result();
+                                                            $row2 = $result2->fetch_assoc();
+
+                                                            $STmname = $row2['mname'];
+                                                            $STminitial = strtoupper(substr($STmname, 0, 1)); 
+
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
+                                                                ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Specialized</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" disabled placeholder="<?= $row['1st'] ?>">
+                                                                    </td>
+                                                                    <td>
+                                                                        <a type="button" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#reviseGrade" 
+                                                                            class="btn btn-warning" 
+                                                                            data-subject-name="<?= $row['subject_name'] ?>" 
+                                                                            data-subject-teacher="<?= $row2['fname']." ".$STminitial.". ".$row2['lname']." ".$row2['suffix'] ?>" 
+                                                                            data-subject-category="specialized" 
+                                                                            data-iGrade="<?= $row['1st'] ?>"
+                                                                            data-grade-level="<?= $row['grade_level'] ?>"
+                                                                            data-quarter="1st"
+                                                                            data-semester="<?= $row['sem'] ?>"
+                                                                            data-schoolYear="<?= $row['school_year'] ?>"
+                                                                            data-student-no="<?= $row['student_no'] ?>"
+                                                                            data-status="Pending"
+                                                                            >
+                                                                            <i class="fas fa-pencil-alt"></i> Revise
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            } 
+                                                            else 
+                                                            {
+                                                    ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Specialized</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" min="0" max="100" name="marks[specialized][<?= $row['subject_name'] . '__' . $row['sem'] ?>]" id="">
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {?>
+                                                        
+                                                            <tr>
+                                                                <td>
+                                                                    Student has no Specialized Subject to take!
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                <?php  }
+                                                ?>
+                                                <!-- OTHER SUBJECTS -->
+                                                <?php
+                                                    //FETCHING SUBJECTS INFO
+                                                    $query = "SELECT * FROM other_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                    $stmt = $conn->prepare($query);
+                                                    $stmt->bind_param("s", $student_no);
+                                                    $stmt->execute();
+                                                    $result = $stmt->get_result();
+                                                    
+                                                    if ($result->num_rows > 0) 
+                                                    {
+                                                        while ($row = $result->fetch_assoc()) 
+                                                        {
+                                                            //FETCHING SUBJECT TEACHER INFO
+                                                            $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
+                                                            $stmt1 = $conn->prepare($query1);
+                                                            $stmt1->bind_param("siss", $row['strand'], $row['grade_level'], $row['section'], $row['subject_name']);
+                                                            $stmt1->execute();
+                                                            $result1 = $stmt1->get_result();
+                                                            $row1 = $result1->fetch_assoc();
+
+                                                            //FETCHING SUBJECT TEACHER NAME
+                                                            $query2 = "SELECT * FROM teachers_info WHERE employeenumber = ? ";
+                                                            $stmt2 = $conn->prepare($query2);
+                                                            $stmt2->bind_param("s", $row1['subj_teacher']);
+                                                            $stmt2->execute();
+                                                            $result2 = $stmt2->get_result();
+                                                            $row2 = $result2->fetch_assoc();
+
+                                                            $STmname = $row2['mname'];
+                                                            $STminitial = strtoupper(substr($STmname, 0, 1)); 
+
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
+                                                                ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Other</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" disabled placeholder="<?= $row['1st'] ?>">
+                                                                    </td>
+                                                                    <td>
+                                                                        <a type="button" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#reviseGrade" 
+                                                                            class="btn btn-warning" 
+                                                                            data-subject-name="<?= $row['subject_name'] ?>" 
+                                                                            data-subject-teacher="<?= $row2['fname']." ".$STminitial.". ".$row2['lname']." ".$row2['suffix'] ?>" 
+                                                                            data-subject-category="other" 
+                                                                            data-iGrade="<?= $row['1st'] ?>"
+                                                                            data-grade-level="<?= $row['grade_level'] ?>"
+                                                                            data-quarter="1st"
+                                                                            data-semester="<?= $row['sem'] ?>"
+                                                                            data-schoolYear="<?= $row['school_year'] ?>"
+                                                                            data-student-no="<?= $row['student_no'] ?>"
+                                                                            data-status="Pending"
+                                                                            >
+                                                                            <i class="fas fa-pencil-alt"></i> Revise
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            } 
+                                                            else 
+                                                            {
+                                                    ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Other</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" min="0" max="100" name="marks[other][<?= $row['subject_name'] . '__' . $row['sem'] ?>]" id="">
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {?>
+                                                        
+                                                            <tr>
+                                                                <td>
+                                                                    Student has no Other Subject to take!
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                <?php  }
+                                                ?>
+
+                                                <tr>
+                                                    <td>
+                                                        <p>&nbsp;</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>&nbsp;</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>&nbsp;</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <p>&nbsp;</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>&nbsp;</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>&nbsp;</p>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <input type="submit" class="btn btn-primary" name="1stSem1Quarter" value="Save Changes">
+                                        </div>
+                                        </div>
+                                    </div>
+
+                                </form>
                             </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4">
-                            <div class="card card-primary collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-semibold">Applied Subjects</h3>
-                                <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                </button>
+                            <!-- Modal Edit-->
+
+
+                            <!-- Modal 2nd Quarter-->
+                            <div class="modal fade" id="112ndQuarterModal" tabindex="-1" aria-labelledby="112ndQuarterModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="112ndQuarterModalLabel">1st Semester - 2nd Quarter</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    
+                                    <table cellspacing="0" class="table table-sm table-bordered table-striped text-center align-middle">
+                                        <thead>
+                                            <tr>
+                                                <td bgcolor="#BEBEBE" class="justify-content-center">
+                                                    <p class="fw-semibold">Indicate if Subject is CORE, APPLIED, or SPECIALIZED</p>
+                                                </td>
+                                                <td bgcolor="#BEBEBE" class="justify-content-center">
+                                                    <p class="fw-semibold">SUBJECTS</p>
+                                                </td>
+                                                <td bgcolor="#BEBEBE" class="justify-content-center">
+                                                    <p class="fw-semibold">2nd Quarter</p>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <!-- CORE SUBJECTS -->
+                                            <?php
+                                                $query = "SELECT * FROM core_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                $stmt = $conn->prepare($query);
+                                                $stmt->bind_param("s", $student_no);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
+
+                                                if($result->num_rows > 0)
+                                                {
+                                                    while($row = $result->fetch_assoc())
+                                                    { ?>
+
+                                                        
+                                                        <tr>
+                                                            <td>
+                                                            <p class="s8">Core</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="s8 text-start"><?=$row['subject_name']?></p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-danger"><?=$row['2nd']?></p>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                   <?php }
+                                                }
+                                                else
+                                                {?>
+                                                    
+                                                        <tr>
+                                                            <td>
+                                                                Student has no Core Subject to take!
+                                                            </td>
+                                                        </tr>
+                                                        
+                                              <?php  }
+                                            ?>
+                                            <!-- APPLIED SUBJECTS -->
+                                            <?php
+                                                $query = "SELECT * FROM applied_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                $stmt = $conn->prepare($query);
+                                                $stmt->bind_param("s", $student_no);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
+
+                                                if($result->num_rows > 0)
+                                                {
+                                                    while($row = $result->fetch_assoc())
+                                                    { ?>
+
+                                                        
+                                                        <tr>
+                                                            <td>
+                                                            <p class="s8">Applied</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="s8 text-start"><?=$row['subject_name']?></p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-danger"><?=$row['2nd']?></p>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                   <?php }
+                                                }
+                                                else
+                                                {?>
+                                                    
+                                                        <tr>
+                                                            <td>
+                                                                Student has no Applied Subject to take!
+                                                            </td>
+                                                        </tr>
+                                                        
+                                              <?php  }
+                                            ?>
+                                            <!-- SPECIALIZED SUBJECTS -->
+                                            <?php
+                                                $query = "SELECT * FROM specialized_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                $stmt = $conn->prepare($query);
+                                                $stmt->bind_param("s", $student_no);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
+
+                                                if($result->num_rows > 0)
+                                                {
+                                                    while($row = $result->fetch_assoc())
+                                                    { ?>
+
+                                                        
+                                                        <tr>
+                                                            <td>
+                                                            <p class="s8">Specialized</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="s8 text-start"><?=$row['subject_name']?></p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-danger"><?=$row['2nd']?></p>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                   <?php }
+                                                }
+                                                else
+                                                {?>
+                                                    
+                                                        <tr>
+                                                            <td>
+                                                                Student has no Specialized Subject to take!
+                                                            </td>
+                                                        </tr>
+                                                        
+                                              <?php  }
+                                            ?>
+                                            <!-- OTHER SUBJECTS -->
+                                            <?php
+                                                $query = "SELECT * FROM other_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                $stmt = $conn->prepare($query);
+                                                $stmt->bind_param("s", $student_no);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
+
+                                                if($result->num_rows > 0)
+                                                {
+                                                    while($row = $result->fetch_assoc())
+                                                    { ?>
+
+                                                        
+                                                        <tr>
+                                                            <td>
+                                                            <p class="s8">Other</p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="s8 text-start"><?=$row['subject_name']?></p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-danger"><?=$row['2nd']?></p>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                   <?php }
+                                                }
+                                                else
+                                                {?>
+                                                    
+                                                        <tr>
+                                                            <td>
+                                                                Student has no Other Subject to take!
+                                                            </td>
+                                                        </tr>
+                                                        
+                                              <?php  }
+                                            ?>
+
+                                            <tr>
+                                                <td>
+                                                    <p>&nbsp;</p>
+                                                </td>
+                                                <td>
+                                                    <p>&nbsp;</p>
+                                                </td>
+                                                <td>
+                                                    <p>&nbsp;</p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <p>&nbsp;</p>
+                                                </td>
+                                                <td>
+                                                    <p>&nbsp;</p>
+                                                </td>
+                                                <td>
+                                                    <p>&nbsp;</p>
+                                                </td>
+                                            </tr>
+                                            <!-- <tr>
+                                                <td colspan="2" bgcolor="#BEBEBE" class="justify-content-center">
+                                                    <p class="fw-semibold text-end">General Ave. for the Quarter:</p>
+                                                </td>
+                                                <td>
+                                                    <p>99</p>
+                                                </td>
+                                                <td>
+                                                    <p>Promoted</p>
+                                                </td>
+                                            </tr> -->
+                                        </tbody>
+                                      </table>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                    </div>
                                 </div>
-                                <!-- /.card-tools -->
                             </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- row -->
-                                <input type="hidden" name="a111grade_level" value="11">
-                                <input type="hidden" name="a111semester" value="1st Semester">
-                                <?php
-                                    $sql = "SELECT DISTINCT subject_name FROM applied_subjects WHERE grade_level = '11' AND semester = '1st Semester'";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
+                            <!-- Modal -->
 
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        {
-                                            echo "
-                                                <div class='row mb-2'>
-                                                    <!-- checkbox -->
-                                                        <div class='col-12'>
-                                                            <div class='input-group'>
-                                                                <div class='input-group-prepend'>
-                                                                    <span class='input-group-text'>
-                                                                        <input type='checkbox' name='a111subjects[]' id='".$row['subject_name']."' value = '".$row['subject_name']."'>
-                                                                    </span>
-                                                                </div>
-                                                                <input type='text' class='form-control' value='".$row['subject_name']."' disabled>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-lg-6 -->
-                                                    <!-- checkbox -->
-                                                </div>
-                                            ";
-                                        }
-                                    }
-                                ?>
-                                <!-- .row -->
-                            </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4">
-                            <div class="card card-primary collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-semibold">Specialized Subjects</h3>
-                                <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                </button>
-                                </div>
-                                <!-- /.card-tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- row -->
-                                <input type="hidden" name="s111grade_level" value="11">
-                                <input type="hidden" name="s111semester" value="1st Semester">
-                                <?php
-                                    $sql = "SELECT DISTINCT subject_name FROM specialized_subjects WHERE grade_level = '11' AND semester = '1st Semester'";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
+                            <!-- Modal Edit-->
+                            <div class="modal fade" id="112ndQuarterEModal" tabindex="-1" aria-labelledby="112ndQuarterEModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="112ndQuarterEModalLabel">1st Semester - 2nd Quarter</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                <form action="update.php?student_no=<?= htmlspecialchars($student_no)?>" method="post">
+                                    <div class="modal-body">
+                                    
+                                        <table cellspacing="0" class="table table-sm table-bordered table-striped text-center align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <td bgcolor="#BEBEBE" class="justify-content-center">
+                                                        <p class="fw-semibold">Indicate if Subject is CORE, APPLIED, or SPECIALIZED</p>
+                                                    </td>
+                                                    <td bgcolor="#BEBEBE" class="justify-content-center">
+                                                        <p class="fw-semibold">SUBJECTS</p>
+                                                    </td>
+                                                    <td bgcolor="#BEBEBE" class="justify-content-center">
+                                                        <p class="fw-semibold">2nd Quarter</p>
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                                <!-- CORE SUBJECTS -->
+                                                <?php
+                                                    //FETCHING SUBJECTS INFO
+                                                    $query = "SELECT * FROM core_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                    $stmt = $conn->prepare($query);
+                                                    $stmt->bind_param("s", $student_no);
+                                                    $stmt->execute();
+                                                    $result = $stmt->get_result();
+                                                    
+                                                    if ($result->num_rows > 0) 
+                                                    {
+                                                        while ($row = $result->fetch_assoc()) 
+                                                        {
+                                                            //FETCHING SUBJECT TEACHER INFO
+                                                            $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
+                                                            $stmt1 = $conn->prepare($query1);
+                                                            $stmt1->bind_param("siss", $row['strand'], $row['grade_level'], $row['section'], $row['subject_name']);
+                                                            $stmt1->execute();
+                                                            $result1 = $stmt1->get_result();
+                                                            $row1 = $result1->fetch_assoc();
 
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        {
-                                            echo "
-                                                <div class='row mb-2'>
-                                                    <!-- checkbox -->
-                                                        <div class='col-12'>
-                                                            <div class='input-group'>
-                                                                <div class='input-group-prepend'>
-                                                                    <span class='input-group-text'>
-                                                                        <input type='checkbox' name='s111subjects[]' id='".$row['subject_name']."' value = '".$row['subject_name']."'>
-                                                                    </span>
-                                                                </div>
-                                                                <input type='text' class='form-control' value='".$row['subject_name']."' disabled>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-lg-6 -->
-                                                    <!-- checkbox -->
-                                                </div>
-                                            ";
-                                        }
-                                    }
-                                ?>
-                                <!-- .row -->
-                            </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                </div>
-                <!-- .col -->
-                <div class="col-6">
-                    <div class="row">
-                        <div class="col-12 mb-3">
-                            <span class="fs-5 fw-semibold">Second Semester</span>
-                        </div>
-                    </div>
-                    <!-- Advisories Card -->
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card card-primary collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-semibold">Core Subjects</h3>
-                                <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                </button>
-                                </div>
-                                <!-- /.card-tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- row -->
-                                <input type="hidden" name="c112grade_level" value="11">
-                                <input type="hidden" name="c112semester" value="2nd Semester">
-                                <?php
-                                    $sql = "SELECT DISTINCT subject_name FROM core_subjects WHERE grade_level = '11' AND semester = '2nd Semester'";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
+                                                            //FETCHING SUBJECT TEACHER NAME
+                                                            $query2 = "SELECT * FROM teachers_info WHERE employeenumber = ? ";
+                                                            $stmt2 = $conn->prepare($query2);
+                                                            $stmt2->bind_param("s", $row1['subj_teacher']);
+                                                            $stmt2->execute();
+                                                            $result2 = $stmt2->get_result();
+                                                            $row2 = $result2->fetch_assoc();
 
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        {
-                                            echo "
-                                                <div class='row mb-2'>
-                                                    <!-- checkbox -->
-                                                        <div class='col-12'>
-                                                            <div class='input-group'>
-                                                                <div class='input-group-prepend'>
-                                                                    <span class='input-group-text'>
-                                                                        <input type='checkbox' name='c112subjects[]' id='".$row['subject_name']."' value = '".$row['subject_name']."'>
-                                                                    </span>
-                                                                </div>
-                                                                <input type='text' class='form-control text-wrap' value='".$row['subject_name']."' disabled>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-lg-6 -->
-                                                    <!-- checkbox -->
-                                                </div>
-                                            ";
-                                        }
-                                    }
-                                ?>
-                                <!-- .row -->
-                            </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4">
-                            <div class="card card-primary collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-semibold">Applied Subjects</h3>
-                                <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                </button>
-                                </div>
-                                <!-- /.card-tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- row -->
-                                <input type="hidden" name="a112grade_level" value="11">
-                                <input type="hidden" name="a112semester" value="2nd Semester">
-                                <?php
-                                    $sql = "SELECT DISTINCT subject_name FROM applied_subjects WHERE grade_level = '11' AND semester = '2nd Semester'";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
+                                                            $STmname = $row2['mname'];
+                                                            $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        {
-                                            echo "
-                                                <div class='row mb-2'>
-                                                    <!-- checkbox -->
-                                                        <div class='col-12'>
-                                                            <div class='input-group'>
-                                                                <div class='input-group-prepend'>
-                                                                    <span class='input-group-text'>
-                                                                        <input type='checkbox' name='a112subjects[]' id='".$row['subject_name']."' value = '".$row['subject_name']."'>
-                                                                    </span>
-                                                                </div>
-                                                                <input type='text' class='form-control' value='".$row['subject_name']."' disabled>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-lg-6 -->
-                                                    <!-- checkbox -->
-                                                </div>
-                                            ";
-                                        }
-                                    }
-                                ?>
-                                <!-- .row -->
-                            </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4">
-                            <div class="card card-primary collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-semibold">Specialized Subjects</h3>
-                                <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                </button>
-                                </div>
-                                <!-- /.card-tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- row -->
-                                <input type="hidden" name="s112grade_level" value="11">
-                                <input type="hidden" name="s112semester" value="2nd Semester">
-                                <?php
-                                    $sql = "SELECT DISTINCT subject_name FROM specialized_subjects WHERE grade_level = '11' AND semester = '2nd Semester'";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
+                                                            if ($row['status'] == "Graded") 
+                                                            {
+                                                                ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Core</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" disabled placeholder="<?= $row['2nd'] ?>">
+                                                                    </td>
+                                                                    <td>
+                                                                        <a type="button" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#reviseGrade" 
+                                                                            class="btn btn-warning" 
+                                                                            data-subject-name="<?= $row['subject_name'] ?>" 
+                                                                            data-subject-teacher="<?= $row2['fname']." ".$STminitial.". ".$row2['lname']." ".$row2['suffix'] ?>" 
+                                                                            data-subject-category="core" 
+                                                                            data-iGrade="<?= $row['2nd'] ?>"
+                                                                            data-grade-level="<?= $row['grade_level'] ?>"
+                                                                            data-quarter="2nd"
+                                                                            data-semester="<?= $row['sem'] ?>"
+                                                                            data-schoolYear="<?= $row['school_year'] ?>"
+                                                                            data-student-no="<?= $row['student_no'] ?>"
+                                                                            data-status="Pending"
+                                                                            >
+                                                                            <i class="fas fa-pencil-alt"></i> Revise
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            } 
+                                                            else 
+                                                            {
+                                                    ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Core</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" min="0" max="100" name="marks[core][<?= $row['subject_name'] . '__' . $row['sem'] ?>]" id="">
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {?>
+                                                        
+                                                            <tr>
+                                                                <td>
+                                                                    Student has no Core Subject to take!
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                <?php  }
+                                                ?>
+                                            <!-- APPLIED SUBJECTS -->
+                                                <?php
+                                                    //FETCHING SUBJECTS INFO
+                                                    $query = "SELECT * FROM applied_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                    $stmt = $conn->prepare($query);
+                                                    $stmt->bind_param("s", $student_no);
+                                                    $stmt->execute();
+                                                    $result = $stmt->get_result();
+                                                    
+                                                    if ($result->num_rows > 0) 
+                                                    {
+                                                        while ($row = $result->fetch_assoc()) 
+                                                        {
+                                                            //FETCHING SUBJECT TEACHER INFO
+                                                            $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
+                                                            $stmt1 = $conn->prepare($query1);
+                                                            $stmt1->bind_param("siss", $row['strand'], $row['grade_level'], $row['section'], $row['subject_name']);
+                                                            $stmt1->execute();
+                                                            $result1 = $stmt1->get_result();
+                                                            $row1 = $result1->fetch_assoc();
 
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        {
-                                            echo "
-                                                <div class='row mb-2'>
-                                                    <!-- checkbox -->
-                                                        <div class='col-12'>
-                                                            <div class='input-group'>
-                                                                <div class='input-group-prepend'>
-                                                                    <span class='input-group-text'>
-                                                                        <input type='checkbox' name='s112subjects[]' id='".$row['subject_name']."' value = '".$row['subject_name']."'>
-                                                                    </span>
-                                                                </div>
-                                                                <input type='text' class='form-control' value='".$row['subject_name']."' disabled>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-lg-6 -->
-                                                    <!-- checkbox -->
-                                                </div>
-                                            ";
-                                        }
-                                    }
-                                ?>
-                                <!-- .row -->
-                            </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                </div>
-                <!-- .col -->
-            </div>
-            <!-- .row -->
-            <div class="row">
-                <div class="col-6 mt-3 mb-3">
-                    <span class="fs-5 fw-semibold">Grade 12 Subjects</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6 border-end border-dark">
-                    <div class="row">
-                        <div class="col-12 mb-3">
-                            <span class="fs-5 fw-semibold">First Semester</span>
-                        </div>
-                    </div>
-                    <!-- Advisories Card -->
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card card-primary collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-semibold">Core Subjects</h3>
-                                <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                </button>
-                                </div>
-                                <!-- /.card-tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- row -->
-                                <input type="hidden" name="c121grade_level" value="12">
-                                <input type="hidden" name="c121semester" value="1st Semester">
-                                <?php
-                                    $sql = "SELECT DISTINCT subject_name FROM core_subjects WHERE grade_level = '12' AND semester = '1st Semester'";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
+                                                            //FETCHING SUBJECT TEACHER NAME
+                                                            $query2 = "SELECT * FROM teachers_info WHERE employeenumber = ? ";
+                                                            $stmt2 = $conn->prepare($query2);
+                                                            $stmt2->bind_param("s", $row1['subj_teacher']);
+                                                            $stmt2->execute();
+                                                            $result2 = $stmt2->get_result();
+                                                            $row2 = $result2->fetch_assoc();
 
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        {
-                                            echo "
-                                                <div class='row mb-2'>
-                                                    <!-- checkbox -->
-                                                        <div class='col-12'>
-                                                            <div class='input-group'>
-                                                                <div class='input-group-prepend'>
-                                                                    <span class='input-group-text'>
-                                                                        <input type='checkbox' name='c121subjects[]' id='".$row['subject_name']."' value = '".$row['subject_name']."'>
-                                                                    </span>
-                                                                </div>
-                                                                <input type='text' class='form-control text-wrap' value='".$row['subject_name']."' disabled>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-lg-6 -->
-                                                    <!-- checkbox -->
-                                                </div>
-                                            ";
-                                        }
-                                    }
-                                ?>
-                                <!-- .row -->
-                            </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4">
-                            <div class="card card-primary collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-semibold">Applied Subjects</h3>
-                                <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                </button>
-                                </div>
-                                <!-- /.card-tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- row -->
-                                <input type="hidden" name="a121grade_level" value="12">
-                                <input type="hidden" name="a121semester" value="1st Semester">
-                                <?php
-                                    $sql = "SELECT DISTINCT subject_name FROM applied_subjects WHERE grade_level = '12' AND semester = '1st Semester'";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
+                                                            $STmname = $row2['mname'];
+                                                            $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        {
-                                            echo "
-                                                <div class='row mb-2'>
-                                                    <!-- checkbox -->
-                                                        <div class='col-12'>
-                                                            <div class='input-group'>
-                                                                <div class='input-group-prepend'>
-                                                                    <span class='input-group-text'>
-                                                                        <input type='checkbox' name='a121subjects[]' id='".$row['subject_name']."' value = '".$row['subject_name']."'>
-                                                                    </span>
-                                                                </div>
-                                                                <input type='text' class='form-control' value='".$row['subject_name']."' disabled>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-lg-6 -->
-                                                    <!-- checkbox -->
-                                                </div>
-                                            ";
-                                        }
-                                    }
-                                ?>
-                                <!-- .row -->
-                            </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4">
-                            <div class="card card-primary collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-semibold">Specialized Subjects</h3>
-                                <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                </button>
-                                </div>
-                                <!-- /.card-tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- row -->
-                                <input type="hidden" name="s121grade_level" value="12">
-                                <input type="hidden" name="s121semester" value="1st Semester">
-                                <?php
-                                    $sql = "SELECT DISTINCT subject_name FROM specialized_subjects WHERE grade_level = '12' AND semester = '1st Semester'";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
+                                                            if ($row['status'] == "Graded") 
+                                                            {
+                                                                ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Applied</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" disabled placeholder="<?= $row['2nd'] ?>">
+                                                                    </td>
+                                                                    <td>
+                                                                        <a type="button" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#reviseGrade" 
+                                                                            class="btn btn-warning" 
+                                                                            data-subject-name="<?= $row['subject_name'] ?>" 
+                                                                            data-subject-teacher="<?= $row2['fname']." ".$STminitial.". ".$row2['lname']." ".$row2['suffix'] ?>" 
+                                                                            data-subject-category="applied" 
+                                                                            data-iGrade="<?= $row['2nd'] ?>"
+                                                                            data-grade-level="<?= $row['grade_level'] ?>"
+                                                                            data-quarter="2nd"
+                                                                            data-semester="<?= $row['sem'] ?>"
+                                                                            data-schoolYear="<?= $row['school_year'] ?>"
+                                                                            data-student-no="<?= $row['student_no'] ?>"
+                                                                            data-status="Pending"
+                                                                            >
+                                                                            <i class="fas fa-pencil-alt"></i> Revise
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            } 
+                                                            else 
+                                                            {
+                                                    ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Applied</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" min="0" max="100" name="marks[applied][<?= $row['subject_name'] . '__' . $row['sem'] ?>]" id="">
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {?>
+                                                        
+                                                            <tr>
+                                                                <td>
+                                                                    Student has no Applied Subject to take!
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                <?php  }
+                                                ?>
+                                            <!-- SPECIALIZED SUBJECTS -->
+                                                <?php
+                                                    //FETCHING SUBJECTS INFO
+                                                    $query = "SELECT * FROM specialized_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                    $stmt = $conn->prepare($query);
+                                                    $stmt->bind_param("s", $student_no);
+                                                    $stmt->execute();
+                                                    $result = $stmt->get_result();
+                                                    
+                                                    if ($result->num_rows > 0) 
+                                                    {
+                                                        while ($row = $result->fetch_assoc()) 
+                                                        {
+                                                            //FETCHING SUBJECT TEACHER INFO
+                                                            $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
+                                                            $stmt1 = $conn->prepare($query1);
+                                                            $stmt1->bind_param("siss", $row['strand'], $row['grade_level'], $row['section'], $row['subject_name']);
+                                                            $stmt1->execute();
+                                                            $result1 = $stmt1->get_result();
+                                                            $row1 = $result1->fetch_assoc();
 
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        {
-                                            echo "
-                                                <div class='row mb-2'>
-                                                    <!-- checkbox -->
-                                                        <div class='col-12'>
-                                                            <div class='input-group'>
-                                                                <div class='input-group-prepend'>
-                                                                    <span class='input-group-text'>
-                                                                        <input type='checkbox' name='s121subjects[]' id='".$row['subject_name']."' value = '".$row['subject_name']."'>
-                                                                    </span>
-                                                                </div>
-                                                                <input type='text' class='form-control' value='".$row['subject_name']."' disabled>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-lg-6 -->
-                                                    <!-- checkbox -->
-                                                </div>
-                                            ";
-                                        }
-                                    }
-                                ?>
-                                <!-- .row -->
-                            </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                </div>
-                <!-- .col -->
-                <div class="col-6">
-                    <div class="row">
-                        <div class="col-12 mb-3">
-                            <span class="fs-5 fw-semibold">Second Semester</span>
-                        </div>
-                    </div>
-                    <!-- Advisories Card -->
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card card-primary collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-semibold">Core Subjects</h3>
-                                <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                </button>
-                                </div>
-                                <!-- /.card-tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- row -->
-                                <input type="hidden" name="c122grade_level" value="12">
-                                <input type="hidden" name="c122semester" value="2nd Semester">
-                                <?php
-                                    $sql = "SELECT DISTINCT subject_name FROM core_subjects WHERE grade_level = '12' AND semester = '2nd Semester'";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
+                                                            //FETCHING SUBJECT TEACHER NAME
+                                                            $query2 = "SELECT * FROM teachers_info WHERE employeenumber = ? ";
+                                                            $stmt2 = $conn->prepare($query2);
+                                                            $stmt2->bind_param("s", $row1['subj_teacher']);
+                                                            $stmt2->execute();
+                                                            $result2 = $stmt2->get_result();
+                                                            $row2 = $result2->fetch_assoc();
 
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        {
-                                            echo "
-                                                <div class='row mb-2'>
-                                                    <!-- checkbox -->
-                                                        <div class='col-12'>
-                                                            <div class='input-group'>
-                                                                <div class='input-group-prepend'>
-                                                                    <span class='input-group-text'>
-                                                                        <input type='checkbox' name='c122subjects[]' id='".$row['subject_name']."' value = '".$row['subject_name']."'>
-                                                                    </span>
-                                                                </div>
-                                                                <input type='text' class='form-control text-wrap' value='".$row['subject_name']."' disabled>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-lg-6 -->
-                                                    <!-- checkbox -->
-                                                </div>
-                                            ";
-                                        }
-                                    }
-                                ?>
-                                <!-- .row -->
-                            </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4">
-                            <div class="card card-primary collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-semibold">Applied Subjects</h3>
-                                <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                </button>
-                                </div>
-                                <!-- /.card-tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- row -->
-                                <input type="hidden" name="a122grade_level" value="12">
-                                <input type="hidden" name="a122semester" value="2nd Semester">
-                                <?php
-                                    $sql = "SELECT DISTINCT subject_name FROM applied_subjects WHERE grade_level = '12' AND semester = '2nd Semester'";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
+                                                            $STmname = $row2['mname'];
+                                                            $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        {
-                                            echo "
-                                                <div class='row mb-2'>
-                                                    <!-- checkbox -->
-                                                        <div class='col-12'>
-                                                            <div class='input-group'>
-                                                                <div class='input-group-prepend'>
-                                                                    <span class='input-group-text'>
-                                                                        <input type='checkbox' name='a122subjects[]' id='".$row['subject_name']."' value = '".$row['subject_name']."'>
-                                                                    </span>
-                                                                </div>
-                                                                <input type='text' class='form-control' value='".$row['subject_name']."' disabled>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-lg-6 -->
-                                                    <!-- checkbox -->
-                                                </div>
-                                            ";
-                                        }
-                                    }
-                                ?>
-                                <!-- .row -->
+                                                            if ($row['status'] == "Graded") 
+                                                            {
+                                                                ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Specialized</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" disabled placeholder="<?= $row['2nd'] ?>">
+                                                                    </td>
+                                                                    <td>
+                                                                        <a type="button" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#reviseGrade" 
+                                                                            class="btn btn-warning" 
+                                                                            data-subject-name="<?= $row['subject_name'] ?>" 
+                                                                            data-subject-teacher="<?= $row2['fname']." ".$STminitial.". ".$row2['lname']." ".$row2['suffix'] ?>" 
+                                                                            data-subject-category="specialized" 
+                                                                            data-iGrade="<?= $row['2nd'] ?>"
+                                                                            data-grade-level="<?= $row['grade_level'] ?>"
+                                                                            data-quarter="2nd"
+                                                                            data-semester="<?= $row['sem'] ?>"
+                                                                            data-schoolYear="<?= $row['school_year'] ?>"
+                                                                            data-student-no="<?= $row['student_no'] ?>"
+                                                                            data-status="Pending"
+                                                                            >
+                                                                            <i class="fas fa-pencil-alt"></i> Revise
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            } 
+                                                            else 
+                                                            {
+                                                    ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Specialized</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" min="0" max="100" name="marks[specialized][<?= $row['subject_name'] . '__' . $row['sem'] ?>]" id="">
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {?>
+                                                        
+                                                            <tr>
+                                                                <td>
+                                                                    Student has no Specialized Subject to take!
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                <?php  }
+                                                ?>
+                                                <!-- OTHER SUBJECTS -->
+                                                <?php
+                                                    //FETCHING SUBJECTS INFO
+                                                    $query = "SELECT * FROM other_sub_grades WHERE student_no = ? ORDER BY subject_name ASC";
+                                                    $stmt = $conn->prepare($query);
+                                                    $stmt->bind_param("s", $student_no);
+                                                    $stmt->execute();
+                                                    $result = $stmt->get_result();
+                                                    
+                                                    if ($result->num_rows > 0) 
+                                                    {
+                                                        while ($row = $result->fetch_assoc()) 
+                                                        {
+                                                            //FETCHING SUBJECT TEACHER INFO
+                                                            $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
+                                                            $stmt1 = $conn->prepare($query1);
+                                                            $stmt1->bind_param("siss", $row['strand'], $row['grade_level'], $row['section'], $row['subject_name']);
+                                                            $stmt1->execute();
+                                                            $result1 = $stmt1->get_result();
+                                                            $row1 = $result1->fetch_assoc();
+
+                                                            //FETCHING SUBJECT TEACHER NAME
+                                                            $query2 = "SELECT * FROM teachers_info WHERE employeenumber = ? ";
+                                                            $stmt2 = $conn->prepare($query2);
+                                                            $stmt2->bind_param("s", $row1['subj_teacher']);
+                                                            $stmt2->execute();
+                                                            $result2 = $stmt2->get_result();
+                                                            $row2 = $result2->fetch_assoc();
+
+                                                            $STmname = $row2['mname'];
+                                                            $STminitial = strtoupper(substr($STmname, 0, 1)); 
+
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
+                                                                ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Other</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" disabled placeholder="<?= $row['2nd'] ?>">
+                                                                    </td>
+                                                                    <td>
+                                                                        <a type="button" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#reviseGrade" 
+                                                                            class="btn btn-warning" 
+                                                                            data-subject-name="<?= $row['subject_name'] ?>" 
+                                                                            data-subject-teacher="<?= $row2['fname']." ".$STminitial.". ".$row2['lname']." ".$row2['suffix'] ?>" 
+                                                                            data-subject-category="other" 
+                                                                            data-iGrade="<?= $row['2nd'] ?>"
+                                                                            data-grade-level="<?= $row['grade_level'] ?>"
+                                                                            data-quarter="2nd"
+                                                                            data-semester="<?= $row['sem'] ?>"
+                                                                            data-schoolYear="<?= $row['school_year'] ?>"
+                                                                            data-student-no="<?= $row['student_no'] ?>"
+                                                                            data-status="Pending"
+                                                                            >
+                                                                            <i class="fas fa-pencil-alt"></i> Revise
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            } 
+                                                            else 
+                                                            {
+                                                    ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="s8">Other</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p class="s8 text-start"><?= $row['subject_name'] ?></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" class="form-control" min="0" max="100" name="marks[other][<?= $row['subject_name'] . '__' . $row['sem'] ?>]" id="">
+                                                                    </td>
+                                                                </tr>
+                                                    <?php
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {?>
+                                                        
+                                                            <tr>
+                                                                <td>
+                                                                    Student has no Other Subject to take!
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                <?php  }
+                                                ?>
+
+                                                <tr>
+                                                    <td>
+                                                        <p>&nbsp;</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>&nbsp;</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>&nbsp;</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <p>&nbsp;</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>&nbsp;</p>
+                                                    </td>
+                                                    <td>
+                                                        <p>&nbsp;</p>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <input type="submit" class="btn btn-primary" name="1stSem2Quarter" value="Save Changes">
+                                        </div>
+                                        </div>
+                                    </div>
+
+                                </form>
                             </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-4">
-                            <div class="card card-primary collapsed-card">
-                            <div class="card-header">
-                                <h3 class="card-title fw-semibold">Specialized Subjects</h3>
-                                <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                                </button>
-                                </div>
-                                <!-- /.card-tools -->
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <!-- row -->
-                                <input type="hidden" name="s122grade_level" value="12">
-                                <input type="hidden" name="s122semester" value="2nd Semester">
-                                <?php
-                                    $sql = "SELECT DISTINCT subject_name FROM specialized_subjects WHERE grade_level = '12' AND semester = '2nd Semester'";
-                                    $stmt = $conn->prepare($sql);
-                                    $stmt->execute();
-                                    $result = $stmt->get_result();
+                            <!-- Modal Edit-->
 
-                                    if($result->num_rows > 0)
-                                    {
-                                        while($row = $result->fetch_assoc())
-                                        {
-                                            echo "
-                                                <div class='row mb-2'>
-                                                    <!-- checkbox -->
-                                                        <div class='col-12'>
-                                                            <div class='input-group'>
-                                                                <div class='input-group-prepend'>
-                                                                    <span class='input-group-text'>
-                                                                        <input type='checkbox' name='s122subjects[]' id='".$row['subject_name']."' value = '".$row['subject_name']."'>
-                                                                    </span>
-                                                                </div>
-                                                                <input type='text' class='form-control' value='".$row['subject_name']."' disabled>
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.col-lg-6 -->
-                                                    <!-- checkbox -->
-                                                </div>
-                                            ";
-                                        }
-                                    }
-                                ?>
-                                <!-- .row -->
-                            </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                </div>
-                <!-- .col -->
-            </div>
-            <!-- .row -->
-
-  </div>
-</div>
-
-
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 fw-bold fs-4">Strand Registration</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <div class="content">
-      <div class="container-fluid">
-        
-                
-                    
-                        
-                    <div class="row mt-3 mb-3">
-                        <div class="col">
-                            <a href="adminIndex.php" id="cancel" class="btn btn-secondary btn-lg me-2">Cancel</a>
-                            <input type="submit" class="btn btn-info btn-lg" id="addstrand" name="addstrand" value="Add Record">
-                        </div>
-                    </div>
-                    </div>
-                </form>
-            </div>
-        
-      </div>
-      <!-- /.container-fluid -->
-    </div>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-
+                            <!-- G11 2ND SEM MODALSZ ENDSAJDKAHDWQ -->

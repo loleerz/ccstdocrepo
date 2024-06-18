@@ -296,15 +296,8 @@
                         </p>
                         <div class="input-field">
                             <input type="submit" class="submit" name="signin" value="Sign In">
+                            <figcaption class="text-center">Don't have an account yet? <a href="">Register here!</a></figcaption>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <figcaption>Don't have an account yet?</figcaption>
-                                <span>
-                                    <a href="">Register here!</a>
-                                </span>
-                            </div>
-                        </div> 
                     </form>
                 </div>  
     </div>

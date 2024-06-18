@@ -649,7 +649,7 @@
                 if (gradeLevel && term && category) {
                     $.ajax({
                         type: 'POST',
-                        url: 'searchdata.php',
+                        url: 'fetchSubject.php',
                         data: {
                             grade_level: gradeLevel,
                             term: term,
