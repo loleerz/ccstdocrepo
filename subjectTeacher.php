@@ -165,7 +165,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="adminIndex.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -579,8 +579,69 @@
           <!-- row -->
         </div>
         <div class="card-body">
-          <table class="table">
+          <table id="example2" class="table table-bordered table-hover table-striped">
+            <thead>
+            <tr>
+              <th>No.</th>
+              <th>Subject Teacher</th>
+              <th>Subject</th>
+              <th>Strand/Section</th>
+              <th>Semester</th>
+              <th>School Year</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+              <?php
+              //Fetching datas for outputting strands
+              $sql6 = "SELECT (@row_number := @row_number + 1) AS row_number, subject_teachers.* 
+              FROM subject_teachers 
+              CROSS JOIN (SELECT @row_number := 0) AS init
+              ORDER BY subj_teacher;";  
+              $stmt5 = $conn->prepare($sql6);
+              $stmt5->execute();
+              $result5 = $stmt5->get_result();
+                  while($row1 = $result5->fetch_assoc())
+                  { 
+                    $sql7 =  "SELECT * FROM teachers_info WHERE employeenumber = ?";
+                    $stmt = $conn->prepare($sql7);
+                    $stmt->bind_param("s", $row1['subj_teacher']);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $row2 = $result->fetch_assoc();
 
+                    $mname = $row2['mname'];
+                    $minitial = strtoupper(substr($mname, 0, 1));
+                    ?>
+                      <tr>
+                          <td>
+                              <?=$row1['row_number']?>
+                          </td>
+                          <td>
+                              <?=$row2['lname']."".$row2['suffix'].", ".$row2['fname']." ".$minitial?>
+                          </td>
+                          <td>
+                              <?=$row1['subject_name']?>
+                          </td>
+                          <td>
+                              <?=$row1['strand']."-".$row1['grade_level'].$row1['section']?>
+                          </td>
+                          <td>
+                              <?=$row1['semester']?>
+                          </td>
+                          <td>
+                              <?=$row1['school_year']?>
+                          </td>
+                          <td>
+                              <a href='' class="btn btn-primary">
+                                  Edit
+                              </a>
+                          </td>
+                      </tr>
+                <?php
+                  }
+              ?>
+            </tbody>
           </table>
         </div>
         <!-- card body -->
@@ -611,24 +672,27 @@
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
-
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
-
-<!-- OPTIONAL SCRIPTS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard3.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="plugins/jszip/jszip.min.js"></script>
+<script src="plugins/pdfmake/pdfmake.min.js"></script>
+<script src="plugins/pdfmake/vfs_fonts.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script>
         $(document).ready(function() 
         {
@@ -699,7 +763,23 @@
                 $('#selected_category').val($('#category').val());
             });
         });
- 
     </script>
+    <script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
 </body>
 </html>

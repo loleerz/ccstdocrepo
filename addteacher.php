@@ -213,6 +213,14 @@
             </ul>
           </li>
           <li class="nav-item">
+            <a href="gradeRevisions.php" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Grade Revisions
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-folder"></i>
               <p>
@@ -222,7 +230,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="generateForm137.php" class="nav-link">
                   <i class="fas fa-file nav-icon"></i>
                   <p>Form 137</p>
                 </a>
@@ -263,6 +271,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="subjectTeacher.php" class="nav-link">
+                  <i class="fas fa-user-tie nav-icon"></i>
+                  <p>Subject Teacher</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="addcoordinator.php" class="nav-link">
                   <i class="fas fa-user-tie nav-icon"></i>
                   <p>Coordinator</p>
@@ -280,13 +294,19 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="addStrand.php" class="nav-link">
+                <a href="Strand.php" class="nav-link">
                   <i class="fas fa-book-open nav-icon"></i>
                   <p>Strand</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="addSubject.php" class="nav-link">
+                <a href="Section.php" class="nav-link">
+                  <i class="fas fa-book-open nav-icon"></i>
+                  <p>Section</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="Subject.php" class="nav-link">
                   <i class="fas fa-book-open nav-icon"></i>
                   <p>Subject</p>
                 </a>

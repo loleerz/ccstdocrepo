@@ -162,7 +162,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="adminIndex.php" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -210,6 +210,14 @@
             </ul>
           </li>
           <li class="nav-item">
+            <a href="gradeRevisions.php" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Grade Revisions
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-folder"></i>
               <p>
@@ -219,7 +227,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="generateForm137.php" class="nav-link">
                   <i class="fas fa-file nav-icon"></i>
                   <p>Form 137</p>
                 </a>
@@ -260,6 +268,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="subjectTeacher.php" class="nav-link">
+                  <i class="fas fa-user-tie nav-icon"></i>
+                  <p>Subject Teacher</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="addcoordinator.php" class="nav-link">
                   <i class="fas fa-user-tie nav-icon"></i>
                   <p>Coordinator</p>
@@ -271,7 +285,7 @@
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-book"></i>
               <p>
-                Course
+                Add Course
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -280,6 +294,12 @@
                 <a href="Strand.php" class="nav-link active">
                   <i class="fas fa-book-open nav-icon"></i>
                   <p>Strand</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="Section.php" class="nav-link">
+                  <i class="fas fa-book-open nav-icon"></i>
+                  <p>Section</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -1112,8 +1132,52 @@
           <!-- row -->
         </div>
         <div class="card-body">
-          <table class="table">
-            
+          <table id="example2" class="table table-bordered table-hover table-striped">
+            <thead>
+            <tr>
+              <th>No.</th>
+              <th>Strand Name</th>
+              <th>Track</th>
+              <th>School Year</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+              <?php
+              //Fetching datas for outputting strands
+              $sql6 = "SELECT (@row_number := @row_number + 1) AS row_number, strand.* 
+              FROM strand 
+              CROSS JOIN (SELECT @row_number := 0) AS init
+              ORDER BY track;";  
+              $stmt5 = $conn->prepare($sql6);
+              $stmt5->execute();
+              $result5 = $stmt5->get_result();
+                  while($row1 = $result5->fetch_assoc())
+                  {  ?>
+
+                      <tr>
+                          <td>
+                              <?=$row1['row_number']?>
+                          </td>
+                          <td>
+                              <?=$row1['strand_name']?>
+                          </td>
+                          <td>
+                              <?=$row1['track']?>
+                          </td>
+                          <td>
+                              <?=$row1['school_year']?>
+                          </td>
+                          <td>
+                              <a href='' class="btn btn-primary">
+                                  Edit
+                              </a>
+                          </td>
+                      </tr>
+                <?php
+                  }
+              ?>
+            </tbody>
           </table>
         </div>
         <!-- card body -->
@@ -1152,24 +1216,65 @@
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
 
-<!-- OPTIONAL SCRIPTS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard3.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+<!-- REQUIRED SCRIPTS -->
+<!-- Bootstrap -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE -->
+<script src="dist/js/adminlte.js"></script>
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="plugins/jszip/jszip.min.js"></script>
+<script src="plugins/pdfmake/pdfmake.min.js"></script>
+<script src="plugins/pdfmake/vfs_fonts.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script>
-        $(document).ready(function() 
-        {
-            $('#cancel').on('click', function() {
-                
-            });
-        });
- 
-    </script>
+  $(document).ready(function() {
+    $('#cancel').on('click', function() {
+      // Add your cancel action here
+    });
+
+    $("#search").keyup(function() {
+      var input = $(this).val();
+
+      $.ajax({
+        url: "searchdata.php",
+        method: "POST",
+        data: { input: input },
+        success: function(data) {
+          $("#tbody").html(data);
+        }
+      });
+    });
+  });
+</script>
+<!-- Page specific script -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
 </body>
 </html>

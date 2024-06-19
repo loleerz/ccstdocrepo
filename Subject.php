@@ -163,7 +163,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="adminIndex.php" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -209,6 +209,14 @@
                 </a>
               </li>
             </ul>
+          </li>
+          <li class="nav-item">
+            <a href="gradeRevisions.php" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Grade Revisions
+              </p>
+            </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -261,6 +269,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="subjectTeacher.php" class="nav-link">
+                  <i class="fas fa-user-tie nav-icon"></i>
+                  <p>Subject Teacher</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="addcoordinator.php" class="nav-link">
                   <i class="fas fa-user-tie nav-icon"></i>
                   <p>Coordinator</p>
@@ -272,7 +286,7 @@
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-book"></i>
               <p>
-                Course
+                Add Course
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -281,6 +295,12 @@
                 <a href="Strand.php" class="nav-link">
                   <i class="fas fa-book-open nav-icon"></i>
                   <p>Strand</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="Section.php" class="nav-link">
+                  <i class="fas fa-book-open nav-icon"></i>
+                  <p>Section</p>
                 </a>
               </li>
               <li class="nav-item">

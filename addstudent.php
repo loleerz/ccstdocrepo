@@ -453,7 +453,7 @@
                             <label for="track" class="form-label">Track</label>
                             <select name="track" id="track" class="form-select" required>
                                 <option disabled selected>Select Track</option>
-                                <option>Academic</option>
+                                <option>Academic Track</option>
                                 <option>TVL</option>
                             </select>
                         </div>

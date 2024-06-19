@@ -166,7 +166,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="adminIndex.php" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -212,6 +212,14 @@
                 </a>
               </li>
             </ul>
+          </li>
+          <li class="nav-item">
+            <a href="gradeRevisions.php" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Grade Revisions
+              </p>
+            </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -264,6 +272,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="subjectTeacher.php" class="nav-link">
+                  <i class="fas fa-user-tie nav-icon"></i>
+                  <p>Subject Teacher</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="addcoordinator.php" class="nav-link">
                   <i class="fas fa-user-tie nav-icon"></i>
                   <p>Coordinator</p>
@@ -284,6 +298,12 @@
                 <a href="Strand.php" class="nav-link">
                   <i class="fas fa-book-open nav-icon"></i>
                   <p>Strand</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="Section.php" class="nav-link">
+                  <i class="fas fa-book-open nav-icon"></i>
+                  <p>Section</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -309,25 +329,25 @@
     <!-- /.sidebar -->
   </aside>
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 fw-bold fs-4">Regular Students</h1>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Regular Students</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
 
     <!-- Main content -->
-    <div class="content">
-        <div class="container-fluid">
-
-            <div class="card col-10">
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-2">
@@ -347,18 +367,17 @@
                     </div>
                 </div>
               <!-- /.card-header -->
-              <div class="card-body p-0">
-              <table class="table table-striped">
-                <thead>
+              <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover table-striped">
+                  <thead>
                   <tr>
                     <th>Student No.</th>
                     <th>Student Name</th>
                     <th>Section</th>
                     <th>Action</th>
                   </tr>
-                </thead>
-                <tbody id="tbody">
-                  
+                  </thead>
+                  <tbody>
                     <?php
                         while($row = $result->fetch_assoc())
                         {
@@ -377,36 +396,31 @@
                                     <?=$row['strand']." - ".$row['grade_level'].$row['section']?>
                                 </td>
                                 <td>
-                                    <a href='studentInfo.php?student_no=<?=$row['student_no']?>'>
-                                        <button>View</button>
+                                    <a href='studentInfo.php?student_no=<?=$row['student_no']?>' class="btn btn-primary">
+                                        View
                                     </a>
                                 </td>
                             </tr>
-                            
                      <?php
                         }
                     ?>
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
               </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
-          </div>
 
+          </div>
+          <!-- /.col -->
         </div>
-        <!-- /.container-fluid -->
-    </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-
   <!-- Main Footer -->
   <footer class="main-footer text-center ms-0">
     <img src="a/logo-re.png" alt="" style="height:25pt; width:25pt;">
@@ -415,28 +429,37 @@
     <div class="float-right d-none d-sm-inline-block">
     </div>
   </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
-
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
-
-<!-- OPTIONAL SCRIPTS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard3.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="plugins/jszip/jszip.min.js"></script>
+<script src="plugins/pdfmake/pdfmake.min.js"></script>
+<script src="plugins/pdfmake/vfs_fonts.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script>
         $(document).ready(function() 
         {
@@ -467,5 +490,23 @@
         });
  
     </script>
+<!-- Page specific script -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+      "responsive": true,
+    });
+  });
+</script>
 </body>
 </html>

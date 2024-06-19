@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2024 at 01:54 AM
+-- Generation Time: Jun 20, 2024 at 01:05 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -100,7 +100,7 @@ CREATE TABLE `applied_sub_grades` (
 --
 
 INSERT INTO `applied_sub_grades` (`ID`, `student_no`, `strand`, `grade_level`, `section`, `sem`, `subject_name`, `1st`, `status1`, `2nd`, `final`, `remarks`, `status`, `school_year`) VALUES
-(3, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Empowerment Technologies', '90', 'Graded', '95', '93', 'PASSED', 'Graded', '2023-2024');
+(3, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Empowerment Technologies', '95', 'Graded', 'INC', 'INC', 'FAILED', 'Graded', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -152,7 +152,8 @@ INSERT INTO `core_subjects` (`ID`, `subject_name`, `grade_level`, `strand`, `sem
 (24, 'Oral Communication', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
 (25, 'Oral Communication', 11, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
 (26, 'Oral Communication', 11, 'Information Communication Technology', '1st Semester', '2023-2024'),
-(27, 'Oral Communication', 11, 'Humanities and Social Sciences', '1st Semester', '2023-2024');
+(27, 'Oral Communication', 11, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(28, 'Contemporary Philippine Arts from the Region', 12, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -182,7 +183,7 @@ CREATE TABLE `core_sub_grades` (
 --
 
 INSERT INTO `core_sub_grades` (`ID`, `student_no`, `strand`, `grade_level`, `section`, `sem`, `subject_name`, `1st`, `status1`, `2nd`, `final`, `remarks`, `status`, `school_year`) VALUES
-(21, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Oral Communication', '76', 'Graded', '96', '86', 'PASSED', 'Graded', '2023-2024');
+(21, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Oral Communication', '96', 'Graded', '90', '93', 'PASSED', 'Graded', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -228,7 +229,7 @@ CREATE TABLE `gen_aves` (
 --
 
 INSERT INTO `gen_aves` (`ID`, `student_no`, `g11_1stSem`, `g11_1remarks`, `g11_2ndSem`, `g11_2remarks`, `g12_1stSem`, `g12_1remarks`, `g12_2ndSem`, `g12_2remarks`, `school_year`) VALUES
-(1, '05-2323', '92', 'PASSED', '', '0', '', '0', '', '', '2023-2024');
+(1, '05-2323', '71', 'FAILED', '', '0', '', '0', '', '', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -264,13 +265,6 @@ CREATE TABLE `grade_revision` (
   `school_year` varchar(11) NOT NULL,
   `status` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `grade_revision`
---
-
-INSERT INTO `grade_revision` (`ID`, `student_no`, `grade_level`, `quarter`, `sem`, `subject_name`, `subject_category`, `initial_grade`, `revised_grade`, `date_revision`, `reason`, `subject_teacher`, `proof`, `school_year`, `status`) VALUES
-(13, '05-2323', 11, '1st', '1st Semester', 'Oral Communication', 'core', '76', 99, '2024-06-16', 'Late Compliance of Activities, Quizzes, and Examination', 'Jomar G. Sangil', 'proofs/Ybeth 2x2.png', '2023-2024', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -381,7 +375,7 @@ CREATE TABLE `other_sub_grades` (
 --
 
 INSERT INTO `other_sub_grades` (`ID`, `student_no`, `strand`, `grade_level`, `section`, `sem`, `subject_name`, `1st`, `status1`, `2nd`, `final`, `remarks`, `status`, `school_year`) VALUES
-(15, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Homeroom Guidance', '90', 'Graded', '98', '94', 'PASSED', 'Graded', '2023-2024');
+(15, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Homeroom Guidance', '90', 'Graded', '96', '93', 'PASSED', 'Graded', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -44288,7 +44282,13 @@ CREATE TABLE `revision_history` (
 INSERT INTO `revision_history` (`ID`, `student_no`, `grade_level`, `quarter`, `sem`, `subject_name`, `subject_category`, `initial_grade`, `revised_grade`, `date_revision`, `reason`, `subject_teacher`, `status`, `school_year`) VALUES
 (11, '05-2323', 0, '1st', '1stSem', 'Oral Communication', 'core', '92', '96', '2024-06-15', 'Late Compliance of Activities, Quizzes, and Examination', 'Jomar G. Sangil', 'Approved', '2023-2024'),
 (12, '05-2323', 0, '1st', '1stSem', 'Oral Communication', 'core', '96', '92', '2024-06-15', 'Late Compliance of Activities, Quizzes, and Examination', 'Jomar G. Sangil', 'Approved', '2023-2024'),
-(13, '05-2323', 0, '1st', '1stSem', 'Oral Communication', 'core', '92', '76', '2024-06-15', 'Late Compliance of Activities, Quizzes, and Examination', 'Jomar G. Sangil', 'Approved', '2023-2024');
+(13, '05-2323', 0, '1st', '1stSem', 'Oral Communication', 'core', '92', '76', '2024-06-15', 'Late Compliance of Activities, Quizzes, and Examination', 'Jomar G. Sangil', 'Approved', '2023-2024'),
+(14, '05-2323', 11, '1st', '1st Semester', 'Empowerment Technologies', 'applied', '90', '93', '2024-06-18', 'Late Compliance of Activities, Quizzes, and Examination', 'Jomar G. Sangil ', 'Approved', ''),
+(15, '05-2323', 0, '1st', '1stSem', 'Empowerment Technologies', 'applied', '90', '92', '2024-06-18', 'Late Compliance of Activities, Quizzes, and Examination', 'Jomar G. Sangil ', 'Approved', '2023-2024'),
+(16, '05-2323', 0, '1st', '1stSem', 'Oral Communication', 'core', '76', '96', '2024-06-18', 'Late Compliance of Activities, Quizzes, and Examination', 'Jomar G. Sangil ', 'Approved', '2023-2024'),
+(17, '05-2323', 0, '1st', '1stSem', 'Empowerment Technologies', 'applied', '92', '95', '2024-06-18', 'Late Compliance of Activities, Quizzes, and Examination', 'Jomar G. Sangil ', 'Approved', '2023-2024'),
+(18, '05-2323', 0, '1st', '1stSem', 'Pre-Calculus', 'specialized', '90', '96', '2024-06-18', 'Late Compliance of Activities, Quizzes, and Examination', 'Carl M. Reyes ', 'Approved', '2023-2024'),
+(19, '05-2323', 0, '2nd', '1stSem', 'Homeroom Guidance', 'other', '91', '96', '2024-06-18', 'Late Compliance of Activities, Quizzes, and Examination', 'jhuerom G. bacani ', 'Approved', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -44394,7 +44394,7 @@ CREATE TABLE `specialized_sub_grades` (
 --
 
 INSERT INTO `specialized_sub_grades` (`ID`, `student_no`, `strand`, `grade_level`, `section`, `sem`, `subject_name`, `1st`, `status1`, `2nd`, `final`, `remarks`, `status`, `school_year`) VALUES
-(3, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Pre-Calculus', '90', 'Graded', '96', '93', 'PASSED', 'Graded', '2023-2024');
+(3, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Pre-Calculus', '96', 'Graded', '96', '96', 'PASSED', 'Graded', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -44463,7 +44463,7 @@ CREATE TABLE `student_info` (
   `date_examination` date NOT NULL,
   `address_learning_center` varchar(255) NOT NULL,
   `school_year` varchar(255) NOT NULL,
-  `semester` varchar(3) NOT NULL,
+  `semester` varchar(15) NOT NULL,
   `grade_level` int(2) NOT NULL,
   `track` varchar(255) NOT NULL,
   `strand` varchar(255) NOT NULL,
@@ -44475,7 +44475,7 @@ CREATE TABLE `student_info` (
 --
 
 INSERT INTO `student_info` (`ID`, `student_no`, `Lname`, `Fname`, `Mname`, `Suffix`, `LRN`, `birthday`, `age`, `Gender`, `contact_num`, `email`, `status`, `house_num`, `brgy_name`, `citymun_name`, `prov_name`, `shs_admission_date`, `HScompleter`, `HS_genave`, `JHScompleter`, `JHS_genave`, `graduation_date`, `school_name`, `school_address`, `PEPTpasser`, `PEPT_rating`, `ALSpasser`, `ALS_rating`, `OTHERSpasser`, `OTHERSspecify`, `date_examination`, `address_learning_center`, `school_year`, `semester`, `grade_level`, `track`, `strand`, `section`) VALUES
-(41, '05-2323', 'Espinosa', 'Den Eizikiel', 'Jarlego', '', 121212121212, '2009-11-11', 14, 'Male', '9454554545', 'Den@gmail', 'Regular', '098 ', 'Marcos Village', 'MABALACAT CITY', 'PAMPANGA', '2023-06-02', '', 0, 'Junior High School Completer', 87, '2023-04-02', 'MTVS', 'Macapagal Village', '', 0, '', 0, '', '', '0000-00-00', '', '2023-2024', '1st', 11, 'Academic', 'Science, Technology, Engineering, and Mathematics', 'A');
+(41, '05-2323', 'Espinosa', 'Den Eizikiel', 'Jarlego', '', 121212121212, '2009-11-11', 14, 'Male', '9454554545', 'Den@gmail', 'Regular', '098 ', 'Marcos Village', 'MABALACAT CITY', 'PAMPANGA', '2023-06-02', '', 0, 'Junior High School Completer', 87, '2023-04-02', 'MTVS', 'Macapagal Village', '', 0, '', 0, '', '', '0000-00-00', '', '2023-2024', '1st Semester', 11, 'Academic Track', 'Science, Technology, Engineering, and Mathematics', 'A');
 
 -- --------------------------------------------------------
 
@@ -44499,7 +44499,10 @@ CREATE TABLE `subject_teachers` (
 --
 
 INSERT INTO `subject_teachers` (`ID`, `subj_teacher`, `subject_name`, `section`, `grade_level`, `strand`, `semester`, `school_year`) VALUES
-(5, '123456-789', 'Oral Communication', 'A', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2024-2025');
+(5, '123456-789', 'Oral Communication', 'A', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2024-2025'),
+(6, '789456-123', 'Pre-Calculus', 'A', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2024-2025'),
+(7, '032656-984', 'Empowerment Technologies', 'A', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2024-2025'),
+(8, '032656-984', 'Homeroom Guidance', 'A', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2024-2025');
 
 -- --------------------------------------------------------
 
@@ -44754,7 +44757,7 @@ ALTER TABLE `applied_sub_grades`
 -- AUTO_INCREMENT for table `core_subjects`
 --
 ALTER TABLE `core_subjects`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `core_sub_grades`
@@ -44784,7 +44787,7 @@ ALTER TABLE `grade_level`
 -- AUTO_INCREMENT for table `grade_revision`
 --
 ALTER TABLE `grade_revision`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `guardian_info`
@@ -44826,7 +44829,7 @@ ALTER TABLE `refprovince`
 -- AUTO_INCREMENT for table `revision_history`
 --
 ALTER TABLE `revision_history`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `revision_reason`
@@ -44874,7 +44877,7 @@ ALTER TABLE `student_info`
 -- AUTO_INCREMENT for table `subject_teachers`
 --
 ALTER TABLE `subject_teachers`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `teachers_info`
