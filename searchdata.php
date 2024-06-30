@@ -47,8 +47,8 @@
                         ".$row['strand']." - ".$row['grade_level'].$row['section']."
                     </td>
                     <td>
-                        <a href='studentGrades.php'>
-                            <button>View</button>
+                        <a href='studentGrades.php' class='btn btn-primary'>
+                            View
                         </a>
                     </td>
                 </tr>

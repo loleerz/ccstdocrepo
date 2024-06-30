@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+body {
+  background-color: #F0FFFF;
+  font-family: "Roboto", sans-serif;
+}
+
+.container .center {
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.container ul.step-progress-bar {
+  display: flex;
+  width: 100%;
+  padding: 0;
+  margin-top: 20px;
+}
+.container ul.step-progress-bar .step-item {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  position: relative;
+  color: #A8A8A8;
+  transition: color 0.2s ease;
+}
+.container ul.step-progress-bar .step-item:after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  background-color: #DCDCDC;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transition: background-color 0.2s ease;
+}
+.container ul.step-progress-bar .step-item:last-child:after {
+  content: none;
+}
+.container ul.step-progress-bar .step-item:before {
+  font-family: "Font Awesome 5 Free";  /* Ensure correct FontAwesome family */
+  content: "\f10c"; /* Unicode value for a circle icon */
+  font-weight: 900;  /* Ensure using the solid icons */
+  background: #fff;
+  border: 2px solid #A8A8A8;
+  width: 50px;
+  height: 50px;
+  border-radius: 30px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease;
+  z-index: 1;
+}
+.container ul.step-progress-bar .step-item.current {
+  color: #3498db;
+}
+.container ul.step-progress-bar .step-item.current:before {
+  content: "\f040"; /* Unicode value for pencil icon */
+  border-color: #3498db;
+  animation: content-animation 0.2s ease both;
+}
+.container ul.step-progress-bar .step-item.success {
+  color: #2ecc71;
+}
+.container ul.step-progress-bar .step-item.success:before {
+  content: "\f00c"; /* Unicode value for check icon */
+  border-color: #2ecc71;
+  animation: content-animation 0.2s ease both;
+}
+.container ul.step-progress-bar .step-item.success:after {
+  background-color: #2ecc71;
+  animation: line-animation 0.2s ease both;
+}
+.container .slides-container {
+  position: relative;
+  padding: 10px;
+  display: inline-flex;
+  width: 100%;
+  overflow: hidden;
+  justify-content: center;
+}
+.container .slides-container .slide {
+  width: 100%;
+  min-width: 100%;
+  display: block;
+}
+.container .slides-container .slide:not(:first-child) {
+  display: none;
+  position: absolute;
+}
+.container .slides-container .slide .card-header {
+  background-color: #EEEEEE;
+  border-bottom: none;
+  font-size: 1rem;
+  padding: 1rem 3rem;
+}
+.container .slides-container .slide.card {
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -3px rgba(0, 0, 0, 0.2), 0 0px 1px 0 rgba(0, 0, 0, 0.12);
+}
+.container .action-buttons {
+  position: absolute;
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  z-index: 2;
+  padding: 1.2rem;
+}
+.container .action-buttons .bmd-btn-fab {
+  width: 2rem;
+  min-width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
+  background: transparent;
+}
+
+@keyframes content-animation {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+@keyframes line-animation {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+/*# sourceMappingURL=progress.css.map */

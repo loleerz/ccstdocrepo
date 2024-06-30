@@ -174,7 +174,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="Teachers.php" class="nav-link">
                   <i class="fas fa-user-tie nav-icon"></i>
                   <p>Teachers</p>
                 </a>
@@ -211,9 +211,15 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="generateGoodMoral.php" class="nav-link">
                   <i class="fas fa-file nav-icon"></i>
                   <p>Good Moral Certificate</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="generateSF9.php" class="nav-link">
+                  <i class="fas fa-file nav-icon"></i>
+                  <p>SF9</p>
                 </a>
               </li>
             </ul>

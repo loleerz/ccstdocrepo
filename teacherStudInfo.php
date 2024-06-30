@@ -254,7 +254,10 @@
               </div>
 
               <div class="card-body">
+
                 <div class="tab-content" id="custom-tabs-one-tabContent">
+                  <!-- STUDENT PROFILE -->
+                   <!-- CONTENT -->
                   <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
                     <!-- PROFILE -->
                     <!-- CONTENT -->
@@ -274,7 +277,7 @@
                                 <div class="card-body text-start text-primary">
                                     <div class="col">
                                         <span><i class="bi bi-caret-right-fill me-2"></i></span>
-                                        <strong class="text-uppercase fs-6"><?=$row['semester']." AY ".$row['school_year']?></strong>
+                                        <strong class="text-uppercase fs-6"><?=" ACADEMIC YEAR ".$row['school_year']?></strong>
                                     </div>
                                     <div class="col">
                                         <span><i class="bi bi-caret-right-fill me-2"></i></span>
@@ -352,9 +355,6 @@
                                             <label class="small mb-1" for="inputEmailAddress">Address</label>
                                             <input class="form-control" id="inputEmailAddress" type="text" placeholder="Enter your email address" value="<?=$row['house_num']." ".$row['brgy_name'].", ".$row['citymun_name'].", ".$row['prov_name']?>" disabled>
                                         </div>
-                                        <div class="d-flex justify-content-end">
-                                            <button class="btn btn-primary" type="button">Update</button>
-                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -363,6 +363,8 @@
                     <!-- .CONTENT -->
                     <!-- PROFILE -->
                   </div>
+                  <!-- CONTENT -->
+                  <!-- STUDENT PROFILE -->
 
                   <!-- GUARDIAN INFO -->
                   <!-- CONTENT -->
@@ -383,7 +385,7 @@
                                     <div class="card-body text-start text-primary">
                                         <div class="col">
                                             <span><i class="bi bi-caret-right-fill me-2"></i></span>
-                                            <strong class="text-uppercase fs-6"><?=$row['semester']." AY ".$row['school_year']?></strong>
+                                            <strong class="text-uppercase fs-6"><?=" ACADEMIC YEAR ".$row['school_year']?></strong>
                                         </div>
                                         <div class="col">
                                             <span><i class="bi bi-caret-right-fill me-2"></i></span>
@@ -426,9 +428,6 @@
                                                 <label class="small mb-1" for="inputEmailAddress">Address</label>
                                                 <input class="form-control" id="inputEmailAddress" type="text" placeholder="Enter your email address" value="<?=$row1['g_house_num']." ".$row1['g_brgyname'].", ".$row1['g_citymunname'].", ".$row1['g_provname']?>" disabled>
                                             </div>
-                                            <div class="d-flex justify-content-end">
-                                                <button class="btn btn-primary" type="button">Update</button>
-                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -457,7 +456,7 @@
                                 <div class="card-body text-start text-primary">
                                     <div class="col">
                                         <span><i class="bi bi-caret-right-fill me-2"></i></span>
-                                            <strong class="text-uppercase fs-6"><?=$row['semester']." AY ".$row['school_year']?></strong>
+                                            <strong class="text-uppercase fs-6"><?=" ACADEMIC YEAR ".$row['school_year']?></strong>
                                         </div>
                                         <div class="col">
                                             <span><i class="bi bi-caret-right-fill me-2"></i></span>
@@ -586,7 +585,6 @@
                                                 <input type="text" class="form-control" id="school_address" name="school_address" placeholder="<?=$row['school_address']?>" disabled>
                                             </div>
                                         </div>
-                                            <button class="btn btn-primary mt-2" type="button">Save changes</button>
                                         </form>
                                     </div>
                                 </div>
@@ -2384,6 +2382,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -2403,8 +2403,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -2480,6 +2479,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -2499,8 +2500,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -2576,6 +2576,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -2595,8 +2597,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -2672,6 +2673,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -2691,8 +2694,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -3063,6 +3065,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -3082,8 +3086,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -3159,6 +3162,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -3178,8 +3183,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -3255,6 +3259,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -3274,8 +3280,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -3745,6 +3750,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -3764,8 +3771,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -3841,6 +3847,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -3860,8 +3868,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -3937,6 +3944,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -3956,8 +3965,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -4033,6 +4041,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -4052,8 +4062,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -4424,6 +4433,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -4443,8 +4454,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -4520,6 +4530,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -4539,8 +4551,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -4616,6 +4627,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -4635,8 +4648,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -4712,6 +4724,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -4731,8 +4745,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -5106,6 +5119,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -5125,8 +5140,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -5202,6 +5216,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -5221,8 +5237,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -5298,6 +5313,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -5317,8 +5334,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -5394,6 +5410,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -5413,8 +5431,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -5785,6 +5802,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -5804,8 +5823,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -5881,6 +5899,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -5900,8 +5920,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -5977,6 +5996,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -5996,8 +6017,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -6073,6 +6093,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -6092,8 +6114,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -6467,6 +6488,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -6486,8 +6509,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -6563,6 +6585,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -6582,8 +6606,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -6659,6 +6682,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -6678,8 +6703,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -6755,6 +6779,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -6774,8 +6800,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -7146,6 +7171,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -7165,8 +7192,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -7242,6 +7268,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -7261,8 +7289,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -7338,6 +7365,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -7357,8 +7386,7 @@
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
 
-                                                            if ($row['status'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -7434,6 +7462,8 @@
                                                     {
                                                         while ($row = $result->fetch_assoc()) 
                                                         {
+                                                            if ($row['status1'] == "Graded") 
+                                                            {
                                                             //FETCHING SUBJECT TEACHER INFO
                                                             $query1 = "SELECT * FROM subject_teachers WHERE strand = ? AND grade_level = ? AND section = ? AND semester = '2nd Semester' AND subject_name = ?";
                                                             $stmt1 = $conn->prepare($query1);
@@ -7452,9 +7482,7 @@
 
                                                             $STmname = $row2['mname'];
                                                             $STminitial = strtoupper(substr($STmname, 0, 1)); 
-
-                                                            if ($row['status1'] == "Graded") 
-                                                            {
+                                                            
                                                                 ?>
                                                                 <tr>
                                                                     <td>
@@ -7720,7 +7748,8 @@
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
 
@@ -7798,6 +7827,10 @@
 <script>
         $(document).ready(function() 
         {
+            $('.nav-tabs a').click(function() {
+                $(this).tab('show');
+            });
+            
             $('#cancel').on('click', function() {
                 
             });

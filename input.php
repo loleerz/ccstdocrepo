@@ -22,7 +22,6 @@
         $fname = $_POST['fname'];
         $mname = $_POST['mname'];
         $suffix = $_POST['suffix'] ?? '';
-        $sname = $lname . " " . $suffix . ", " . $fname . " " . $mname;
         $lrn = $_POST['lrn'];
         $birthday = $_POST['birthday'];
         $age = $_POST['age'];
@@ -41,11 +40,11 @@
         $Others_specify = $_POST['Others_specify'];
         $date_examination = $_POST['date_examination'];
         $address_learningcenter = $_POST['address_learningcenter'];
-        $grade_level = $_POST['grade_level'];
+        $grade_level = $_POST['selected_gradeLevel'];
         $school_year = $_POST['school_year'];
-        $sem = $_POST['sem'];
+        // $sem = $_POST['sem'];
         $track = $_POST['track'];
-        $strand = $_POST['strand'];
+        $strand = $_POST['selected_strand'];
         $section = $_POST['section'];
         $g_name = $_POST['g_name'];
         $g_contact_no = $_POST['g_contact_no'];
@@ -73,24 +72,24 @@
             $stmt->close();
     
             // Insert new student
-            $sql1 = "INSERT INTO student_info (student_no, Lname, Fname, Mname, Suffix, LRN, birthday, age, Gender, contact_num, email, status, house_num, brgy_name, citymun_name, prov_name, shs_admission_date, HScompleter, HS_genave, JHScompleter, JHS_genave, graduation_date, school_name, school_address, PEPTpasser, PEPT_rating, ALSpasser, ALS_rating, OTHERSpasser, OTHERSspecify, date_examination, address_learning_center, school_year, semester, grade_level, track, strand, section) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql1 = "INSERT INTO student_info (student_no, Lname, Fname, Mname, Suffix, LRN, birthday, age, Gender, contact_num, email, status, house_num, brgy_name, citymun_name, prov_name, shs_admission_date, HScompleter, HS_genave, JHScompleter, JHS_genave, graduation_date, school_name, school_address, PEPTpasser, PEPT_rating, ALSpasser, ALS_rating, OTHERSpasser, OTHERSspecify, date_examination, address_learning_center, school_year, grade_level, track, strand, section) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql1);
             if ($stmt === false) {
                 die("Prepare failed: " . $conn->error);
             }
-            $stmt->bind_param("sssssisisissssssssisissssisissssssisss", $student_no, $lname, $fname, $mname, $suffix, $lrn, $birthday, $age, $sex, $contact_no, $email, $status, $house_num, $brgyname, $citymunname, $provname, $date_shs_admission, $HScompleter, $HSgen_ave, $JHScompleter, $JHSgen_ave, $date_graduation, $name_school, $school_address, $PEPTpasser, $PEPTrating, $ALSpasser, $ALSrating, $Otherspasser, $Others_specify, $date_examination, $address_learningcenter, $school_year, $sem, $grade_level, $track, $strand, $section);
+            $stmt->bind_param("sssssisisissssssssisissssisisssssisss", $student_no, $lname, $fname, $mname, $suffix, $lrn, $birthday, $age, $sex, $contact_no, $email, $status, $house_num, $brgyname, $citymunname, $provname, $date_shs_admission, $HScompleter, $HSgen_ave, $JHScompleter, $JHSgen_ave, $date_graduation, $name_school, $school_address, $PEPTpasser, $PEPTrating, $ALSpasser, $ALSrating, $Otherspasser, $Others_specify, $date_examination, $address_learningcenter, $school_year, $grade_level, $track, $strand, $section);
             if (!$stmt->execute()) {
                 die("Execute failed: " . $stmt->error);
             }
             $stmt->close(); // Close the statement for the first insert
     
             // Insert guardian info
-            $sql2 = "INSERT INTO guardian_info (student_employee_no, name, g_name, g_contact_no, g_house_num, g_brgyname, g_citymunname, g_provname) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $sql2 = "INSERT INTO guardian_info (student_employee_no, g_name, g_contact_no, g_house_num, g_brgyname, g_citymunname, g_provname) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql2);
             if ($stmt === false) {
                 die("Prepare failed: " . $conn->error);
             }
-            $stmt->bind_param("sssissss", $student_no, $sname, $g_name, $g_contact_no, $g_house_num, $g_barangay, $g_municipality, $g_provname);
+            $stmt->bind_param("ssissss", $student_no, $g_name, $g_contact_no, $g_house_num, $g_barangay, $g_municipality, $g_provname);
             if ($stmt->execute()) {
                 $stmt->close();
             } else {
@@ -98,7 +97,7 @@
             }
     
             // Insert subjects into core_subs_grades
-            $insert_subject = "INSERT INTO core_sub_grades (student_no, strand, grade_level, section, sem, subject_name, school_year) SELECT ?, strand, grade_level, ?, semester, subject_name, school_year FROM core_subjects WHERE strand = ? AND grade_level = ? AND semester = ?";
+            $insert_subject = "INSERT INTO core_sub_grades (student_no, strand, grade_level, section, sem, subject_name, school_year) SELECT ?, strand, grade_level, ?, semester, subject_name, school_year FROM core_subjects WHERE strand = ?";
             
             // Prepare the statement
             $stmt = $conn->prepare($insert_subject);
@@ -106,7 +105,7 @@
                 die("Prepare failed: " . $conn->error);
             }
             // Bind the parameters
-            $stmt->bind_param("sssss", $student_no, $section, $strand, $grade_level, $sem);
+            $stmt->bind_param("sss", $student_no, $section, $strand);
             // Execute the statement
             if (!$stmt->execute()) {
                 die("Execute failed: " . $stmt->error);
@@ -117,7 +116,7 @@
             $insert_asubject = "INSERT INTO applied_sub_grades (student_no, strand, grade_level, section, sem, subject_name, school_year)
             SELECT ?, strand, grade_level, ?, semester, subject_name, school_year
             FROM applied_subjects
-            WHERE strand = ? AND grade_level = ? AND semester = ?";
+            WHERE strand = ?";
 
             // Prepare the statement
             $stmt = $conn->prepare($insert_asubject);
@@ -128,7 +127,7 @@
             }
 
             // Bind the parameters
-            $stmt->bind_param("sssis", $student_no, $section, $strand, $grade_level, $sem);
+            $stmt->bind_param("sss", $student_no, $section, $strand);
 
             // Execute the statement
             if ($stmt->execute()) {
@@ -139,9 +138,9 @@
             }
 
             // Debugging: check the data in the applied_subjects table
-            $check_query = "SELECT * FROM applied_subjects WHERE strand = ? AND grade_level = ? AND semester = ?";
+            $check_query = "SELECT * FROM applied_subjects WHERE strand = ?";
             $check_stmt = $conn->prepare($check_query);
-            $check_stmt->bind_param("sis", $strand, $grade_level, $sem);
+            $check_stmt->bind_param("s", $strand);
             $check_stmt->execute();
             $check_result = $check_stmt->get_result();
 
@@ -158,35 +157,92 @@
             $check_stmt->close();
 
             // Insert subjects into specialized_sub_grades
-            $insert_ssubject = "INSERT INTO specialized_sub_grades (student_no, strand, grade_level, section, sem, subject_name, school_year) 
-            SELECT ?, strand, grade_level, ?, semester, subject_name, school_year 
-            FROM specialized_subjects 
-            WHERE strand = ? AND grade_level = ? AND semester = ?";
-            $stmt = $conn->prepare($insert_ssubject);
-            if ($stmt === false) {
-                die("Prepare failed for specialized_sub_grades: " . $conn->error);
-            }
-            $stmt->bind_param("sssss", $student_no, $section, $strand, $grade_level, $sem);
-            if (!$stmt->execute()) {
-                die("Execute failed: " . $stmt->error);
-            }
-            $stmt->close(); // Close the statement for the first insert
+            $insert_asubject = "INSERT INTO specialized_sub_grades (student_no, strand, grade_level, section, sem, subject_name, school_year)
+            SELECT ?, strand, grade_level, ?, semester, subject_name, school_year
+            FROM specialized_subjects
+            WHERE strand = ?";
 
-            // Insert subjects into other_subs_grades
-            $insert_subject = "INSERT INTO other_sub_grades (student_no, strand, grade_level, section, sem, subject_name, school_year) SELECT ?, strand, grade_level, ?, semester, subject_name, school_year FROM other_subjects WHERE strand = ? AND grade_level = ? AND semester = ?";
-            
             // Prepare the statement
-            $stmt = $conn->prepare($insert_subject);
+            $stmt = $conn->prepare($insert_asubject);
             if ($stmt === false) {
-                die("Prepare failed: " . $conn->error);
+            die("Prepare failed for specialized_sub_grades: " . $conn->error);
+            } else {
+            echo "<script>console.log('Prepare successful for specialized_sub_grades');</script>";
             }
+
             // Bind the parameters
-            $stmt->bind_param("sssss", $student_no, $section, $strand, $grade_level, $sem);
+            $stmt->bind_param("sss", $student_no, $section, $strand);
+
             // Execute the statement
-            if (!$stmt->execute()) {
-                die("Execute failed: " . $stmt->error);
+            if ($stmt->execute()) {
+            echo "<script>alert('Specialized subject records inserted successfully');</script>";
+            $stmt->close();
+            } else {
+            echo "<script>alert('Something went wrong for specialized_sub_grades: " . $stmt->error . "');</script>";
             }
-            $stmt->close(); // Close the statement for the first insert
+
+            // Debugging: check the data in the specialized_subjects table
+            $check_query = "SELECT * FROM specialized_subjects WHERE strand = ?";
+            $check_stmt = $conn->prepare($check_query);
+            $check_stmt->bind_param("s", $strand);
+            $check_stmt->execute();
+            $check_result = $check_stmt->get_result();
+
+            if ($check_result->num_rows > 0) {
+            echo "<script>console.log('Records found in specialized_subjects matching the conditions');</script>";
+            while ($row = $check_result->fetch_assoc()) {
+            echo "<script>console.log('Subject: " . $row['subject_name'] . "');</script>";
+            }
+            } else {
+            echo "Strand: ".$strand." g_level: ".$grade_level." sem: ".$sem;
+            echo "<script>alert('No records found in specialized_subjects matching the conditions.');</script>";
+            }
+
+            $check_stmt->close();
+
+            // Insert subjects into other_sub_grades
+            $insert_asubject = "INSERT INTO other_sub_grades (student_no, strand, grade_level, section, sem, subject_name, school_year)
+            SELECT ?, strand, grade_level, ?, semester, subject_name, school_year
+            FROM other_subjects
+            WHERE strand = ?";
+
+            // Prepare the statement
+            $stmt = $conn->prepare($insert_asubject);
+            if ($stmt === false) {
+            die("Prepare failed for other_sub_grades: " . $conn->error);
+            } else {
+            echo "<script>console.log('Prepare successful for other_sub_grades');</script>";
+            }
+
+            // Bind the parameters
+            $stmt->bind_param("sss", $student_no, $section, $strand);
+
+            // Execute the statement
+            if ($stmt->execute()) {
+            echo "<script>alert('Other subject records inserted successfully');</script>";
+            $stmt->close();
+            } else {
+            echo "<script>alert('Something went wrong for other_sub_grades: " . $stmt->error . "');</script>";
+            }
+
+            // Debugging: check the data in the other_subjects table
+            $check_query = "SELECT * FROM other_subjects WHERE strand = ?";
+            $check_stmt = $conn->prepare($check_query);
+            $check_stmt->bind_param("s", $strand);
+            $check_stmt->execute();
+            $check_result = $check_stmt->get_result();
+
+            if ($check_result->num_rows > 0) {
+            echo "<script>console.log('Records found in other_subjects matching the conditions');</script>";
+            while ($row = $check_result->fetch_assoc()) {
+            echo "<script>console.log('Subject: " . $row['subject_name'] . "');</script>";
+            }
+            } else {
+            echo "Strand: ".$strand." g_level: ".$grade_level." sem: ".$sem;
+            echo "<script>alert('No records found in other_subjects matching the conditions.');</script>";
+            }
+
+            $check_stmt->close();
 
             // Insert Student to Gen_Ave Table
             $insert = "INSERT INTO gen_aves (student_no, school_year) VALUES (?, ?)";
@@ -194,13 +250,15 @@
             $stmt->bind_param("ss", $student_no, $school_year);
             if ($stmt->execute()) {
                 echo "Records inserted successfully";
-                // header('Location: addstudent.php?status=success');
+                header('Location: addstudent.php?status=success');
                 exit();
             } else {
                 echo "Error: " . $stmt->error;
             }
             // Close the statement and connection
             $stmt->close();
+
+            // header('Location: addstudent.php?status=success');
 
             $conn->close();
         } else {
@@ -907,5 +965,35 @@
  elseif(isset($_POST['reject']))
  {
 
+ }
+
+
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ //ADDING REVISION REASON
+ if(isset($_POST['addRevisR']))
+ {
+    $reason = $_POST['revisonReason'];
+
+    $check_query = "SELECT * FROM revision_reason WHERE reason = ?";
+    $stmt = $conn->prepare($check_query);
+    $stmt->bind_param("s", $reason);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if($result->num_rows == 0)
+    {
+        $insert_query = "INSERT INTO revision_reason (reason) VALUES (?)";
+        $stmt = $conn->prepare($insert_query);
+        $stmt->bind_param("s", $reason);
+        if ($stmt->execute()) 
+        {
+            $stmt->close();
+            header('Location: gradeRevisions.php?added');
+        }
+    }
+    else
+    {
+        header('Location: gradeRevisions.php?existing');
+    }
  }
 ?>

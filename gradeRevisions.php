@@ -264,7 +264,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="generateGoodMoral.php" class="nav-link">
                   <i class="fas fa-file nav-icon"></i>
                   <p>Good Moral Certificate</p>
                 </a>
@@ -355,9 +355,43 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
+
+        <?php
+          //EXISTING REASON
+          if(isset($_GET['existing']))
+          {
+            echo "
+              <script src='plugins/sweetalert2/sweetalert2.min.js'></script>
+              <script>
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Reason already exist!'
+                });
+              </script>
+            ";
+          }
+          //REASON ADDED
+          if (isset($_GET['added'])) {
+            echo "
+              <script src='plugins/sweetalert2/sweetalert2.min.js'></script>
+              <script>
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Revision Reason Added Successfully!',
+                });
+              </script>
+            ";
+          }
+        ?>
+
+
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0 fw-bold fs-4">Grade Revisions Requests</h1>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#revisionReasonzModal">
+                      View Revision Reasons
+                    </button>
                 </div>
                 <!-- /.col -->
             </div><!-- /.row -->
@@ -370,6 +404,94 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
+
+    <!-- MODAL REVISIONS REASONS START -->
+      <div class="modal fade" id="revisionReasonzModal" tabindex="-1" aria-labelledby="revisionReasonzModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="revisionReasonzModalLabel">Revision Reasons</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table table-striped table-bordered">
+              <thead>
+                  <tr>
+                    <th>Revision Reason</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody">
+                  
+                    <?php
+                          //Fetching datas for outputting student infos
+                          $sql = "SELECT * FROM revision_reason";
+                          $stmt = $conn->prepare($sql);
+                          $stmt->execute();
+                          $result1 = $stmt->get_result();
+                          
+                          if($result1->num_rows > 0)
+                          {
+                          while($row1 = $result1->fetch_assoc())
+                          {
+                               ?>
+
+                              
+                              <tr>
+                                  <td>
+                                      <?=$row1['reason']?>
+                                  </td>
+                              </tr>
+                              
+                      <?php
+                          }
+                        }
+                      else
+                      {?>
+                        <tr>
+                            <td>
+                                No record found!
+                            </td>
+                        </tr>
+                              
+                      <?php
+                          }
+                    ?>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#AddrevisionReasonzModal">
+                Add Revision Reason
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- MODAL REVISIONS REASONS END -->
+
+    <!-- MODAL ADD REVISIONS REASONS START -->
+     <form action="input.php" method="post">
+      <div class="modal fade" id="AddrevisionReasonzModal" tabindex="-1" aria-labelledby="AddrevisionReasonzModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="AddrevisionReasonzModalLabel">Add Revision Reasons</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <label for="revisionReason">Revision Reason:</label>
+              <input type="text" class="form-control" name="revisonReason" id="revisonReason">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-info" name="addRevisR">Add Reason</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!-- MODAL ADD REVISIONS REASONS END -->
 
     <!-- Main content -->
     <div class="content">
@@ -514,7 +636,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="approval">Grade Revision Request</h1>
+                    <h1 class="modal-title fs-5" id="">Grade Revision Request</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -643,10 +765,13 @@
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <!-- AdminLTE -->
 <script src="dist/js/adminlte.js"></script>
 <!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+<script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="plugins/sweetalert2/sweetalert2.all.min.js"></script>
 <!-- DataTables  & Plugins -->
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>

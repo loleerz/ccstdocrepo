@@ -10,7 +10,7 @@
         $stmt->bind_param("s", $student_no);
         $stmt->execute();
         $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
+        $studInfo = $result->fetch_assoc();
 
         // Function to pad the text
         function pad_text($inputText, $maxLength) 
@@ -24,6 +24,26 @@
         {
             return date('m/d/Y', strtotime($birthday));
         }
+
+        //SETTING NEW SCHOOL YEAR
+        $school_year = $studInfo['school_year'];
+
+        // Split the school year into two parts
+        list($start_year, $end_year) = explode("-", $school_year);
+
+        // Increment each year
+        $start_year = (int)$start_year + 1;
+        $end_year = (int)$end_year + 1;
+
+        // Join the incremented years back into a string
+        $new_school_year = $start_year . "-" . $end_year;
+
+        $ave_query = "SELECT * FROM gen_aves WHERE student_no = ?";
+        $stmt = $conn->prepare($ave_query);
+        $stmt->bind_param("s", $student_no);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $studAve = $result->fetch_assoc();
     ?>
 
 <!DOCTYPE html>
@@ -327,34 +347,34 @@
                 <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;">
                     LAST NAME: 
                     <u> 
-                        <?=pad_text(strtoupper($row['Lname']), 83)?>
+                        <?=pad_text(strtoupper($studInfo['Lname']), 83)?>
                     </u> 
                     <span style="padding-left: 5pt;">FIRST NAME:</span> 
                     <u>
-                    <?=pad_text(strtoupper($row['Fname']), 84)?>
+                    <?=pad_text(strtoupper($studInfo['Fname']), 84)?>
                     </u> 
                     <span style="padding-left: 10pt;">MIDDLE NAME: </span>
                     <u>
-                        <?=pad_text(strtoupper($row['Mname']), 65)?>
+                        <?=pad_text(strtoupper($studInfo['Mname']), 63)?>
                     </u>
                 </p>
                 <p style="padding-top: 1pt;text-indent: 0pt;text-align: left;">
                     LRN: 
                     <u style="margin-right: 3pt;">
-                        <?=pad_text(strtoupper($row['LRN']), 84)?> 
+                        <?=pad_text(strtoupper($studInfo['LRN']), 84)?> 
                     </u> 
                     Date of Birth (MM/DD/YYYY): 
                     <u style="margin-right: 3pt;"> 
-                        <?=pad_text(format_birthday($row['birthday']), 35)?>
+                        <?=pad_text(format_birthday($studInfo['birthday']), 35)?>
                     </u> 
                     Sex: 
                     <u style="margin-right: 3pt;"> 
-                        <?=pad_text(strtoupper($row['Gender']), 31)?> 
+                        <?=pad_text(strtoupper($studInfo['Gender']), 31)?> 
                     </u> 
                     Date of SHS Admission (MM/DD/YYYY): 
                     <u>
                         <b> 
-                            <?=pad_text(format_birthday($row['shs_admission_date']), 17)?>
+                            <?=pad_text(format_birthday($studInfo['shs_admission_date']), 15)?>
                         </b>
                     </u>
                 </p>
@@ -369,7 +389,7 @@
                             <tr>
                                 <td style="padding-top: 1pt;text-indent: 0pt;text-align: left;">
                                     <?php
-                                        if($row['HScompleter'] != '')
+                                        if($studInfo['HScompleter'] != '')
                                         { ?>
                                             <div class="checkbox-wrapper-33">
                                                 <label class="checkbox">
@@ -390,7 +410,7 @@
                                                     <label for="HSCompleter" class="checkbox__textwrapper">High School Completer* </label>
                                                     <span style="margin-left:7pt;" class="label">Gen. Ave:</span>
                                                     <u style="color: #000000; font-weight:700;">
-                                                        <?=pad_text(strtoupper($row['HS_genave']), 13)?> 
+                                                        <?=pad_text(strtoupper($studInfo['HS_genave']), 13)?> 
                                                     </u>
                                                 </label>
                                             </div>
@@ -426,7 +446,7 @@
 
                                 <td style="padding-left: 10pt;text-indent: 0pt;text-align: left;">
                                     <?php
-                                        if($row['JHScompleter'] != '')
+                                        if($studInfo['JHScompleter'] != '')
                                         {?>
                                             <div class="checkbox-wrapper-33">
                                                 <label class="checkbox">
@@ -447,7 +467,7 @@
                                                     <label for="JHSCompleter" class="checkbox__textwrapper">Junior High School Completer* </label>
                                                     <span style="margin-left:7pt;" class="label">Gen. Ave:</span>
                                                     <u style="color: #000000; font-weight:700;">
-                                                        <?=pad_text(strtoupper($row['JHS_genave']), 10)?>  
+                                                        <?=pad_text(strtoupper($studInfo['JHS_genave']), 10)?>  
                                                     </u>
                                                 </label>
                                             </div>
@@ -490,15 +510,15 @@
                 <p style="text-indent: 0pt;text-align: left;">
                     Date of Graduation/Completion (MM/DD/YYYY): 
                     <u style="margin-right: 3pt;">
-                        <?=pad_text(format_birthday($row['graduation_date']), 18)?>
+                        <?=pad_text(format_birthday($studInfo['graduation_date']), 18)?>
                     </u> 
                     Name of School: 
                     <u style="margin-right: 3pt;">
-                        <?=pad_text(strtoupper($row['school_name']), 75)?> 
+                        <?=pad_text(strtoupper($studInfo['school_name']), 75)?> 
                     </u>
                     School Address: 
                     <u>
-                        <?=pad_text(strtoupper($row['school_address']), 81)?> 
+                        <?=pad_text(strtoupper($studInfo['school_address']), 81)?> 
                     </u>
                 </p>
                 <p style="text-indent: 0pt;text-align: left;"/>
@@ -605,6 +625,8 @@
                         SCHOLASTIC RECORD                         
                     </span>
                 </p>
+
+                <!-- G11 1st Sem Starts Here -->
                 <p class="s7" style="padding-top: 2pt;text-indent: 0pt;text-align: left;">
                     SCHOOL: 
                     <u>
@@ -619,18 +641,18 @@
                     </u> 
                     SY: 
                     <u>
-                        <?=pad_text(strtoupper($row['school_year']), 21)?> 
+                        <?=pad_text(strtoupper($studInfo['school_year']), 21)?> 
                     </u> 
                     SEM: <u>&nbsp;1ST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
                 </p>
                 <p class="s7" style="padding-top: 2pt;padding-bottom: 1pt;text-indent: 0pt;text-align: left;">
                     TRACK/STRAND:
                     <u> 
-                        <?=pad_text(strtoupper($row['track']."/ ".$row['strand']), 79)?>
+                        <?=pad_text(strtoupper($studInfo['track']."/ ".$studInfo['strand']), 79)?>
                     </u> 
                     SECTION: 
                     <u>
-                        <?=pad_text(strtoupper($row['section']), 41)?>
+                        <?=pad_text(strtoupper($studInfo['section']), 41)?>
                     </u>
                 </p>
                 <table style="border-collapse:collapse;" cellspacing="0">
@@ -708,22 +730,22 @@
                                         </p>
                                     </td
                                     ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['1st']?>
                                         </p>
                                     </td>
                                     <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['2nd']?>
                                         </p>
                                     </td>
                                     <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['final']?>
                                         </p>
                                     </td>
                                     <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['remarks']?>
                                         </p>
                                     </td>
@@ -769,22 +791,22 @@
                                         </p>
                                     </td
                                     ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['1st']?>
                                         </p>
                                     </td>
                                     <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['2nd']?>
                                         </p>
                                     </td>
                                     <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['final']?>
                                         </p>
                                     </td>
                                     <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['remarks']?>
                                         </p>
                                     </td>
@@ -830,22 +852,22 @@
                                         </p>
                                     </td
                                     ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['1st']?>
                                         </p>
                                     </td>
                                     <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['2nd']?>
                                         </p>
                                     </td>
                                     <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['final']?>
                                         </p>
                                     </td>
                                     <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['remarks']?>
                                         </p>
                                     </td>
@@ -891,22 +913,22 @@
                                         </p>
                                     </td
                                     ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['1st']?>
                                         </p>
                                     </td>
                                     <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['2nd']?>
                                         </p>
                                     </td>
                                     <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['final']?>
                                         </p>
                                     </td>
                                     <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                                        <p style="text-indent: 0pt;text-align: left;">
+                                        <p style="text-indent: 0pt;text-align: center;">
                                             <?=$row['remarks']?>
                                         </p>
                                     </td>
@@ -972,13 +994,13 @@
                             </p>
                         </td>
                         <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
+                            <p style="text-indent: 0pt;text-align: center;">
+                                <?=$studAve['g11_1stSem']?>
                             </p>
                         </td>
                         <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
+                            <p style="text-indent: 0pt;text-align: center;">
+                            <?=$studAve['g11_1remarks']?>
                             </p>
                         </td>
                     </tr>
@@ -1249,7 +1271,7 @@
                     <br/>
                 </p>
                 
-                <!-- 2nd Sem Starts Here -->
+                <!-- G11 2nd Sem Starts Here -->
                 <p class="s7" style="padding-top: 2pt;text-indent: 0pt;text-align: left;">
                     SCHOOL: 
                     <u>
@@ -1264,18 +1286,18 @@
                     </u> 
                     SY: 
                     <u>
-                        &nbsp;2022-2023 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        <?=pad_text(strtoupper($studInfo['school_year']), 21)?> 
                     </u> 
-                    SEM: <u>&nbsp;1ST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+                    SEM: <u>&nbsp;2ND &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
                 </p>
                 <p class="s7" style="padding-top: 2pt;padding-bottom: 1pt;text-indent: 0pt;text-align: left;">
                     TRACK/STRAND:
                     <u> 
-                        ACADEMIC TRACK/ ACCOUNTANCY, BUSINESS AND MANAGEMENT STRAND &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <?=pad_text(strtoupper($studInfo['track']."/ ".$studInfo['strand']), 79)?>
                     </u> 
                     SECTION: 
                     <u>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <?=pad_text(strtoupper($studInfo['section']), 41)?>
                     </u>
                 </p>
                 
@@ -1325,409 +1347,312 @@
                             </p>
                         </td>
                     </tr>
-                    <tr style="height:11pt">
-                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                                Core
-                            </p>
-                        </td>
-                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                                Reading and Writing Skills
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr style="height:11pt">
-                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                                Core
-                            </p>
-                        </td>
-                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                                Pagbasa at Pagsusuri ng Iba’t-Ibang Teksto Tungo sa Pananaliksik
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr style="height:11pt">
-                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                                Core
-                            </p>
-                        </td>
-                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                                Personal Development
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr style="height:11pt">
-                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                                Core
-                            </p>
-                        </td>
-                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                                Physical Science
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr style="height:11pt">
-                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                                Core
-                            </p>
-                        </td>
-                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                                Statistics and Probability
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr style="height:11pt">
-                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                                Core
-                            </p>
-                        </td>
-                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                                Physical Education and Health
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr style="height:11pt">
-                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                                Applied
-                            </p>
-                        </td>
-                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                                Research in Daily Life 1
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr style="height:11pt">
-                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                                Specialized
-                            </p>
-                        </td>
-                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                                Business Mathematics
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr style="height:11pt">
-                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                                Specialized
-                            </p>
-                        </td>
-                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                                Organization and Management
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr style="height:11pt">
-                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                                Other Subject
-                            </p>
-                        </td>
-                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                                Homeroom Guidance
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr style="height:11pt">
-                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr style="height:11pt">
-                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr style="height:11pt">
-                        <td style="width:478pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt" colspan="4" bgcolor="#BEBEBE">
-                            <p class="s2" style="padding-top: 2pt;text-indent: 0pt;line-height: 8pt;text-align: right;">
+                    
+                    <!-- CORE SUBJECTS -->
+                    <?php
+                        $rowCount = 0;
+
+                        $query = "SELECT * FROM core_sub_grades WHERE student_no = ? AND sem = '2nd Semester' AND grade_level = '11' ORDER BY subject_name ASC";
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param("s", $student_no);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if($result->num_rows > 0)
+                        {
+                            while($row = $result->fetch_assoc())
+                            { 
+                                $rowCount++;
+                                ?>                   
+                                <tr style="height:11pt">
+                                    <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                            Core
+                                        </p>
+                                    </td>
+                                    <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                            <?=$row['subject_name']?>
+                                        </p>
+                                    </td
+                                    ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['1st']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['2nd']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['final']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['remarks']?>
+                                        </p>
+                                    </td>
+                                </tr>
+                    <?php }
+                            }
+                            else
+                            {?>
+                                
+                                    <tr>
+                                        <td>
+                                            Student has no Core Subject to take!
+                                        </td>
+                                    </tr>
+                                    
+                            <?php  }
+                            ?>
+                    <!-- APPLIED SUBJECTS -->
+                    <?php
+                        $rowCount1 = 0;
+
+                        $query = "SELECT * FROM applied_sub_grades WHERE student_no = ? AND sem = '2nd Semester' AND grade_level = '11' ORDER BY subject_name ASC";
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param("s", $student_no);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if($result->num_rows > 0)
+                        {
+                            while($row = $result->fetch_assoc())
+                            { 
+                                $rowCount1++;
+                                ?>                   
+                                <tr style="height:11pt">
+                                    <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                            Applied
+                                        </p>
+                                    </td>
+                                    <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                            <?=$row['subject_name']?>
+                                        </p>
+                                    </td
+                                    ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['1st']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['2nd']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['final']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['remarks']?>
+                                        </p>
+                                    </td>
+                                </tr>
+                    <?php }
+                            }
+                            else
+                            {?>
+                                
+                                    <tr>
+                                        <td>
+                                            Student has no Applied Subject to take!
+                                        </td>
+                                    </tr>
+                                    
+                            <?php  }
+                            ?>
+                    <!-- SPECIALIZED SUBJECTS -->
+                    <?php
+                        $rowCount2 = 0;
+
+                        $query = "SELECT * FROM specialized_sub_grades WHERE student_no = ? AND sem = '2nd Semester' AND grade_level = '11' ORDER BY subject_name ASC";
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param("s", $student_no);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if($result->num_rows > 0)
+                        {
+                            while($row = $result->fetch_assoc())
+                            { 
+                                $rowCount2++;
+                                ?>                   
+                                <tr style="height:11pt">
+                                    <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                            Specialized
+                                        </p>
+                                    </td>
+                                    <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                            <?=$row['subject_name']?>
+                                        </p>
+                                    </td
+                                    ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['1st']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['2nd']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['final']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['remarks']?>
+                                        </p>
+                                    </td>
+                                </tr>
+                    <?php }
+                            }
+                            else
+                            {?>
+                                
+                                    <tr>
+                                        <td>
+                                            Student has no Specialized Subject to take!
+                                        </td>
+                                    </tr>
+                                    
+                            <?php  }
+                            ?>
+                    <!-- Other SUBJECTS -->
+                    <?php
+                        $rowCount3 = 0;
+
+                        $query = "SELECT * FROM other_sub_grades WHERE student_no = ? AND sem = '2nd Semester' AND grade_level = '11' ORDER BY subject_name ASC";
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param("s", $student_no);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if($result->num_rows > 0)
+                        {
+                            while($row = $result->fetch_assoc())
+                            { 
+                                $rowCount3++;
+                                ?>                   
+                                <tr style="height:11pt">
+                                    <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                            Other Subject
+                                        </p>
+                                    </td>
+                                    <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                            <?=$row['subject_name']?>
+                                        </p>
+                                    </td
+                                    ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['1st']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['2nd']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['final']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['remarks']?>
+                                        </p>
+                                    </td>
+                                </tr>
+                    <?php }
+                            }
+                            else
+                            {?>
+                                
+                                    <tr>
+                                        <td>
+                                            Student has no Other Subject Subject to take!
+                                        </td>
+                                    </tr>
+                                    
+                            <?php  }
+
+                                $requiredRow = 12;
+                                $t_rowCount = $rowCount + $rowCount1 + $rowCount2 + $rowCount3;
+
+                                // Add blank rows if necessary
+                                for ($i = $t_rowCount; $i < $requiredRow; $i++) 
+                                {?>
+                                    <tr style="height:11pt">
+                                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td
+                                        ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p style="text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p style="text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p style="text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                            <p style="text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                        <?php }
+                            ?>
+
+                    <tr style="height:10pt">
+                        <td style="width:478pt;border-top-style:solid;border-top-width:2pt;border-top-color:#3E3E3E;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt" colspan="4" bgcolor="#BEBEBE">
+                            <p class="s2" style="padding-top: 1pt;text-indent: 0pt;line-height: 8pt;text-align: right;">
                                 General Ave. for the Semester:
                             </p>
                         </td>
                         <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
+                            <p style="text-indent: 0pt;text-align: center;">
+                                <?=$studAve['g11_2ndSem']?>
                             </p>
                         </td>
                         <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                            <p style="text-indent: 0pt;text-align: left;">
-                                <br/>
+                            <p style="text-indent: 0pt;text-align: center;">
+                            <?=$studAve['g11_2remarks']?>
                             </p>
                         </td>
                     </tr>
                 </table>
-                
+
+                <!-- REMARKS STARTS HERE -->
                 <p class="s7" style="padding-top: 1pt;padding-left: 7pt;text-indent: 0pt;text-align: left;">
                     REMARKS:
                     <u> 
@@ -2015,18 +1940,18 @@
             </u> 
             SY: 
             <u>
-                &nbsp;2022-2023 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                <?=pad_text(strtoupper($new_school_year), 21)?> 
             </u> 
             SEM: <u>&nbsp;1ST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
         </p>
         <p class="s7" style="padding-top: 2pt;padding-bottom: 1pt;padding-left: 7pt;text-indent: 0pt;text-align: left;">
             TRACK/STRAND:
             <u> 
-                ACADEMIC TRACK/ ACCOUNTANCY, BUSINESS AND MANAGEMENT STRAND &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <?=pad_text(strtoupper($studInfo['track']."/ ".$studInfo['strand']), 79)?>
             </u> 
             SECTION: 
             <u>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <?=pad_text(strtoupper($studInfo['section']), 41)?>
             </u>
         </p>
         <table style="border-collapse:collapse;margin-left:6.59pt" cellspacing="0">
@@ -2075,407 +2000,309 @@
                     </p>
                 </td>
             </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Core
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Understanding Culture, Society and Politics
-                    </p>
-                </td
-                ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Core
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Introduction to the Philosophy of the Human Person
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Core
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Physical Education and Health
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Core
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Media and Information Literacy
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Applied
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Research in Daily Life 2
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Applied
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Pagsulat sa Filipino sa Piling Larangan
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Specialized							
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Business Finance
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Specialized
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Fundamentals of Accounting, Business and Management 2
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Other Subject
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Homeroom Guidance
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-bottom-color:#3E3E3E;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:10pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt;border-right-color:#3E3E3E">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-top-color:#3E3E3E;border-left-style:solid;border-left-width:1pt;border-left-color:#3E3E3E;border-bottom-style:solid;border-bottom-width:1pt;border-bottom-color:#3E3E3E;border-right-style:solid;border-right-width:1pt;border-right-color:#3E3E3E">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-left-color:#3E3E3E;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:10pt">
-                <td style="width:478pt;border-top-style:solid;border-top-width:2pt;border-top-color:#3E3E3E;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt" colspan="4" bgcolor="#BEBEBE">
-                    <p class="s2" style="padding-top: 1pt;text-indent: 0pt;line-height: 8pt;text-align: right;">
-                        General Ave. for the Semester:
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
+            
+            <!-- CORE SUBJECTS -->
+                <?php
+                $rowCount = 0;
+
+                $query = "SELECT * FROM core_sub_grades WHERE student_no = ? AND sem = '1st Semester' AND grade_level = '12' ORDER BY subject_name ASC";
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("s", $student_no);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if($result->num_rows > 0)
+                {
+                    while($row = $result->fetch_assoc())
+                    { 
+                        $rowCount++;
+                        ?>                   
+                        <tr style="height:11pt">
+                            <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                    Core
+                                </p>
+                            </td>
+                            <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                    <?=$row['subject_name']?>
+                                </p>
+                            </td
+                            ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                <p style="text-indent: 0pt;text-align: center;">
+                                    <?=$row['1st']?>
+                                </p>
+                            </td>
+                            <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                <p style="text-indent: 0pt;text-align: center;">
+                                    <?=$row['2nd']?>
+                                </p>
+                            </td>
+                            <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                <p style="text-indent: 0pt;text-align: center;">
+                                    <?=$row['final']?>
+                                </p>
+                            </td>
+                            <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                <p style="text-indent: 0pt;text-align: center;">
+                                    <?=$row['remarks']?>
+                                </p>
+                            </td>
+                        </tr>
+                    <?php }
+                            }
+                            else
+                            {?>
+                                
+                                    <tr>
+                                        <td>
+                                            Student has no Core Subject to take!
+                                        </td>
+                                    </tr>
+                                    
+                            <?php  }
+                            ?>
+                    <!-- APPLIED SUBJECTS -->
+                    <?php
+                        $rowCount1 = 0;
+
+                        $query = "SELECT * FROM applied_sub_grades WHERE student_no = ? AND sem = '1st Semester' AND grade_level = '12' ORDER BY subject_name ASC";
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param("s", $student_no);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if($result->num_rows > 0)
+                        {
+                            while($row = $result->fetch_assoc())
+                            { 
+                                $rowCount1++;
+                                ?>                   
+                                <tr style="height:11pt">
+                                    <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                            Applied
+                                        </p>
+                                    </td>
+                                    <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                            <?=$row['subject_name']?>
+                                        </p>
+                                    </td
+                                    ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['1st']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['2nd']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['final']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['remarks']?>
+                                        </p>
+                                    </td>
+                                </tr>
+                    <?php }
+                            }
+                            else
+                            {?>
+                                
+                                    <tr>
+                                        <td>
+                                            Student has no Applied Subject to take!
+                                        </td>
+                                    </tr>
+                                    
+                            <?php  }
+                            ?>
+                    <!-- SPECIALIZED SUBJECTS -->
+                    <?php
+                        $rowCount2 = 0;
+
+                        $query = "SELECT * FROM specialized_sub_grades WHERE student_no = ? AND sem = '1st Semester' AND grade_level = '12' ORDER BY subject_name ASC";
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param("s", $student_no);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if($result->num_rows > 0)
+                        {
+                            while($row = $result->fetch_assoc())
+                            { 
+                                $rowCount2++;
+                                ?>                   
+                                <tr style="height:11pt">
+                                    <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                            Specialized
+                                        </p>
+                                    </td>
+                                    <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                            <?=$row['subject_name']?>
+                                        </p>
+                                    </td
+                                    ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['1st']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['2nd']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['final']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['remarks']?>
+                                        </p>
+                                    </td>
+                                </tr>
+                    <?php }
+                            }
+                            else
+                            {?>
+                                
+                                    <tr>
+                                        <td>
+                                            Student has no Specialized Subject to take!
+                                        </td>
+                                    </tr>
+                                    
+                            <?php  }
+                            ?>
+                    <!-- Other SUBJECTS -->
+                    <?php
+                        $rowCount3 = 0;
+
+                        $query = "SELECT * FROM other_sub_grades WHERE student_no = ? AND sem = '1st Semester' AND grade_level = '12' ORDER BY subject_name ASC";
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param("s", $student_no);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if($result->num_rows > 0)
+                        {
+                            while($row = $result->fetch_assoc())
+                            { 
+                                $rowCount3++;
+                                ?>                   
+                                <tr style="height:11pt">
+                                    <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                            Other Subject
+                                        </p>
+                                    </td>
+                                    <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                            <?=$row['subject_name']?>
+                                        </p>
+                                    </td
+                                    ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['1st']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['2nd']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['final']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['remarks']?>
+                                        </p>
+                                    </td>
+                                </tr>
+                    <?php }
+                            }
+                            else
+                            {?>
+                                
+                                    <tr>
+                                        <td>
+                                            Student has no Other Subject Subject to take!
+                                        </td>
+                                    </tr>
+                                    
+                            <?php  }
+
+                                $requiredRow = 12;
+                                $t_rowCount = $rowCount + $rowCount1 + $rowCount2 + $rowCount3;
+
+                                // Add blank rows if necessary
+                                for ($i = $t_rowCount; $i < $requiredRow; $i++) 
+                                {?>
+                                    <tr style="height:11pt">
+                                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td
+                                        ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p style="text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p style="text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p style="text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                            <p style="text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                        <?php }
+                            ?>
+
+                    <tr style="height:10pt">
+                        <td style="width:478pt;border-top-style:solid;border-top-width:2pt;border-top-color:#3E3E3E;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt" colspan="4" bgcolor="#BEBEBE">
+                            <p class="s2" style="padding-top: 1pt;text-indent: 0pt;line-height: 8pt;text-align: right;">
+                                General Ave. for the Semester:
+                            </p>
+                        </td>
+                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt">
+                            <p style="text-indent: 0pt;text-align: center;">
+                                <?=$studAve['g12_1stSem']?>
+                            </p>
+                        </td>
+                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
+                            <p style="text-indent: 0pt;text-align: center;">
+                            <?=$studAve['g12_1remarks']?>
+                            </p>
+                        </td>
+                    </tr>
         </table>
         
         <!-- REMARKS starts Here -->
@@ -2694,18 +2521,18 @@
             </u> 
             SY: 
             <u>
-                &nbsp;2022-2023 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                <?=pad_text(strtoupper($new_school_year), 21)?> 
             </u> 
-            SEM: <u>&nbsp;1ST &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+            SEM: <u>&nbsp;2ND &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
         </p>
         <p class="s7" style="padding-top: 2pt;padding-bottom: 1pt;padding-left: 7pt;text-indent: 0pt;text-align: left;">
             TRACK/STRAND:
             <u> 
-                ACADEMIC TRACK/ ACCOUNTANCY, BUSINESS AND MANAGEMENT STRAND &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <?=pad_text(strtoupper($studInfo['track']."/ ".$studInfo['strand']), 79)?>
             </u> 
             SECTION: 
             <u>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <?=pad_text(strtoupper($studInfo['section']), 41)?>
             </u>
         </p>
         
@@ -2755,407 +2582,309 @@
                     </p>
                 </td>
             </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Core
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Contemporary Philippine Arts from the Regions																																				
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Core
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Physical Education and Health																																				
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Applied							
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        English for Academic and Professional Purposes																																				
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Applied
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Research Project																																				
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Applied
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Entrepreneurship																																				
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Specialized							
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Business Marketing																																				
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Specialized							
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Applied Economics																																				
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Specialized
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Business Enterprise Simulation																																				
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Specialized
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Business Ethics and Social Responsibility																																				
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
-                        Other Subject
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
-                        Homeroom Guidance
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
-            <tr style="height:11pt">
-                <td style="width:478pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt" colspan="4" bgcolor="#BEBEBE">
-                    <p class="s2" style="padding-top: 2pt;text-indent: 0pt;line-height: 8pt;text-align: right;">
-                        General Ave. for the Semester:
-                    </p>
-                </td>
-                <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-                <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
-                    </p>
-                </td>
-            </tr>
+            
+            <!-- CORE SUBJECTS -->
+<?php
+                        $rowCount = 0;
+
+                        $query = "SELECT * FROM core_sub_grades WHERE student_no = ? AND sem = '2nd Semester' AND grade_level = '12' ORDER BY subject_name ASC";
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param("s", $student_no);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if($result->num_rows > 0)
+                        {
+                            while($row = $result->fetch_assoc())
+                            { 
+                                $rowCount++;
+                                ?>                   
+                                <tr style="height:11pt">
+                                    <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                            Core
+                                        </p>
+                                    </td>
+                                    <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                            <?=$row['subject_name']?>
+                                        </p>
+                                    </td
+                                    ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['1st']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['2nd']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['final']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['remarks']?>
+                                        </p>
+                                    </td>
+                                </tr>
+                    <?php }
+                            }
+                            else
+                            {?>
+                                
+                                    <tr>
+                                        <td>
+                                            Student has no Core Subject to take!
+                                        </td>
+                                    </tr>
+                                    
+                            <?php  }
+                            ?>
+                    <!-- APPLIED SUBJECTS -->
+                    <?php
+                        $rowCount1 = 0;
+
+                        $query = "SELECT * FROM applied_sub_grades WHERE student_no = ? AND sem = '2nd Semester' AND grade_level = '12' ORDER BY subject_name ASC";
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param("s", $student_no);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if($result->num_rows > 0)
+                        {
+                            while($row = $result->fetch_assoc())
+                            { 
+                                $rowCount1++;
+                                ?>                   
+                                <tr style="height:11pt">
+                                    <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                            Applied
+                                        </p>
+                                    </td>
+                                    <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                            <?=$row['subject_name']?>
+                                        </p>
+                                    </td
+                                    ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['1st']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['2nd']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['final']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['remarks']?>
+                                        </p>
+                                    </td>
+                                </tr>
+                    <?php }
+                            }
+                            else
+                            {?>
+                                
+                                    <tr>
+                                        <td>
+                                            Student has no Applied Subject to take!
+                                        </td>
+                                    </tr>
+                                    
+                            <?php  }
+                            ?>
+                    <!-- SPECIALIZED SUBJECTS -->
+                    <?php
+                        $rowCount2 = 0;
+
+                        $query = "SELECT * FROM specialized_sub_grades WHERE student_no = ? AND sem = '2nd Semester' AND grade_level = '12' ORDER BY subject_name ASC";
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param("s", $student_no);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if($result->num_rows > 0)
+                        {
+                            while($row = $result->fetch_assoc())
+                            { 
+                                $rowCount2++;
+                                ?>                   
+                                <tr style="height:11pt">
+                                    <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                            Specialized
+                                        </p>
+                                    </td>
+                                    <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                            <?=$row['subject_name']?>
+                                        </p>
+                                    </td
+                                    ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['1st']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['2nd']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['final']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['remarks']?>
+                                        </p>
+                                    </td>
+                                </tr>
+                    <?php }
+                            }
+                            else
+                            {?>
+                                
+                                    <tr>
+                                        <td>
+                                            Student has no Specialized Subject to take!
+                                        </td>
+                                    </tr>
+                                    
+                            <?php  }
+                            ?>
+                    <!-- Other SUBJECTS -->
+                    <?php
+                        $rowCount3 = 0;
+
+                        $query = "SELECT * FROM other_sub_grades WHERE student_no = ? AND sem = '2nd Semester' AND grade_level = '12' ORDER BY subject_name ASC";
+                        $stmt = $conn->prepare($query);
+                        $stmt->bind_param("s", $student_no);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if($result->num_rows > 0)
+                        {
+                            while($row = $result->fetch_assoc())
+                            { 
+                                $rowCount3++;
+                                ?>                   
+                                <tr style="height:11pt">
+                                    <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                            Other Subject
+                                        </p>
+                                    </td>
+                                    <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                            <?=$row['subject_name']?>
+                                        </p>
+                                    </td
+                                    ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['1st']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['2nd']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['final']?>
+                                        </p>
+                                    </td>
+                                    <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                        <p style="text-indent: 0pt;text-align: center;">
+                                            <?=$row['remarks']?>
+                                        </p>
+                                    </td>
+                                </tr>
+                    <?php }
+                            }
+                            else
+                            {?>
+                                
+                                    <tr>
+                                        <td>
+                                            Student has no Other Subject Subject to take!
+                                        </td>
+                                    </tr>
+                                    
+                            <?php  }
+
+                                $requiredRow = 12;
+                                $t_rowCount = $rowCount + $rowCount1 + $rowCount2 + $rowCount3;
+
+                                // Add blank rows if necessary
+                                for ($i = $t_rowCount; $i < $requiredRow; $i++) 
+                                {?>
+                                    <tr style="height:11pt">
+                                        <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                        <td style="width:331pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td
+                                        ><td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p style="text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                        <td style="width:38pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p style="text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                            <p style="text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:2pt">
+                                            <p style="text-indent: 0pt;text-align: left;">
+                                                <br/>
+                                            </p>
+                                        </td>
+                                    </tr>
+                        <?php }
+                            ?>
+
+                    <tr style="height:10pt">
+                        <td style="width:478pt;border-top-style:solid;border-top-width:2pt;border-top-color:#3E3E3E;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt" colspan="4" bgcolor="#BEBEBE">
+                            <p class="s2" style="padding-top: 1pt;text-indent: 0pt;line-height: 8pt;text-align: right;">
+                                General Ave. for the Semester:
+                            </p>
+                        </td>
+                        <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:1pt">
+                            <p style="text-indent: 0pt;text-align: center;">
+                                <?=$studAve['g12_2ndSem']?>
+                            </p>
+                        </td>
+                        <td style="width:41pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:2pt;border-right-style:solid;border-right-width:2pt">
+                            <p style="text-indent: 0pt;text-align: center;">
+                            <?=$studAve['g12_2remarks']?>
+                            </p>
+                        </td>
+                    </tr>
         </table>
         
         <p class="s7" style="padding-top: 1pt;padding-left: 7pt;text-indent: 0pt;text-align: left;">

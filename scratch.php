@@ -1,493 +1,3047 @@
-<?php
-    session_start();
-    //para ma-check if nag log in ba si user
-    if(!isset($_SESSION['username']))
-    {
-        header("Location: index.php");
-    }
-    include ('connection.php');
-    // Function to get the school year based on start and end dates
-    function getSchoolYear($startDate, $endDate) {
-        $currentDate = date('Y-m-d'); // Get current date
+<!DOCTYPE  html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>F9-ABM-2024</title>
+    <meta name="author" content="Sabrina Ongkiko;Yong Barba"/>
+    <style type="text/css">
+      * {margin:0; padding:0; text-indent:0; }
+      .s1 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 5.5pt; }
+      .s2 { color: black; font-family:"Monotype Corsiva"; font-style: italic; font-weight: bold; text-decoration: none; font-size: 9.5pt; }
+      .s3 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 9.5pt; }
+      h1 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 7.5pt; }
+      .s4 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 6pt; }
+      .s5 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: bold; text-decoration: underline; font-size: 6pt; }
+      .s6 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: bold; text-decoration: underline; font-size: 5.5pt; }
+      .h2 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 6pt; }
+      .s8 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 5.5pt; }
+      .s9 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 5pt; }
+      .s10 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 5pt; }
+      .s11 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 4.5pt; }
+      .s12 { color: black; font-family:Cambria, serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 5.5pt; }
+      .s13 { color: black; font-family:Cambria, serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 4.5pt; }
+      .s14 { color: black; font-family:Cambria, serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 4pt; }
+      .s15 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 4.5pt; }
+      .s16 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 5.5pt; }
+      .s17 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 4pt; }
+      .s18 { color: black; font-family:Cambria, serif; font-style: italic; font-weight: bold; text-decoration: none; font-size: 5pt; }
+      .s19 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 6pt; }
+      .s20 { color: #808080; font-family:Cambria, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 4pt; }
+      .s23 { color: black; font-family:Cambria, serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 6pt; }
+      p { color: black; font-family:Cambria, serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 5pt; margin:0pt; }
+      table, tbody {vertical-align: top; overflow: visible; }
+    </style>
+  </head>
+  <body>
+    <p style="text-indent: 0pt;text-align: left;">
+      <br/>
+    </p>
+    <table style="border-collapse:collapse" cellspacing="0">
+      <tr style="height:8pt">
+        <td style="width:204pt">
+          <p class="s1" style="text-indent: 0pt;text-align: center;">
+            Republic of the Philippines
+          </p>
+        </td>
+      </tr>
+      <tr style="height:9pt">
+        <td style="width:204pt">
+          <p class="s1" style="padding-top: 1pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+            DEPARTMENT OF EDUCATION REGION III
+          </p>
+        </td>
+      </tr>
+      <tr style="height:8pt">
+        <td style="width:204pt">
+          <p class="s1" style="padding-top: 1pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+            City Schools Division of Mabalacat City
+          </p>
+        </td>
+      </tr>
+      <tr style="height:13pt">
+        <td style="width:204pt">
+          <p class="s2" style="text-indent: 0pt;line-height: 11pt;text-align: center;">
+            Clark <span class="s3">
+            COLLEGE OF SCIENCE AND TECHNOLOGY</span>
+          </p>
+        </td>
+      </tr>
+      <tr style="height:8pt">
+        <td style="width:204pt">
+          <p class="s1" style="text-indent: 0pt;line-height: 6pt;text-align: center;">
+            SNS Bldg., Aurea St., Samsonville Subdivision, Dau, Mabalacat City, Pampanga
+          </p>
+        </td>
+      </tr>
+    </table>
+    <p style="padding-left: 190pt;text-indent: 0pt;text-align: left;">
+      <span style=" color: black; font-family:&quot;Times New Roman&quot;, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 10pt; vertical-align: 11pt;">
+      </span>
+      <span>
+      <img width="64" height="67" alt="image" src="F9-ABM-2024_files/Image_001.png"/>
+      </span>
+    </p>
+    <p style="text-indent: 0pt;text-align: left;">
+      <span>
+      <img width="72" height="72" alt="image" src="F9-ABM-2024_files/Image_002.png"/>
+      </span>
+    </p>
+    <h1 style="text-indent: 0pt;text-align: center;">
+      SENIOR HIGH SCHOOL STUDENTS&#39; GRADUATION FORM 9
+    </h1>
+    <p style="text-indent: 0pt;text-align: left;">
+      <br/>
+    </p>
+
+    <p style="text-indent: 0pt;text-align: left;">
+        <span class="s4" style=" background-color: #B8CCE3;">
+            LEARNER&#39;S INFORMATION                   
+        </span>
+    </p>
+    <table style="border-collapse:collapse" cellspacing="0">
         
-        if ($currentDate >= $startDate && $currentDate <= $endDate) {
-            return date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate)); // Format as "YYYY-YYYY"
-        } else {
-            return false; // Return false if not within a school year
-        }
-    }
-
-    // Example usage:
-    $startYear = 2016; // Starting year when school started accepting students
-    $currentYear = date('Y'); // Current year
-    $schoolYears = array();
-
-    for ($year = $startYear; $year <= $currentYear; $year++) {
-        $startDate = $year . '-09-01'; // Start date of the school year
-        $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate))); // End date of the school year (1 year from start date)
-        
-        $schoolYear = getSchoolYear($startDate, $endDate);
-        if ($schoolYear) {
-            $schoolYears[] = $schoolYear;
-        }
-    }
-
-    //Fetching datas for outputting student infos
-    $sql = "SELECT * FROM student_info";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CCST SHS</title>
-  <link rel="icon" type="image/x-icon" href="a/logo-re.png">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- IonIcons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
-<!--
-`body` tag options:
-
-  Apply one or more of the following classes to to the body tag
-  to get the desired effect
-
-  * sidebar-collapse
-  * sidebar-mini
--->
-<body class="hold-transition sidebar-mini">
-  <style>
-    .widget-user-header {
-      padding: 20px; /* add some padding */
-      border-radius: 10px; /* add a border radius */
-    }
-
-    .widget-user-username {
-      font-size: 18px; /* change the font size to 24px */
-      font-weight: bold; /* make the font bold */
-      color: #fff; /* change the text color to white */
-    }
-
-    .widget-user-desc {
-      font-size: 18px; /* change the font size to 18px */
-      color: #ccc; /* change the text color to a light gray */
-  margin-top: 10px; /* add some margin top */
-    }
-  </style>
-<div class="wrapper">
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>
-    </ul>
-
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <!-- Navbar Search -->
-      <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-          <i class="fas fa-search"></i>
-        </a>
-        <div class="navbar-search-block">
-          <form class="form-inline">
-            <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-              <div class="input-group-append">
-                <button class="btn btn-navbar" type="submit">
-                  <i class="fas fa-search"></i>
-                </button>
-                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </li>
-
-      <li cSlass="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-          <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <!-- /.navbar -->
-
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link text-secondary text-decoration-none">
-      <img src="a/logo-re.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .9">
-      <span class="brand-text fw-bold">CCST SHS</span>
-    </a>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="a/blankprofile.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <a href="#" class="d-block text-decoration-none text-secondary">Registrar</a>
-        </div>
-      </div>
-
-
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            <a href="adminIndex.php" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Records
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link active">
-                  <i class="nav-icon fas fa-users"></i>
-                  <p>
-                    Students
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="regularStudents.php" class="nav-link active">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Regular</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Irregular</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="fas fa-user-tie nav-icon"></i>
-                  <p>Teachers</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-folder"></i>
-              <p>
-                Documents
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="generateForm137.php" class="nav-link">
-                  <i class="fas fa-file nav-icon"></i>
-                  <p>Form 137</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="fas fa-file nav-icon"></i>
-                  <p>Form 138</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="fas fa-file nav-icon"></i>
-                  <p>Good Moral Certificate</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-user-plus"></i>
-              <p>
-                Add People
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="addstudent.php" class="nav-link">
-                  <i class="fas fa-user nav-icon"></i>
-                  <p>Student</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="addteacher.php" class="nav-link">
-                  <i class="fas fa-user-tie nav-icon"></i>
-                  <p>Teacher</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="addcoordinator.php" class="nav-link">
-                  <i class="fas fa-user-tie nav-icon"></i>
-                  <p>Coordinator</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
-              <p>
-                Add Course
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="Strand.php" class="nav-link">
-                  <i class="fas fa-book-open nav-icon"></i>
-                  <p>Strand</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="Subject.php" class="nav-link">
-                  <i class="fas fa-book-open nav-icon"></i>
-                  <p>Subject</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="logout.php" class="nav-link text-danger">
-              <i class="nav-icon fas fa-sign-out-alt"></i>
-              <p>
-                Log Out
-              </p>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-  </aside>
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>DataTables</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">DataTables</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-2">
-                            <h3 class="card-title fs-4 fw-semibold">Students</h3>
-                        </div>
-                        <div class="col-4">
-                            <select name="school_year" class="form-select col-4" id="">
-                                <?php foreach ($schoolYears as $year) { ?>
-                                    <option value="<?=$year?>"><?=$year?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="col-6 text-end">
-                            <!-- SEARCH BAR -->
-                            <input type="text" name="search" id="search" class="form-control col-3" placeholder="Search" style="align: right; border: 1px solid black">
-                        </div>
-                    </div>
-                </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
-                  <thead>
-                  <tr>
-                    <th>Student No.</th>
-                    <th>Student Name</th>
-                    <th>Section</th>
-                    <th>Action</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                        while($row = $result->fetch_assoc())
-                        {
-                            $mname = $row['Mname'];
-                            $minitial = strtoupper(substr($mname, 0, 1)); ?>
-
-                            
-                            <tr>
-                                <td>
-                                    <?=$row['student_no']?>
-                                </td>
-                                <td>
-                                    <?=$row['Lname']."".$row['Suffix'].", ".$row['Fname']." ".$minitial?>
-                                </td>
-                                <td>
-                                    <?=$row['strand']." - ".$row['grade_level'].$row['section']?>
-                                </td>
-                                <td>
-                                    <a href='studentInfo.php?student_no=<?=$row['student_no']?>'>
-                                        <button>View</button>
-                                    </a>
-                                </td>
-                            </tr>
-                     <?php
-                        }
-                    ?>
-                  </tbody>
+        <tr>
+            <td>
+                <table>
+                    <tr style="height:11pt">
+                        <td style="width:44pt">
+                        <p class="s1" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                            Name:
+                        </p>
+                        </td>
+                        <td style="width:282pt">
+                        <p class="s5" style="padding-top: 2pt;padding-left: 2pt;text-indent: 0pt;text-align: left;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; , &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </p>
+                        </td>
+                    </tr>
+                    <tr style="height:9pt">
+                        <td style="width:44pt">
+                        <p class="s1" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                            Date of Birth:
+                        </p>
+                        </td>
+                        <td style="width:282pt">
+                        <p class="s6" style="padding-left: 4pt;text-indent: 0pt;text-align: center;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1/0/1900 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </p>
+                        </td>
+                    </tr>
+                    <tr style="height:9pt">
+                        <td style="width:44pt">
+                        <p class="s1" style="padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                            Name of JHS:
+                        </p>
+                        </td>
+                        <td style="width:282pt">
+                        <p class="s6" style="padding-left: 4pt;text-indent: 0pt;text-align: center;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </p>
+                        </td>
+                    </tr>
+                    <tr style="height:8pt">
+                        <td style="width:44pt">
+                        <p class="s1" style="padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                            School Address:
+                        </p>
+                        </td>
+                        <td style="width:282pt">
+                        <p class="s6" style="padding-left: 4pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </p>
+                        </td>
+                    </tr>
                 </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  <!-- Main Footer -->
-  <footer class="main-footer text-center ms-0">
-    <img src="a/logo-re.png" alt="" style="height:25pt; width:25pt;">
-    <strong>Clark College of Scince and Technology. Since 2005.</strong>
-    SNS BLDG, Samsonville Subdivision, Aurea, Dau, Mabalacat, Pampanga
-    <div class="float-right d-none d-sm-inline-block">
-    </div>
-  </footer>
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
-
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- DataTables  & Plugins -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="plugins/jszip/jszip.min.js"></script>
-<script src="plugins/pdfmake/pdfmake.min.js"></script>
-<script src="plugins/pdfmake/vfs_fonts.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<script>
-        $(document).ready(function() 
-        {
-            $('#cancel').on('click', function() {
-                
-            });
-
-            $("#search").keyup(function(){
-                var input = $(this).val();
-
-                // if(input != "")
-                // {
-                    $.ajax({
-                        url: "searchdata.php",
-                        method: "POST",
-                        data: {input:input},
-
-                        success:function(data){
-                            $("#tbody").html(data);
-                        }
-                    });
-                // }
-                // else
-                // {
-                //     $("#tbody").css("display", "block");
-                // }
-            });
-        });
- 
-    </script>
-<!-- Page specific script -->
-<script>
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
-  });
-</script>
-</body>
+            </td>
+            <td>
+                <table style="border-collapse:collapse" cellspacing="0">
+                    <tr style="height:8pt">
+                        <td style="width:65pt">
+                        <p class="s1" style="padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                            LRN:    <u>
+                            <b>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                            </u>
+                        </p>
+                        </td>
+                        <td style="width:149pt">
+                        <p class="s6" style="text-indent: 0pt;line-height: 6pt;text-align: right;">
+                            0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </p>
+                        </td>
+                        <td style="width:20pt">
+                        <p style="text-indent: 0pt;text-align: left;">
+                            <br/>
+                        </p>
+                        </td>
+                    </tr>
+                    <tr style="height:9pt">
+                        <td style="width:65pt">
+                        <p class="s1" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                            Sex:      <u>
+                            <b>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                            </u>
+                        </p>
+                        </td>
+                        <td style="width:149pt">
+                        <p style="text-indent: 0pt;text-align: left;">
+                            <br/>
+                        </p>
+                        </td>
+                        <td style="width:20pt">
+                        <p class="s6" style="padding-top: 1pt;text-indent: 0pt;line-height: 6pt;text-align: right;">
+                            - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </p>
+                        </td>
+                    </tr>
+                    <tr style="height:9pt">
+                        <td style="width:65pt">
+                        <p class="s1" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                            Year Graduated in JHS:
+                        </p>
+                        </td>
+                        <td style="width:149pt">
+                        <p class="s1" style="padding-top: 1pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">
+                            <u>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                            </u>
+                            Gen. Ave:<u>
+                            <b>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                            </u>
+                        </p>
+                        </td>
+                        <td style="width:20pt">
+                        <p class="s6" style="padding-top: 1pt;text-indent: 0pt;text-align: right;">
+                            0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </p>
+                        </td>
+                    </tr>
+                    <tr style="height:8pt">
+                        <td style="width:65pt">
+                        <p class="s1" style="padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                            Date of SHS Admission:
+                        </p>
+                        </td>
+                        <td style="width:149pt">
+                        <p class="s6" style="text-indent: 0pt;line-height: 6pt;text-align: right;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; August 22, 2022 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </p>
+                        </td>
+                        <td style="width:20pt">
+                        <!-- <p style="text-indent: 0pt;text-align: left;">
+                            <br/>
+                            </p> -->
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>  
+      
+    </table>
+    
+    <p style="padding-left: 5pt;text-indent: 0pt;text-align: left;">
+      <span style=" color: black; font-family:&quot;Times New Roman&quot;, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 10pt;">
+      </span>
+    </p>
+    <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;">
+      <br/>
+    </p>
+    <!-- <table style="border-collapse:collapse;margin-left:3pt" cellspacing="0">
+      <tr style="height:8pt">
+      <td style="width:143pt">
+      <p style="text-indent: 0pt;text-align: left;">
+           <br/>
+      </p>
+      </td>
+      <td style="width:93pt">
+      <p style="text-indent: 0pt;text-align: left;">
+          <br/>
+      </p>
+      </td>
+      </tr>
+      <tr style="height:8pt">
+      <td style="width:143pt">
+      <p style="text-indent: 0pt;text-align: left;">
+          <br/>
+      </p>
+      </td>
+      <td style="width:93pt">
+      <p style="text-indent: 0pt;text-align: left;">
+          <br/>
+      </p>
+      </td>
+      </tr>
+      <tr style="height:9pt">
+      <td style="width:143pt">
+      <p style="text-indent: 0pt;text-align: left;">
+          <br/>
+      </p>
+      </td>
+      <td style="width:93pt">
+      <p style="text-indent: 0pt;text-align: left;">
+          <br/>
+      </p>
+      </td>
+      </tr>
+      </table> -->
+    <p style="text-indent: 0pt;text-align: left;"/>
+    <table style="border-collapse:collapse;margin-left:3pt" cellspacing="0">
+      <tr style="height:8pt">
+        <td style="width:137pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+        <td style="width:93pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+      </tr>
+      <tr style="height:8pt">
+        <td style="width:137pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+        <td style="width:93pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+      </tr>
+      <tr style="height:9pt">
+        <td style="width:137pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+        <td style="width:93pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+      </tr>
+    </table>
+    <p style="text-indent: 0pt;text-align: left;"/>
+    <p style="padding-left: 6pt;text-indent: 0pt;text-align: left;">
+      <span class="h2" style=" background-color: #B8CCE3;">
+      SCHOLASTIC RECORD                            </span>
+    </p>
+    <p style="text-indent: 0pt;text-align: left;">
+      <br/>
+    </p>
+    </td>
+    <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+      <p style="text-indent: 0pt;text-align: left;">
+        <br/>
+      </p>
+      <table>
+        <tr>
+          <td>
+            <table style="border-collapse:collapse" cellspacing="0">
+              <tr style="height:8pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt">
+                  <p class="s1" style="padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    School:
+                  </p>
+                </td>
+                <td style="width:243pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="6">
+                  <p class="s8" style="padding-left: 58pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    CLARK COLLEGE OF SCIENCE AND TECHNOLOGY
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:46pt;border-left-style:solid;border-left-width:1pt">
+                  <p class="s9" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;line-height: 5pt;text-align: left;">
+                    Track/ Strand:
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:208pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="5">
+                  <p class="s10" style="padding-top: 1pt;padding-left: 14pt;text-indent: 0pt;line-height: 5pt;text-align: left;">
+                    ACADEMIC TRACK/ ACCOUNTANCY, BUSINESS AND MANAGEMENT STRAND
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:46pt;border-left-style:solid;border-left-width:1pt">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    SHS Grade Level:
+                  </p>
+                </td>
+                <td style="width:78pt">
+                  <p class="s6" style="padding-top: 1pt;padding-left: 35pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </p>
+                </td>
+                <td style="width:28pt;border-top-style:solid;border-top-width:1pt">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 7pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    SY:
+                  </p>
+                </td>
+                <td style="width:67pt;border-top-style:solid;border-top-width:1pt" colspan="2">
+                  <p class="s6" style="padding-top: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2022-2023 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 5pt;padding-right: 3pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                    Semester:
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s8" style="padding-top: 1pt;padding-left: 2pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                    1ST
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:46pt;border-left-style:solid;border-left-width:1pt">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    Section:
+                  </p>
+                </td>
+                <td style="width:78pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:28pt">
+                  <p class="s6" style="padding-top: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </p>
+                </td>
+                <td style="width:35pt">
+                  <p class="s9" style="padding-top: 1pt;padding-left: 5pt;padding-right: 3pt;text-indent: 0pt;line-height: 5pt;text-align: center;">
+                    School ID:
+                  </p>
+                </td>
+                <td style="width:32pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p class="s8" style="padding-top: 1pt;padding-left: 5pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                    401878
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:46pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:141pt;border-bottom-style:solid;border-bottom-width:1pt" colspan="3">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:102pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:15pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" bgcolor="#DCE6F0">
+                  <p class="s10" style="padding-top: 4pt;padding-left: 12pt;text-indent: 0pt;text-align: left;">
+                    Category
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4" bgcolor="#DCE6F0">
+                  <p class="s8" style="padding-top: 3pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Subjects
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" bgcolor="#DCE6F0">
+                  <p class="s8" style="padding-top: 4pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Final Grade
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" bgcolor="#DCE6F0">
+                  <p class="s8" style="padding-left: 9pt;text-indent: 0pt;text-align: left;">
+                    Action
+                  </p>
+                  <p class="s8" style="padding-left: 9pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    Taken
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Core
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Earth and Life Science
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Core
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    General Mathematics
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Core
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Oral Communication in Context
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Core
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Physical Education and Health
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Core
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Komunikasyon at Pananaliksik sa Wika at Kulturang Pilipino
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Core
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    21st Century Literature from the Philippines and the World
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                    Applied
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Empowerment Technologies
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 11pt;text-indent: 0pt;text-align: left;">
+                    Specialized
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Fundamentals of Accounting, Business and Management 1
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 9pt;text-indent: 0pt;text-align: left;">
+                    Other Subject
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Homeroom Guidance
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-right: 7pt;text-indent: 0pt;text-align: right;">
+                    -
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-right: 9pt;text-indent: 0pt;text-align: right;">
+                    -
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-right: 7pt;text-indent: 0pt;text-align: right;">
+                    -
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-right: 9pt;text-indent: 0pt;text-align: right;">
+                    -
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s12" style="padding-left: 87pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    General Average for the Semester:
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:5pt">
+                <td style="width:289pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="7">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:81pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2">
+                  <p class="s10" style="padding-top: 1pt;padding-left: 20pt;text-indent: 0pt;line-height: 5pt;text-align: left;">
+                    Remedial Classes
+                  </p>
+                </td>
+                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p class="s1" style="padding-left: 15pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    Conducted from
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p class="s1" style="padding-left: 2pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                    to
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:13pt">
+                <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                  <p class="s10" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Learning Areas
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s13" style="padding-top: 3pt;text-indent: 0pt;text-align: center;">
+                    Final Rating
+                  </p>
+                </td>
+                <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s13" style="padding-left: 5pt;padding-right: 4pt;text-indent: 1pt;line-height: 6pt;text-align: left;">
+                    Remedial Class Mark
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s14" style="padding-top: 1pt;padding-left: 6pt;text-indent: 0pt;text-align: left;">
+                    Recomputed
+                  </p>
+                  <p class="s13" style="padding-left: 6pt;text-indent: 0pt;line-height: 4pt;text-align: left;">
+                    Final Grade
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s13" style="padding-top: 3pt;text-indent: 0pt;text-align: center;">
+                    Remarks
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:46pt">
+                <td style="width:289pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="7">
+                  <p class="s15" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                    Prepared by:                      Certified True and Correct:
+                  </p>
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                  <p class="s8" style="padding-left: 138pt;text-indent: 0pt;text-align: left;">
+                    -      CHRISCEL IVY A. CARANZA
+                  </p>
+                  <p class="s13" style="padding-top: 1pt;padding-left: 36pt;text-indent: 0pt;text-align: left;">
+                    Signature of Adviser over Printed Name                SHS Registrar
+                  </p>
+                  <p class="s1" style="padding-top: 3pt;padding-left: 134pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    Date Checked:      PUT DATE CHECK HERE
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:6pt">
+                <td style="width:187pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt" colspan="4">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:102pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <table style="border-collapse:collapse" cellspacing="0">
+              <tr style="height:8pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt">
+                  <p class="s1" style="padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    School:
+                  </p>
+                </td>
+                <td style="width:243pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="6">
+                  <p class="s8" style="padding-left: 58pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    CLARK COLLEGE OF SCIENCE AND TECHNOLOGY
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:46pt;border-left-style:solid;border-left-width:1pt">
+                  <p class="s9" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;line-height: 5pt;text-align: left;">
+                    Track/ Strand:
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:208pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="5">
+                  <p class="s10" style="padding-top: 1pt;padding-left: 14pt;text-indent: 0pt;line-height: 5pt;text-align: left;">
+                    ACADEMIC TRACK/ ACCOUNTANCY, BUSINESS AND MANAGEMENT STRAND
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:46pt;border-left-style:solid;border-left-width:1pt">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    SHS Grade Level:
+                  </p>
+                </td>
+                <td style="width:78pt">
+                  <p class="s6" style="padding-top: 1pt;padding-left: 35pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </p>
+                </td>
+                <td style="width:28pt;border-top-style:solid;border-top-width:1pt">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 7pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    SY:
+                  </p>
+                </td>
+                <td style="width:67pt;border-top-style:solid;border-top-width:1pt" colspan="2">
+                  <p class="s6" style="padding-top: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2022-2023 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 5pt;padding-right: 3pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                    Semester:
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s8" style="padding-top: 1pt;padding-left: 2pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                    1ST
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:46pt;border-left-style:solid;border-left-width:1pt">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    Section:
+                  </p>
+                </td>
+                <td style="width:78pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:28pt">
+                  <p class="s6" style="padding-top: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </p>
+                </td>
+                <td style="width:35pt">
+                  <p class="s9" style="padding-top: 1pt;padding-left: 5pt;padding-right: 3pt;text-indent: 0pt;line-height: 5pt;text-align: center;">
+                    School ID:
+                  </p>
+                </td>
+                <td style="width:32pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p class="s8" style="padding-top: 1pt;padding-left: 5pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                    401878
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:46pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:141pt;border-bottom-style:solid;border-bottom-width:1pt" colspan="3">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:102pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:15pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" bgcolor="#DCE6F0">
+                  <p class="s10" style="padding-top: 4pt;padding-left: 12pt;text-indent: 0pt;text-align: left;">
+                    Category
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4" bgcolor="#DCE6F0">
+                  <p class="s8" style="padding-top: 3pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Subjects
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" bgcolor="#DCE6F0">
+                  <p class="s8" style="padding-top: 4pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Final Grade
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" bgcolor="#DCE6F0">
+                  <p class="s8" style="padding-left: 9pt;text-indent: 0pt;text-align: left;">
+                    Action
+                  </p>
+                  <p class="s8" style="padding-left: 9pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    Taken
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Core
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Earth and Life Science
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Core
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    General Mathematics
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Core
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Oral Communication in Context
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Core
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Physical Education and Health
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Core
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Komunikasyon at Pananaliksik sa Wika at Kulturang Pilipino
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Core
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    21st Century Literature from the Philippines and the World
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                    Applied
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Empowerment Technologies
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 11pt;text-indent: 0pt;text-align: left;">
+                    Specialized
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Fundamentals of Accounting, Business and Management 1
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-left: 9pt;text-indent: 0pt;text-align: left;">
+                    Other Subject
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                    Homeroom Guidance
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-right: 7pt;text-indent: 0pt;text-align: right;">
+                    -
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-right: 9pt;text-indent: 0pt;text-align: right;">
+                    -
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:10pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s11" style="padding-top: 2pt;padding-right: 7pt;text-indent: 0pt;text-align: right;">
+                    -
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s1" style="padding-top: 1pt;padding-right: 9pt;text-indent: 0pt;text-align: right;">
+                    -
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                  <p class="s12" style="padding-left: 87pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    General Average for the Semester:
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:5pt">
+                <td style="width:289pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="7">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:81pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2">
+                  <p class="s10" style="padding-top: 1pt;padding-left: 20pt;text-indent: 0pt;line-height: 5pt;text-align: left;">
+                    Remedial Classes
+                  </p>
+                </td>
+                <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p class="s1" style="padding-left: 15pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    Conducted from
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p class="s1" style="padding-left: 2pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                    to
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:13pt">
+                <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                  <p class="s10" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    Learning Areas
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s13" style="padding-top: 3pt;text-indent: 0pt;text-align: center;">
+                    Final Rating
+                  </p>
+                </td>
+                <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s13" style="padding-left: 5pt;padding-right: 4pt;text-indent: 1pt;line-height: 6pt;text-align: left;">
+                    Remedial Class Mark
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s14" style="padding-top: 1pt;padding-left: 6pt;text-indent: 0pt;text-align: left;">
+                    Recomputed
+                  </p>
+                  <p class="s13" style="padding-left: 6pt;text-indent: 0pt;line-height: 4pt;text-align: left;">
+                    Final Grade
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p class="s13" style="padding-top: 3pt;text-indent: 0pt;text-align: center;">
+                    Remarks
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:8pt">
+                <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:46pt">
+                <td style="width:289pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="7">
+                  <p class="s15" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                    Prepared by:                      Certified True and Correct:
+                  </p>
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                  <p class="s8" style="padding-left: 138pt;text-indent: 0pt;text-align: left;">
+                    -      CHRISCEL IVY A. CARANZA
+                  </p>
+                  <p class="s13" style="padding-top: 1pt;padding-left: 36pt;text-indent: 0pt;text-align: left;">
+                    Signature of Adviser over Printed Name                SHS Registrar
+                  </p>
+                  <p class="s1" style="padding-top: 3pt;padding-left: 134pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                    Date Checked:      PUT DATE CHECK HERE
+                  </p>
+                </td>
+              </tr>
+              <tr style="height:6pt">
+                <td style="width:187pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt" colspan="4">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+                <td style="width:102pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                  <p style="text-indent: 0pt;text-align: left;">
+                    <br/>
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <table style="border-collapse:collapse" cellspacing="0">
+            <tr style="height:8pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt">
+                <p class="s1" style="padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  School:
+                </p>
+              </td>
+              <td style="width:243pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="6">
+                <p class="s8" style="padding-left: 58pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  CLARK COLLEGE OF SCIENCE AND TECHNOLOGY
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:46pt;border-left-style:solid;border-left-width:1pt">
+                <p class="s9" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;line-height: 5pt;text-align: left;">
+                  Track/ Strand:
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:208pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="5">
+                <p class="s10" style="padding-top: 1pt;padding-left: 14pt;text-indent: 0pt;line-height: 5pt;text-align: left;">
+                  ACADEMIC TRACK/ ACCOUNTANCY, BUSINESS AND MANAGEMENT STRAND
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:46pt;border-left-style:solid;border-left-width:1pt">
+                <p class="s1" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  SHS Grade Level:
+                </p>
+              </td>
+              <td style="width:78pt">
+                <p class="s6" style="padding-top: 1pt;padding-left: 35pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </p>
+              </td>
+              <td style="width:28pt;border-top-style:solid;border-top-width:1pt">
+                <p class="s1" style="padding-top: 1pt;padding-left: 7pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  SY:
+                </p>
+              </td>
+              <td style="width:67pt;border-top-style:solid;border-top-width:1pt" colspan="2">
+                <p class="s6" style="padding-top: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2022-2023 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt">
+                <p class="s1" style="padding-top: 1pt;padding-left: 5pt;padding-right: 3pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                  Semester:
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s8" style="padding-top: 1pt;padding-left: 2pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                  1ST
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:46pt;border-left-style:solid;border-left-width:1pt">
+                <p class="s1" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  Section:
+                </p>
+              </td>
+              <td style="width:78pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:28pt">
+                <p class="s6" style="padding-top: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </p>
+              </td>
+              <td style="width:35pt">
+                <p class="s9" style="padding-top: 1pt;padding-left: 5pt;padding-right: 3pt;text-indent: 0pt;line-height: 5pt;text-align: center;">
+                  School ID:
+                </p>
+              </td>
+              <td style="width:32pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p class="s8" style="padding-top: 1pt;padding-left: 5pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                  401878
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:46pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:141pt;border-bottom-style:solid;border-bottom-width:1pt" colspan="3">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:102pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:15pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" bgcolor="#DCE6F0">
+                <p class="s10" style="padding-top: 4pt;padding-left: 12pt;text-indent: 0pt;text-align: left;">
+                  Category
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4" bgcolor="#DCE6F0">
+                <p class="s8" style="padding-top: 3pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Subjects
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" bgcolor="#DCE6F0">
+                <p class="s8" style="padding-top: 4pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Final Grade
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" bgcolor="#DCE6F0">
+                <p class="s8" style="padding-left: 9pt;text-indent: 0pt;text-align: left;">
+                  Action
+                </p>
+                <p class="s8" style="padding-left: 9pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  Taken
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Core
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Earth and Life Science
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Core
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  General Mathematics
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Core
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Oral Communication in Context
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Core
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Physical Education and Health
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Core
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Komunikasyon at Pananaliksik sa Wika at Kulturang Pilipino
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Core
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  21st Century Literature from the Philippines and the World
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                  Applied
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Empowerment Technologies
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 11pt;text-indent: 0pt;text-align: left;">
+                  Specialized
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Fundamentals of Accounting, Business and Management 1
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 9pt;text-indent: 0pt;text-align: left;">
+                  Other Subject
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Homeroom Guidance
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-right: 7pt;text-indent: 0pt;text-align: right;">
+                  -
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-right: 9pt;text-indent: 0pt;text-align: right;">
+                  -
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-right: 7pt;text-indent: 0pt;text-align: right;">
+                  -
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-right: 9pt;text-indent: 0pt;text-align: right;">
+                  -
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s12" style="padding-left: 87pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  General Average for the Semester:
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:5pt">
+              <td style="width:289pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="7">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:81pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2">
+                <p class="s10" style="padding-top: 1pt;padding-left: 20pt;text-indent: 0pt;line-height: 5pt;text-align: left;">
+                  Remedial Classes
+                </p>
+              </td>
+              <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p class="s1" style="padding-left: 15pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  Conducted from
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p class="s1" style="padding-left: 2pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                  to
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:13pt">
+              <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                <p class="s10" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Learning Areas
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s13" style="padding-top: 3pt;text-indent: 0pt;text-align: center;">
+                  Final Rating
+                </p>
+              </td>
+              <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s13" style="padding-left: 5pt;padding-right: 4pt;text-indent: 1pt;line-height: 6pt;text-align: left;">
+                  Remedial Class Mark
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s14" style="padding-top: 1pt;padding-left: 6pt;text-indent: 0pt;text-align: left;">
+                  Recomputed
+                </p>
+                <p class="s13" style="padding-left: 6pt;text-indent: 0pt;line-height: 4pt;text-align: left;">
+                  Final Grade
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s13" style="padding-top: 3pt;text-indent: 0pt;text-align: center;">
+                  Remarks
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:46pt">
+              <td style="width:289pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="7">
+                <p class="s15" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                  Prepared by:                      Certified True and Correct:
+                </p>
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+                <p class="s8" style="padding-left: 138pt;text-indent: 0pt;text-align: left;">
+                  -      CHRISCEL IVY A. CARANZA
+                </p>
+                <p class="s13" style="padding-top: 1pt;padding-left: 36pt;text-indent: 0pt;text-align: left;">
+                  Signature of Adviser over Printed Name                SHS Registrar
+                </p>
+                <p class="s1" style="padding-top: 3pt;padding-left: 134pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  Date Checked:      PUT DATE CHECK HERE
+                </p>
+              </td>
+            </tr>
+            <tr style="height:6pt">
+              <td style="width:187pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt" colspan="4">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:102pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <table style="border-collapse:collapse" cellspacing="0">
+            <tr style="height:8pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt">
+                <p class="s1" style="padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  School:
+                </p>
+              </td>
+              <td style="width:243pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="6">
+                <p class="s8" style="padding-left: 58pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  CLARK COLLEGE OF SCIENCE AND TECHNOLOGY
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:46pt;border-left-style:solid;border-left-width:1pt">
+                <p class="s9" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;line-height: 5pt;text-align: left;">
+                  Track/ Strand:
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:208pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="5">
+                <p class="s10" style="padding-top: 1pt;padding-left: 14pt;text-indent: 0pt;line-height: 5pt;text-align: left;">
+                  ACADEMIC TRACK/ ACCOUNTANCY, BUSINESS AND MANAGEMENT STRAND
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:46pt;border-left-style:solid;border-left-width:1pt">
+                <p class="s1" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  SHS Grade Level:
+                </p>
+              </td>
+              <td style="width:78pt">
+                <p class="s6" style="padding-top: 1pt;padding-left: 35pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 11 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </p>
+              </td>
+              <td style="width:28pt;border-top-style:solid;border-top-width:1pt">
+                <p class="s1" style="padding-top: 1pt;padding-left: 7pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  SY:
+                </p>
+              </td>
+              <td style="width:67pt;border-top-style:solid;border-top-width:1pt" colspan="2">
+                <p class="s6" style="padding-top: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2022-2023 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt">
+                <p class="s1" style="padding-top: 1pt;padding-left: 5pt;padding-right: 3pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                  Semester:
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s8" style="padding-top: 1pt;padding-left: 2pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                  1ST
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:46pt;border-left-style:solid;border-left-width:1pt">
+                <p class="s1" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  Section:
+                </p>
+              </td>
+              <td style="width:78pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:28pt">
+                <p class="s6" style="padding-top: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </p>
+              </td>
+              <td style="width:35pt">
+                <p class="s9" style="padding-top: 1pt;padding-left: 5pt;padding-right: 3pt;text-indent: 0pt;line-height: 5pt;text-align: center;">
+                  School ID:
+                </p>
+              </td>
+              <td style="width:32pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p class="s8" style="padding-top: 1pt;padding-left: 5pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                  401878
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:46pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:141pt;border-bottom-style:solid;border-bottom-width:1pt" colspan="3">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:102pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:15pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" bgcolor="#DCE6F0">
+                <p class="s10" style="padding-top: 4pt;padding-left: 12pt;text-indent: 0pt;text-align: left;">
+                  Category
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4" bgcolor="#DCE6F0">
+                <p class="s8" style="padding-top: 3pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Subjects
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" bgcolor="#DCE6F0">
+                <p class="s8" style="padding-top: 4pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Final Grade
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" bgcolor="#DCE6F0">
+                <p class="s8" style="padding-left: 9pt;text-indent: 0pt;text-align: left;">
+                  Action
+                </p>
+                <p class="s8" style="padding-left: 9pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  Taken
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Core
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Earth and Life Science
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Core
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  General Mathematics
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Core
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Oral Communication in Context
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Core
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Physical Education and Health
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Core
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Komunikasyon at Pananaliksik sa Wika at Kulturang Pilipino
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Core
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  21st Century Literature from the Philippines and the World
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 15pt;text-indent: 0pt;text-align: left;">
+                  Applied
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Empowerment Technologies
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 11pt;text-indent: 0pt;text-align: left;">
+                  Specialized
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Fundamentals of Accounting, Business and Management 1
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-left: 9pt;text-indent: 0pt;text-align: left;">
+                  Other Subject
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-left: 3pt;text-indent: 0pt;text-align: left;">
+                  Homeroom Guidance
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-right: 7pt;text-indent: 0pt;text-align: right;">
+                  -
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-right: 9pt;text-indent: 0pt;text-align: right;">
+                  -
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:10pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s11" style="padding-top: 2pt;padding-right: 7pt;text-indent: 0pt;text-align: right;">
+                  -
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s1" style="padding-top: 1pt;padding-right: 9pt;text-indent: 0pt;text-align: right;">
+                  -
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:46pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:173pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                <p class="s12" style="padding-left: 87pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  General Average for the Semester:
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:5pt">
+              <td style="width:289pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="7">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:81pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2">
+                <p class="s10" style="padding-top: 1pt;padding-left: 20pt;text-indent: 0pt;line-height: 5pt;text-align: left;">
+                  Remedial Classes
+                </p>
+              </td>
+              <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p class="s1" style="padding-left: 15pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  Conducted from
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p class="s1" style="padding-left: 2pt;text-indent: 0pt;line-height: 6pt;text-align: center;">
+                  to
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:13pt">
+              <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                <p class="s10" style="padding-top: 2pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                  Learning Areas
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s13" style="padding-top: 3pt;text-indent: 0pt;text-align: center;">
+                  Final Rating
+                </p>
+              </td>
+              <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s13" style="padding-left: 5pt;padding-right: 4pt;text-indent: 1pt;line-height: 6pt;text-align: left;">
+                  Remedial Class Mark
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s14" style="padding-top: 1pt;padding-left: 6pt;text-indent: 0pt;text-align: left;">
+                  Recomputed
+                </p>
+                <p class="s13" style="padding-left: 6pt;text-indent: 0pt;line-height: 4pt;text-align: left;">
+                  Final Grade
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p class="s13" style="padding-top: 3pt;text-indent: 0pt;text-align: center;">
+                  Remarks
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:8pt">
+              <td style="width:152pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:32pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:35pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+            <tr style="height:46pt">
+              <td style="width:289pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="7">
+                <p class="s15" style="padding-top: 1pt;padding-left: 1pt;text-indent: 0pt;text-align: left;">
+                  Prepared by:                      Certified True and Correct:
+                </p>
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+                <p class="s8" style="padding-left: 138pt;text-indent: 0pt;text-align: left;">
+                  -      CHRISCEL IVY A. CARANZA
+                </p>
+                <p class="s13" style="padding-top: 1pt;padding-left: 36pt;text-indent: 0pt;text-align: left;">
+                  Signature of Adviser over Printed Name                SHS Registrar
+                </p>
+                <p class="s1" style="padding-top: 3pt;padding-left: 134pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+                  Date Checked:      PUT DATE CHECK HERE
+                </p>
+              </td>
+            </tr>
+            <tr style="height:6pt">
+              <td style="width:187pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt" colspan="4">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+              <td style="width:102pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                <p style="text-indent: 0pt;text-align: left;">
+                  <br/>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    </table>
+    </td>
+    </tr>
+    <tr style="height:8pt">
+      <td style="width:177pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt" colspan="5">
+        <p style="text-indent: 0pt;text-align: left;">
+          <br/>
+        </p>
+      </td>
+      <td style="width:102pt;border-top-style:solid;border-top-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+        <p style="text-indent: 0pt;text-align: left;">
+          <br/>
+        </p>
+      </td>
+    </tr>
+    </table></td>
+    </tr>
+    </table>
+    <p style="padding-left: 5pt;text-indent: 0pt;text-align: left;">
+      <span style=" color: black; font-family:&quot;Times New Roman&quot;, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 10pt;">
+      </span>
+    </p>
+    <p style="text-indent: 0pt;text-align: left;">
+      <br/>
+    </p>
+    <p style="padding-left: 5pt;text-indent: 0pt;text-align: left;">
+      <span style=" color: black; font-family:&quot;Times New Roman&quot;, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 10pt;">
+      </span>
+    </p>
+    <table style="border-collapse:collapse;margin-left:3pt" cellspacing="0">
+      <tr style="height:8pt">
+        <td style="width:143pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+        <td style="width:93pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+      </tr>
+      <tr style="height:8pt">
+        <td style="width:143pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+        <td style="width:93pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+      </tr>
+      <tr style="height:9pt">
+        <td style="width:143pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+        <td style="width:93pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+      </tr>
+    </table>
+    <p style="text-indent: 0pt;text-align: left;"/>
+    <table style="border-collapse:collapse;margin-left:3pt" cellspacing="0">
+      <tr style="height:8pt">
+        <td style="width:137pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+        <td style="width:93pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+      </tr>
+      <tr style="height:8pt">
+        <td style="width:137pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+        <td style="width:93pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+      </tr>
+      <tr style="height:9pt">
+        <td style="width:137pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+        <td style="width:93pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+      </tr>
+    </table>
+    <p style="text-indent: 0pt;text-align: left;"/>
+    <p class="s16" style="text-indent: 0pt;text-align: right;">
+      SHS General Average:
+    </p>
+    <table style="border-collapse:collapse;margin-left:5.94pt" cellspacing="0">
+      <tr style="height:16pt">
+        <td style="width:289pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" rowspan="4">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+          <p class="s17" style="text-indent: 0pt;line-height: 118%;text-align: left;">
+            Note: <i>
+            This permanent record or a photocopy of this permanent record that bears the seal of the school and the original signature in ink of the School Head shall be considered valid for all legal purposes. Any erasure or alteration made on this copy should be validated by the School Head.
+            </i>
+          </p>
+          <p class="s14" style="text-indent: 0pt;line-height: 118%;text-align: left;">
+            If the student transfers to another school, the originating school should produce one (1) certified true copy of this permanent record for safekeeping. The receiving school shall continue filling up the original form.
+          </p>
+          <p class="s14" style="text-indent: 0pt;line-height: 5pt;text-align: left;">
+            Upon graduation, the school from which the student graduated should keep the original form and produce one (1) certified true copy for the Division Office.
+          </p>
+        </td>
+        <td style="width:65pt;border-left-style:solid;border-left-width:1pt">
+          <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+          <p class="s12" style="padding-left: 4pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+            Business Simulation:
+          </p>
+        </td>
+        <td style="width:218pt">
+          <p style="padding-left: 147pt;text-indent: 0pt;line-height: 1pt;text-align: left;">
+            <span>
+            <img width="47" height="1" alt="image" src="F9-ABM-2024_files/Image_003.png"/>
+            </span>
+          </p>
+          <p style="padding-top: 1pt;text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+          <p class="s8" style="padding-left: 10pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+            ONGOING
+          </p>
+        </td>
+      </tr>
+      <tr style="height:8pt">
+        <td style="width:65pt;border-left-style:solid;border-left-width:1pt">
+          <p class="s12" style="padding-left: 4pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+            No. of Hours:
+          </p>
+        </td>
+        <td style="width:218pt">
+          <p class="s8" style="padding-left: 10pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+            80 HOURS
+          </p>
+        </td>
+      </tr>
+      <tr style="height:8pt">
+        <td style="width:65pt;border-left-style:solid;border-left-width:1pt">
+          <p class="s12" style="padding-left: 4pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+            Place of Simulation:
+          </p>
+        </td>
+        <td style="width:218pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+      </tr>
+      <tr style="height:16pt">
+        <td style="width:65pt;border-left-style:solid;border-left-width:1pt">
+          <p class="s12" style="padding-left: 4pt;text-indent: 0pt;text-align: left;">
+            Inclusive Dates:
+          </p>
+        </td>
+        <td style="width:218pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+      </tr>
+      <tr style="height:14pt">
+        <td style="width:289pt;border-top-style:solid;border-top-width:1pt">
+          <p style="padding-top: 1pt;text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+          <p class="s18" style="padding-left: 1pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+            Remarks:
+          </p>
+        </td>
+        <td style="width:65pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+        <td style="width:218pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+      </tr>
+      <tr style="height:17pt">
+        <td style="width:572pt" colspan="3" bgcolor="#DCE6F0">
+          <p class="s19" style="padding-left: 254pt;padding-right: 5pt;text-indent: -248pt;line-height: 8pt;text-align: left;">
+            This is to certify that has completed all the requirements for Senior High School graduation this S.Y. 2023-2024. This document further certifies that the grades entered therein are a true and correct copy of his/her original grades.
+          </p>
+        </td>
+      </tr>
+      <tr style="height:13pt">
+        <td style="width:289pt">
+          <p class="s20" style="padding-left: 7pt;text-indent: 0pt;text-align: left;">
+            NOT VALID WITHOUT SCHOOL SEAL
+          </p>
+        </td>
+        <td style="width:65pt">
+          <p style="text-indent: 0pt;text-align: left;">
+            <br/>
+          </p>
+        </td>
+        <td style="width:218pt">
+          <p class="s12" style="padding-top: 1pt;padding-left: 64pt;text-indent: 0pt;text-align: left;">
+            Date Issued:    <u>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u>
+          </p>
+        </td>
+      </tr>
+      <tr style="height:12pt">
+        <td style="width:289pt">
+          <p class="s8" style="padding-top: 5pt;padding-left: 82pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+            Noted by:
+          </p>
+        </td>
+        <td style="width:283pt" colspan="2">
+          <p class="s8" style="padding-top: 5pt;padding-left: 5pt;text-indent: 0pt;line-height: 6pt;text-align: left;">
+            Processed and Evaluated by:
+          </p>
+        </td>
+      </tr>
+    </table>
+    <p style="text-indent: 0pt;text-align: left;">
+      <br/>
+    </p>
+    <p class="s23" style="padding-left: 121pt;text-indent: 0pt;text-align: left;">
+      <u>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ARVIN MARK D. SERRANO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      </u>
+      <u>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DR. JENNIFER Q. CUNANAN &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </u>
+    </p>
+    <p style="padding-top: 2pt;padding-left: 172pt;text-indent: 0pt;text-align: left;">
+      SHS Focal Person                               Chief, School Governance Operations Division 
+    </p>
+    <p style="padding-top: 2pt;padding-left: 148pt;text-indent: 0pt;text-align: left;">
+      Clark College of Sciene and Technology                             DEPED Division of Mabalacat City
+    </p>
+  </body>
 </html>

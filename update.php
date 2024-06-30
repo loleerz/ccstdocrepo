@@ -193,4 +193,51 @@
         $conn->close();
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //CODE FOR UPDATING STUDENT PROFILE
+    if(isset($_POST['updateProfile']))
+    {
+        $fname = $_POST['Fname'];
+        $mname = $_POST['Mname'];
+        $lname = $_POST['Lname'];
+        $suffix = $_POST['Suffix'];
+        $birthday = $_POST['birthday'];
+        $age = $_POST['age'];
+        $sex = $_POST['sex'];
+        $email = $_POST['email'];
+        $contact_num = $_POST['contact_num'];
+        $provname = $_POST['provname'] ?? '';
+        $citymunname = $_POST['citymunname'] ?? '';
+        $brgyname = $_POST['brgyname'] ?? '';
+
+        // SQL update query
+        $sql = "UPDATE student_info SET 
+        Fname = ?, 
+        Mname = ?, 
+        Lname = ?, 
+        Suffix = ?, 
+        birthday = ?, 
+        age = ?, 
+        Gender = ?, 
+        email = ?, 
+        contact_num = ?, 
+        prov_name = ?, 
+        citymun_name = ?, 
+        brgy_name = ? 
+        WHERE student_no = ?";
+
+        // Prepare the SQL statement
+        $stmt = $conn->prepare($sql);
+
+        // Bind parameters
+        $stmt->bind_param("sssssisssssss", $fname, $mname, $lname, $suffix, $birthday, $age, $sex, $email, $contact_num, $provname, $citymunname, $brgyname, $student_no);
+
+        // Execute the query
+        if ($stmt->execute()) {
+        header('Location: studentInfo.php?student_no='.$student_no.'&updated');
+        } else {
+        echo "Update failed: " . $stmt->error;
+        }
+            }
+
 ?>
