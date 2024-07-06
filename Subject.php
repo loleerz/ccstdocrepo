@@ -163,7 +163,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="adminIndex.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -203,7 +203,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="Teachers.php" class="nav-link">
                   <i class="fas fa-user-tie nav-icon"></i>
                   <p>Teachers</p>
                 </a>
@@ -274,12 +274,7 @@
                   <p>Subject Teacher</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="addcoordinator.php" class="nav-link">
-                  <i class="fas fa-user-tie nav-icon"></i>
-                  <p>Coordinator</p>
-                </a>
-              </li>
+              
             </ul>
           </li>
           <li class="nav-item">
