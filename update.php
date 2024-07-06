@@ -209,6 +209,7 @@
         $provname = $_POST['provname'] ?? '';
         $citymunname = $_POST['citymunname'] ?? '';
         $brgyname = $_POST['brgyname'] ?? '';
+        $house_num = $_POST['house_num'] ?? '';
 
         // SQL update query
         $sql = "UPDATE student_info SET 
@@ -223,14 +224,15 @@
         contact_num = ?, 
         prov_name = ?, 
         citymun_name = ?, 
-        brgy_name = ? 
+        brgy_name = ?, 
+        house_num = ? 
         WHERE student_no = ?";
 
         // Prepare the SQL statement
         $stmt = $conn->prepare($sql);
 
         // Bind parameters
-        $stmt->bind_param("sssssisssssss", $fname, $mname, $lname, $suffix, $birthday, $age, $sex, $email, $contact_num, $provname, $citymunname, $brgyname, $student_no);
+        $stmt->bind_param("sssssissssssss", $fname, $mname, $lname, $suffix, $birthday, $age, $sex, $email, $contact_num, $provname, $citymunname, $brgyname, $house_num, $student_no);
 
         // Execute the query
         if ($stmt->execute()) {

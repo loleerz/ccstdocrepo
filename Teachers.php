@@ -348,24 +348,44 @@
         <div class="row">
           <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-2">
-                            <h3 class="card-title fs-4 fw-semibold">Teachers</h3>
-                        </div>
-                        <div class="col-4">
-                            <select name="school_year" class="form-select col-4" id="">
-                                <?php foreach ($schoolYears as $year) { ?>
-                                    <option value="<?=$year?>"><?=$year?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="col-6 text-end">
-                            <!-- SEARCH BAR -->
-                            <input type="text" name="search" id="search" class="form-control col-3" placeholder="Search" style="align: right; border: 1px solid black">
-                        </div>
-                    </div>
-                </div>
+            <div class="card-header">
+          <div class="row">
+            <div class="col-4">
+              <div class="form-floating">
+                <select name="school_year" class="form-select col-7" id="school_year">
+                    <?php foreach ($schoolYears as $year) { ?>
+                        <option selected value="<?=$year?>"><?=$year?></option>
+                    <?php } ?>
+                </select>
+                <label for="school_year">School Year</label>
+              </div>
+              <!-- form-floating -->
+              </form>
+            </div>
+            <!-- col -->
+            <div class="col-4">
+              <div class="form-floating">
+                <select name="strand" class="form-select" id="strand">
+                    <?php 
+                     ?>
+                </select>
+                <label for="strand">Choose Strand</label>
+              </div>
+              <!-- form-floating -->
+            </div>
+            <!-- col -->
+            <div class="col-4 text-end align-end">
+              <div class="form-floating">
+                <!-- SEARCH BAR -->
+                <input type="text" name="search" id="search" class="form-control col-7" placeholder="Search" style="align: right;">
+                <label for="search">Search</label>
+              </div>
+              <!-- form-floating -->
+            </div>
+            <!-- col -->
+          </div>
+          <!-- row -->
+        </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="example2" class="table table-bordered table-hover table-striped">

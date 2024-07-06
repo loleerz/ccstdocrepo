@@ -1,5 +1,5 @@
 <?php
-    include ('connection.php');
+    include __DIR__ . '/../connection.php';
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //CODE FOR SEARCH
@@ -9,7 +9,7 @@
 
         
         // Prepare the SQL statement with a placeholder for the input
-        $sql = "SELECT * FROM student_info WHERE Lname LIKE ? OR Fname LIKE ? OR Mname LIKE ? OR strand LIKE ?";
+        $sql = "SELECT * FROM student_info WHERE student_no LIKE ? OR Lname LIKE ? OR Fname LIKE ? OR Mname LIKE ? OR strand LIKE ? OR grade_level LIKE ? OR section LIKE ? OR school_year LIKE ?";
 
         // Prepare the statement
         $stmt = $conn->prepare($sql);
@@ -20,7 +20,7 @@
 
         // Bind parameters
         $searchParam = "%". $input . "%"; // Add '%' wildcard to search for values starting with the input
-        $stmt->bind_param("ssss", $searchParam, $searchParam, $searchParam, $searchParam); // Assuming all columns are strings, adjust "sss" accordingly
+        $stmt->bind_param("ssssssss", $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam); // Assuming all columns are strings, adjust "sss" accordingly
 
         // Execute the statement
         $stmt->execute();
@@ -47,7 +47,10 @@
                         ".$row['strand']." - ".$row['grade_level'].$row['section']."
                     </td>
                     <td>
-                        <a href='studentGrades.php' class='btn btn-primary'>
+                        ".$row['school_year']."
+                    </td>
+                    <td>
+                        <a href='studentInfo.php?student_no=".$row['student_no']."' class='btn btn-primary'>
                             View
                         </a>
                     </td>

@@ -278,7 +278,8 @@ $conn->close();
               <tbody id="tbody">
                 <?php
                 if ($result) {
-                    while ($row = $result->fetch_assoc()) {
+                    while ($row = $result->fetch_assoc()) 
+                    {
                         $minitial = !empty($row['Minitial']) ? $row['Minitial'] . '.' : '';
                         ?>
                         <tr>
@@ -356,11 +357,17 @@ $conn->close();
 
     $("#search").keyup(function() {
       var input = $(this).val();
+      var strand = "<?php echo addslashes($strand); ?>";
+      var gradeLevel = "<?php echo addslashes($gradeLevel); ?>";
+      var section = "<?php echo addslashes($section); ?>";
 
       $.ajax({
-        url: "searchdata.php",
+        url: "search/searchTeacherStudent.php",
         method: "POST",
-        data: { input: input },
+        data: { input: input,
+                strand: strand,
+                gradeLevel: gradeLevel,
+                section: section },
         success: function(data) {
           $("#tbody").html(data);
         }

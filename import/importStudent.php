@@ -1,5 +1,5 @@
 <?php
-include ('connection.php');
+include('connection.php');
 include('vendor/autoload.php');
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -22,14 +22,7 @@ if (isset($_POST['importStuds']))
         foreach ($row->getCellIterator() as $cell) 
         {
             $value = $cell->getValue();
-            if (empty($value)) 
-            {
-                $data[] = "";
-            } 
-            else 
-            {
-                $data[] = $value;
-            }
+            $data[] = empty($value) ? "" : $value;
         }
 
         // Insert data into the database
@@ -48,184 +41,84 @@ if (isset($_POST['importStuds']))
             die("Prepare failed: " . $conn->error);
         }
         $stmt->bind_param("ssissss", $data[1], $data[38], $data[39], $data[43], $data[42], $data[41], $data[40]);
-        if($stmt->execute())
-        {
+        if ($stmt->execute()) {
             $stmt->close();
         }
 
-        // Insert subjects into core_subs_grades
+        // Insert subjects into core_sub_grades
         $insert_subject = "INSERT INTO core_sub_grades (student_no, strand, grade_level, section, sem, subject_name, school_year) SELECT ?, strand, grade_level, ?, semester, subject_name, school_year FROM core_subjects WHERE strand = ?";
-            
-        // Prepare the statement
         $stmt = $conn->prepare($insert_subject);
         if ($stmt === false) {
             die("Prepare failed: " . $conn->error);
         }
-        // Bind the parameters
         $stmt->bind_param("sss", $data[1], $data[18], $data[20]);
-        // Execute the statement
         if (!$stmt->execute()) {
             die("Execute failed: " . $stmt->error);
         }
-        $stmt->close(); // Close the statement for the first insert
+        $stmt->close();
 
         // Insert subjects into applied_sub_grades
         $insert_asubject = "INSERT INTO applied_sub_grades (student_no, strand, grade_level, section, sem, subject_name, school_year)
         SELECT ?, strand, grade_level, ?, semester, subject_name, school_year
         FROM applied_subjects
         WHERE strand = ?";
-
-        // Prepare the statement
         $stmt = $conn->prepare($insert_asubject);
         if ($stmt === false) {
-        die("Prepare failed for applied_sub_grades: " . $conn->error);
-        } else {
-        echo "<script>console.log('Prepare successful for applied_sub_grades');</script>";
+            die("Prepare failed for applied_sub_grades: " . $conn->error);
         }
-
-        // Bind the parameters
         $stmt->bind_param("sss", $data[1], $data[18], $data[20]);
-
-        // Execute the statement
         if ($stmt->execute()) {
-        echo "<script>alert('Applied subject records inserted successfully');</script>";
-        $stmt->close();
-        } else {
-        echo "<script>alert('Something went wrong for applied_sub_grades: " . $stmt->error . "');</script>";
+            $stmt->close();
         }
-
-        // Debugging: check the data in the applied_subjects table
-        $check_query = "SELECT * FROM applied_subjects WHERE strand = ?";
-        $check_stmt = $conn->prepare($check_query);
-        $check_stmt->bind_param("s", $data[20]);
-        $check_stmt->execute();
-        $check_result = $check_stmt->get_result();
-
-        if ($check_result->num_rows > 0) {
-        echo "<script>console.log('Records found in applied_subjects matching the conditions');</script>";
-        while ($row = $check_result->fetch_assoc()) {
-        echo "<script>console.log('Subject: " . $row['subject_name'] . "');</script>";
-        }
-        } else {
-        echo "<script>alert('No records found in applied_subjects matching the conditions.');</script>";
-        }
-
-        $check_stmt->close();
 
         // Insert subjects into specialized_sub_grades
         $insert_asubject = "INSERT INTO specialized_sub_grades (student_no, strand, grade_level, section, sem, subject_name, school_year)
         SELECT ?, strand, grade_level, ?, semester, subject_name, school_year
         FROM specialized_subjects
         WHERE strand = ?";
-
-        // Prepare the statement
         $stmt = $conn->prepare($insert_asubject);
         if ($stmt === false) {
-        die("Prepare failed for specialized_sub_grades: " . $conn->error);
-        } else {
-        echo "<script>console.log('Prepare successful for specialized_sub_grades');</script>";
+            die("Prepare failed for specialized_sub_grades: " . $conn->error);
         }
-
-        // Bind the parameters
         $stmt->bind_param("sss", $data[1], $data[18], $data[20]);
-
-        // Execute the statement
         if ($stmt->execute()) {
-        echo "<script>alert('Specialized subject records inserted successfully');</script>";
-        $stmt->close();
-        } else {
-        echo "<script>alert('Something went wrong for specialized_sub_grades: " . $stmt->error . "');</script>";
+            $stmt->close();
         }
-
-        // Debugging: check the data in the specialized_subjects table
-        $check_query = "SELECT * FROM specialized_subjects WHERE strand = ?";
-        $check_stmt = $conn->prepare($check_query);
-        $check_stmt->bind_param("s", $data[20]);
-        $check_stmt->execute();
-        $check_result = $check_stmt->get_result();
-
-        if ($check_result->num_rows > 0) {
-        echo "<script>console.log('Records found in specialized_subjects matching the conditions');</script>";
-        while ($row = $check_result->fetch_assoc()) {
-        echo "<script>console.log('Subject: " . $row['subject_name'] . "');</script>";
-        }
-        } else {
-        echo "<script>alert('No records found in specialized_subjects matching the conditions.');</script>";
-        }
-
-        $check_stmt->close();
 
         // Insert subjects into other_sub_grades
         $insert_asubject = "INSERT INTO other_sub_grades (student_no, strand, grade_level, section, sem, subject_name, school_year)
         SELECT ?, strand, grade_level, ?, semester, subject_name, school_year
         FROM other_subjects
         WHERE strand = ?";
-
-        // Prepare the statement
         $stmt = $conn->prepare($insert_asubject);
         if ($stmt === false) {
-        die("Prepare failed for other_sub_grades: " . $conn->error);
-        } else {
-        echo "<script>console.log('Prepare successful for other_sub_grades');</script>";
+            die("Prepare failed for other_sub_grades: " . $conn->error);
         }
-
-        // Bind the parameters
         $stmt->bind_param("sss", $data[1], $data[18], $data[20]);
-
-        // Execute the statement
         if ($stmt->execute()) {
-        echo "<script>alert('Other subject records inserted successfully');</script>";
-        $stmt->close();
-        } else {
-        echo "<script>alert('Something went wrong for other_sub_grades: " . $stmt->error . "');</script>";
+            $stmt->close();
         }
-
-        // Debugging: check the data in the other_subjects table
-        $check_query = "SELECT * FROM other_subjects WHERE strand = ?";
-        $check_stmt = $conn->prepare($check_query);
-        $check_stmt->bind_param("s", $data[20]);
-        $check_stmt->execute();
-        $check_result = $check_stmt->get_result();
-
-        if ($check_result->num_rows > 0) 
-        {
-        echo "<script>console.log('Records found in other_subjects matching the conditions');</script>";
-        while ($row = $check_result->fetch_assoc()) {
-        echo "<script>console.log('Subject: " . $row['subject_name'] . "');</script>";
-        }
-        } else {
-        echo "<script>alert('No records found in other_subjects matching the conditions.');</script>";
-        }
-
-        $check_stmt->close();
 
         // Insert Student to Gen_Ave Table
         $insert = "INSERT INTO gen_aves (student_no, school_year) VALUES (?, ?)";
         $stmt = $conn->prepare($insert);
         $stmt->bind_param("ss", $data[1], $data[21]);
-        if($stmt->execute())
-        {
+        if ($stmt->execute()) {
             $numSuccess++;
         }
     }
+
     // Display a message indicating whether all data has been imported successfully
     if ($numSuccess == $numRows - 1) 
     {
-        echo "
-            <script>
-                alert('All data has been imported successfully!');
-            </script>
-        ";
         header('Location: addstudent.php?status=success');
         exit();
     } 
     else 
     {
-        echo "
-            <script>
+        echo "<script>
                 alert('Some data failed to import. ' . ($numRows - $numSuccess) . ' rows were skipped.');
-            </script>
-        ";
+              </script>";
     }
 }
 ?>
