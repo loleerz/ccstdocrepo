@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2024 at 01:05 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Jul 05, 2024 at 10:35 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -65,12 +65,46 @@ CREATE TABLE `applied_subjects` (
 --
 
 INSERT INTO `applied_subjects` (`ID`, `subject_name`, `grade_level`, `strand`, `semester`, `school_year`) VALUES
-(20, 'Empowerment Technologies', 11, 'General Academic Strand', '1st Semester', '2023-2024'),
-(21, 'Empowerment Technologies', 11, 'Home Economics', '1st Semester', '2023-2024'),
-(22, 'Empowerment Technologies', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
-(23, 'Empowerment Technologies', 11, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
-(24, 'Empowerment Technologies', 11, 'Information Communication Technology', '1st Semester', '2023-2024'),
-(25, 'Empowerment Technologies', 11, 'Humanities and Social Sciences', '1st Semester', '2023-2024');
+(26, 'Empowerment Technologies', 11, 'General Academic Strand', '1st Semester', '2023-2024'),
+(27, 'Empowerment Technologies', 11, 'Home Economics', '1st Semester', '2023-2024'),
+(28, 'Empowerment Technologies', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(29, 'Empowerment Technologies', 11, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(30, 'Empowerment Technologies', 11, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(31, 'Empowerment Technologies', 11, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(32, 'Practical Research 1', 11, 'Humanities and Social Sciences', '2nd Semester', '2023-2024'),
+(33, 'Practical Research 1 ', 11, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(34, 'Practical Research 1', 11, 'Home Economics', '2nd Semester', '2023-2024'),
+(35, 'Practical Research 1', 11, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(36, 'Practical Research 1', 11, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(37, 'Practical Research 1', 11, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(38, 'Practical Research 2', 12, 'General Academic Strand', '1st Semester', '2023-2024'),
+(39, 'English for Academic and Professional Purposes', 12, 'General Academic Strand', '1st Semester', '2023-2024'),
+(40, 'Filipino sa Piling Larangan', 12, 'General Academic Strand', '1st Semester', '2023-2024'),
+(41, 'Practical Research 2', 12, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(42, 'Filipino sa Piling Larangan', 12, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(43, 'English for Academic and Professional Purposes', 12, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(44, 'Research Project', 12, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(45, 'Entrepreneurship', 12, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(46, 'Filipino sa Piling Larangan', 12, 'Home Economics', '1st Semester', '2023-2024'),
+(47, 'Practical Research 2', 12, 'Home Economics', '1st Semester', '2023-2024'),
+(48, 'English for Academic and Professional Purposes', 12, 'Home Economics', '2nd Semester', '2023-2024'),
+(49, 'Entrepreneurship', 12, 'Home Economics', '2nd Semester', '2023-2024'),
+(50, 'Inquiries, Investigations and Immersion', 12, 'Home Economics', '2nd Semester', '2023-2024'),
+(51, 'Practical Research 2', 12, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(52, 'Filipino sa Piling Larang', 12, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(53, 'English for Academic and Professional Purposes', 12, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(54, 'Entrepreneurship', 12, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(55, 'Research Project', 12, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(56, 'Filipino sa Piling Larang', 12, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(57, 'Practical Research 2', 12, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(58, 'English for Academic and Professional Purposes', 12, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(59, 'Enterepreneurship', 12, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(60, 'Inquiries, Investigation and Immersion', 12, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(61, 'Filipino sa Piling Larang', 12, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(62, 'Practical Research 2', 12, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(63, 'Entrepreneurship', 12, 'Humanities and Social Sciences', '2nd Semester', '2023-2024'),
+(64, 'English for Academic and Professional Purposes', 12, 'Humanities and Social Sciences', '2nd Semester', '2023-2024'),
+(65, 'Research Project', 12, 'Humanities and Social Sciences', '2nd Semester', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -100,7 +134,14 @@ CREATE TABLE `applied_sub_grades` (
 --
 
 INSERT INTO `applied_sub_grades` (`ID`, `student_no`, `strand`, `grade_level`, `section`, `sem`, `subject_name`, `1st`, `status1`, `2nd`, `final`, `remarks`, `status`, `school_year`) VALUES
-(3, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Empowerment Technologies', '95', 'Graded', 'INC', 'INC', 'FAILED', 'Graded', '2023-2024');
+(3, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Empowerment Technologies', '95', 'Graded', 'INC', 'INC', 'FAILED', 'Graded', '2023-2024'),
+(7, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Empowerment Technologies', '', '', '', '', '', '', '2023-2024'),
+(8, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '2nd Semester', 'Practical Research 1', '', '', '', '', '', '', '2023-2024'),
+(9, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '2nd Semester', 'Practical Research 2', '', '', '', '', '', '', '2023-2024'),
+(10, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '1st Semester', 'Filipino sa Piling Larang', '', '', '', '', '', '', '2023-2024'),
+(11, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '2nd Semester', 'English for Academic and Professional Purposes', '', '', '', '', '', '', '2023-2024'),
+(12, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '2nd Semester', 'Entrepreneurship', '', '', '', '', '', '', '2023-2024'),
+(13, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '2nd Semester', 'Research Project', '', '', '', '', '', '', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -147,13 +188,110 @@ CREATE TABLE `core_subjects` (
 --
 
 INSERT INTO `core_subjects` (`ID`, `subject_name`, `grade_level`, `strand`, `semester`, `school_year`) VALUES
-(22, 'Oral Communication', 11, 'General Academic Strand', '1st Semester', '2023-2024'),
-(23, 'Oral Communication', 11, 'Home Economics', '1st Semester', '2023-2024'),
-(24, 'Oral Communication', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
-(25, 'Oral Communication', 11, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
-(26, 'Oral Communication', 11, 'Information Communication Technology', '1st Semester', '2023-2024'),
-(27, 'Oral Communication', 11, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
-(28, 'Contemporary Philippine Arts from the Region', 12, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024');
+(29, 'Oral Communication', 11, 'General Academic Strand', '1st Semester', '2023-2024'),
+(30, 'Oral Communication', 11, 'Home Economics', '1st Semester', '2023-2024'),
+(31, 'Oral Communication', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(32, 'Oral Communication', 11, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(33, 'Oral Communication', 11, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(34, 'Oral Communication', 11, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(35, 'Komunikasyon at pananaliksik(KOMPAN)', 11, 'General Academic Strand', '1st Semester', '2023-2024'),
+(36, 'Komunikasyon at pananaliksik(KOMPAN)', 11, 'Home Economics', '1st Semester', '2023-2024'),
+(37, 'Komunikasyon at pananaliksik(KOMPAN)', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(38, 'Komunikasyon at pananaliksik(KOMPAN)', 11, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(39, 'Komunikasyon at pananaliksik(KOMPAN)', 11, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(40, 'Komunikasyon at pananaliksik(KOMPAN)', 11, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(41, 'General Mathematics', 11, 'General Academic Strand', '1st Semester', '2023-2024'),
+(42, 'General Mathematics', 11, 'Home Economics', '1st Semester', '2023-2024'),
+(43, 'General Mathematics', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(44, 'General Mathematics', 11, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(45, 'General Mathematics', 11, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(46, 'General Mathematics', 11, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(47, 'Earth and Life Science', 11, 'General Academic Strand', '1st Semester', '2023-2024'),
+(48, 'Earth and Life Science', 11, 'Home Economics', '1st Semester', '2023-2024'),
+(49, 'Earth and Life Science', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(50, 'Earth and Life Science', 11, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(51, 'Earth and Life Science', 11, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(52, 'Earth and Life Science', 11, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(53, '21St Century Literature', 11, 'General Academic Strand', '1st Semester', '2023-2024'),
+(54, '21St Century Literature', 11, 'Home Economics', '1st Semester', '2023-2024'),
+(55, '21St Century Literature', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(56, '21St Century Literature', 11, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(57, '21St Century Literature', 11, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(58, 'Contemporary Philippine Arts from the Region', 11, 'General Academic Strand', '1st Semester', '2023-2024'),
+(59, 'Physical Education And Health', 11, 'General Academic Strand', '1st Semester', '2023-2024'),
+(60, 'Physical Education And Health', 11, 'Home Economics', '1st Semester', '2023-2024'),
+(61, 'Physical Education And Health', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(62, 'Physical Education And Health', 11, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(63, 'Physical Education And Health', 11, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(64, 'Physical Education And Health', 11, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(65, 'Reading and Writing Skills', 11, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(66, 'Reading and Writing Skills', 11, 'Home Economics', '2nd Semester', '2023-2024'),
+(67, 'Reading and Writing Skills', 11, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(68, 'Reading and Writing Skills', 11, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(69, 'Reading and Writing Skills', 11, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(70, 'Reading and Writing Skills', 11, 'Humanities and Social Sciences', '2nd Semester', '2023-2024'),
+(71, 'Pagbasa at Pagsusuri(PAGPAG)', 11, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(72, 'Pagbasa at Pagsusuri(PAGPAG)', 11, 'Home Economics', '2nd Semester', '2023-2024'),
+(73, 'Pagbasa at Pagsusuri(PAGPAG)', 11, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(74, 'Pagbasa at Pagsusuri(PAGPAG)', 11, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(75, 'Pagbasa at Pagsusuri(PAGPAG)', 11, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(76, 'Pagbasa at Pagsusuri(PAGPAG)', 11, 'Humanities and Social Sciences', '2nd Semester', '2023-2024'),
+(77, 'Statistics and Probability', 11, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(78, 'Statistics and Probability', 11, 'Home Economics', '2nd Semester', '2023-2024'),
+(79, 'Statistics and Probability', 11, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(80, 'Statistics and Probability', 11, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(81, 'Statistics and Probability', 11, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(82, 'Statistics and Probability', 11, 'Humanities and Social Sciences', '2nd Semester', '2023-2024'),
+(83, 'Understanding Culture, Society and Politics', 11, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(84, 'Physical Science', 11, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(85, 'Physical Science', 11, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(86, 'Personal Development', 11, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(87, 'Personal Development', 11, 'Home Economics', '2nd Semester', '2023-2024'),
+(88, 'Personal Development', 11, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(89, 'Personal Development', 11, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(90, 'Personal Development', 11, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(91, 'Personal Development', 11, 'Humanities and Social Sciences', '2nd Semester', '2023-2024'),
+(92, 'Media and Information Literacy', 11, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(93, 'Media and Information Literacy', 11, 'Home Economics', '2nd Semester', '2023-2024'),
+(94, 'Media and Information Literacy', 11, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(95, 'Media and Information Literacy', 11, 'Humanities and Social Sciences', '2nd Semester', '2023-2024'),
+(96, 'Physical Eduction and Health', 11, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(97, 'Physical Eduction and Health', 11, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(98, 'Physical Eduction and Health', 11, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(99, 'Physical Eduction and Health', 11, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(100, 'Physical Eduction and Health', 11, 'Humanities and Social Sciences', '2nd Semester', '2023-2024'),
+(101, 'Introduction to the Philosophy of the HP', 12, 'General Academic Strand', '1st Semester', '2023-2024'),
+(102, 'Physical Education And Health', 12, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(103, 'Filipino sa Piling Larangan', 12, 'General Academic Strand', '1st Semester', '2023-2024'),
+(104, 'Understanding Culture, Society and Politics', 12, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(105, 'Introduction to the Phiosophy of the HP', 12, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(106, 'Physical Education and Health', 12, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(107, 'Media Information Literacy', 12, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(108, 'Contemporary Philippine Arts from the Region', 12, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(109, 'Physical Education and Health', 12, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(110, 'Disaster Readiness and Risk Reduction', 12, 'Home Economics', '1st Semester', '2023-2024'),
+(111, 'Understanding Culture, Society and Politics', 12, 'Home Economics', '1st Semester', '2023-2024'),
+(112, 'Introduction to the Philosophy of the HP', 12, 'Home Economics', '1st Semester', '2023-2024'),
+(113, 'Physical Education and Health', 12, 'Home Economics', '1st Semester', '2023-2024'),
+(114, 'Contemporary Philippine Arts from the Region', 12, 'Home Economics', '2nd Semester', '2023-2024'),
+(115, 'Physical Education and Health', 12, 'Home Economics', '2nd Semester', '2023-2024'),
+(116, 'Contemporary Philippine Arts from the Region', 12, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(117, 'Introduction to the Philosophy of the HP', 12, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(118, 'Media and information Literacy', 12, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(119, 'Understanding Culture, Society and Politics', 12, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(120, 'Physical Education adn Health ', 12, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(121, 'Physical Education and Health', 12, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(122, 'Oral Communication', 12, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(123, 'Disaster Readiness and Risk Reduction ', 12, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(124, 'Understanding Cultuyre, Society and Politics ', 12, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(125, 'Introdution to the Phylosophy of the HP', 12, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(126, 'Physical Education and Health ', 12, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(127, 'Contemporary Philippine Arts from the Region', 12, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(128, 'Physical Education and Health', 12, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(129, 'Physical Science', 12, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(130, 'Introduction to the Philosophy of the HP', 12, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(131, 'Physical Education and Health', 12, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(132, 'Physical Education and Health', 12, 'Humanities and Social Sciences', '2nd Semester', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -183,7 +321,24 @@ CREATE TABLE `core_sub_grades` (
 --
 
 INSERT INTO `core_sub_grades` (`ID`, `student_no`, `strand`, `grade_level`, `section`, `sem`, `subject_name`, `1st`, `status1`, `2nd`, `final`, `remarks`, `status`, `school_year`) VALUES
-(21, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Oral Communication', '96', 'Graded', '90', '93', 'PASSED', 'Graded', '2023-2024');
+(21, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Oral Communication', '96', 'Graded', '90', '93', 'PASSED', 'Graded', '2023-2024'),
+(29, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Oral Communication', '', '', '', '', '', '', '2023-2024'),
+(30, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Komunikasyon at pananaliksik(KOMPAN)', '', '', '', '', '', '', '2023-2024'),
+(31, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'General Mathematics', '', '', '', '', '', '', '2023-2024'),
+(32, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Earth and Life Science', '', '', '', '', '', '', '2023-2024'),
+(33, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', '21St Century Literature', '', '', '', '', '', '', '2023-2024'),
+(34, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Physical Education And Health', '', '', '', '', '', '', '2023-2024'),
+(35, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '2nd Semester', 'Reading and Writing Skills', '', '', '', '', '', '', '2023-2024'),
+(36, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '2nd Semester', 'Pagbasa at Pagsusuri(PAGPAG)', '', '', '', '', '', '', '2023-2024'),
+(37, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '2nd Semester', 'Statistics and Probability', '', '', '', '', '', '', '2023-2024'),
+(38, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '2nd Semester', 'Personal Development', '', '', '', '', '', '', '2023-2024'),
+(39, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '2nd Semester', 'Physical Eduction and Health', '', '', '', '', '', '', '2023-2024'),
+(40, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '1st Semester', 'Contemporary Philippine Arts from the Region', '', '', '', '', '', '', '2023-2024'),
+(41, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '1st Semester', 'Introduction to the Philosophy of the HP', '', '', '', '', '', '', '2023-2024'),
+(42, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '1st Semester', 'Media and information Literacy', '', '', '', '', '', '', '2023-2024'),
+(43, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '1st Semester', 'Understanding Culture, Society and Politics', '', '', '', '', '', '', '2023-2024'),
+(44, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '1st Semester', 'Physical Education adn Health ', '', '', '', '', '', '', '2023-2024'),
+(45, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '2nd Semester', 'Physical Education and Health', '', '', '', '', '', '', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -229,7 +384,11 @@ CREATE TABLE `gen_aves` (
 --
 
 INSERT INTO `gen_aves` (`ID`, `student_no`, `g11_1stSem`, `g11_1remarks`, `g11_2ndSem`, `g11_2remarks`, `g12_1stSem`, `g12_1remarks`, `g12_2ndSem`, `g12_2remarks`, `school_year`) VALUES
-(1, '05-2323', '71', 'FAILED', '', '0', '', '0', '', '', '2023-2024');
+(1, '05-2323', '71', 'FAILED', '', '0', '', '0', '', '', '2023-2024'),
+(2, '05-2326', '', '', '', '', '', '', '', '', '2023-2024'),
+(3, '05-2326', '', '', '', '', '', '', '', '', '2023-2024'),
+(4, '05-2326', '', '', '', '', '', '', '', '', '2023-2024'),
+(5, '05-2326', '', '', '', '', '', '', '', '', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -318,7 +477,11 @@ INSERT INTO `guardian_info` (`ID`, `student_employee_no`, `name`, `g_name`, `g_c
 (27, '05-3256', 'dsa , dsa dsa', 'dsa', 2147483647, '1233', 'Pagkakaisa (Pob.)', 'PUERTO PRINCESA CITY (Capital)', 'PALAWAN'),
 (28, '05-0001', 'Ilan , Hazel Mae Gutierrez', 'Mama', 2147483647, '123', 'Sapang Biabas', 'MABALACAT CITY', 'PAMPANGA'),
 (29, '05-4554', 'Jarlego , Eahron James Estrella', 'Ma.Fe E Jarlego', 963224313, '097 3rd street', 'Marcos Village', 'MABALACAT CITY', 'PAMPANGA'),
-(30, '05-2323', 'Espinosa , Den Eizikiel Jarlego', 'Ma.Fe E Jarlego', 2147483647, '98 3rd street', 'Marcos Village', 'MABALACAT CITY', 'PAMPANGA');
+(30, '05-2323', 'Espinosa , Den Eizikiel Jarlego', 'Ma.Fe E Jarlego', 2147483647, '98 3rd street', 'Marcos Village', 'MABALACAT CITY', 'PAMPANGA'),
+(31, '05-2326', '', 'dadasd', 2147483647, '1234', 'Bacjao', 'ALMAGRO', 'SAMAR (WESTERN SAMAR)'),
+(32, '05-2326', '', 'sdsfdsdf', 2147483647, '1254', 'Ableg', 'DAGUIOMAN', 'ABRA'),
+(33, '05-2326', '', 'dadasd', 2147483647, '1234', 'Palat', 'PORAC', 'PAMPANGA'),
+(34, '05-2326', '', 'dadasd', 2147483647, '1232', 'Pagkakaisa (Pob.)', 'PUERTO PRINCESA CITY (Capital)', 'PALAWAN');
 
 -- --------------------------------------------------------
 
@@ -375,7 +538,8 @@ CREATE TABLE `other_sub_grades` (
 --
 
 INSERT INTO `other_sub_grades` (`ID`, `student_no`, `strand`, `grade_level`, `section`, `sem`, `subject_name`, `1st`, `status1`, `2nd`, `final`, `remarks`, `status`, `school_year`) VALUES
-(15, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Homeroom Guidance', '90', 'Graded', '96', '93', 'PASSED', 'Graded', '2023-2024');
+(15, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Homeroom Guidance', '90', 'Graded', '96', '93', 'PASSED', 'Graded', '2023-2024'),
+(19, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Homeroom Guidance', '', '', '', '', '', '', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -44342,7 +44506,7 @@ INSERT INTO `section` (`ID`, `strand`, `grade_level`, `section`, `adviser`, `sch
 (1, 'Science, Technology, Engineering, and Mathematics', 11, 'A', '456789-123', '2023-2024'),
 (2, 'Science, Technology, Engineering, and Mathematics', 11, 'B', '123456-789', '2023-2024'),
 (3, 'Science, Technology, Engineering, and Mathematics', 11, 'C', '032654-789', '2023-2024'),
-(4, 'Science, Technology, Engineering, and Mathematics', 11, 'D', '032656-984', '2023-2024');
+(4, 'Science, Technology, Engineering, and Mathematics', 11, 'D', '032656-984', '2020-2021');
 
 -- --------------------------------------------------------
 
@@ -44364,7 +44528,48 @@ CREATE TABLE `specialized_subjects` (
 --
 
 INSERT INTO `specialized_subjects` (`ID`, `subject_name`, `grade_level`, `strand`, `semester`, `school_year`) VALUES
-(2, 'Pre-Calculus', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024');
+(3, 'Fundementals of ABM 1', 11, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(4, 'Pre-Calculus', 11, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(5, 'Computer Hardware Servicing', 11, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(6, 'EPAS 1', 11, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(7, 'Introduction to World Religions and Belief', 11, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(8, 'Discipline and  Ideas in the Social Sciences', 11, 'Humanities and Social Sciences', '2nd Semester', '2023-2024'),
+(9, 'Computer Systems Servicing', 11, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(10, 'General Chemisty', 11, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(11, 'Basic Caculus', 11, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(12, 'Organization and Management', 11, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(13, 'Business Mathematics', 11, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(14, 'HUMSS1', 12, 'General Academic Strand', '1st Semester', '2023-2024'),
+(15, 'ELECTIVE1', 12, 'General Academic Strand', '1st Semester', '2023-2024'),
+(16, 'Organization and Management', 12, 'General Academic Strand', '1st Semester', '2023-2024'),
+(17, 'Disaster Readiness and Risk Reduction', 12, 'General Academic Strand', '1st Semester', '2023-2024'),
+(18, 'SOC. SCI.1', 12, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(19, 'HUMSS2', 12, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(20, 'ELECTIVE2', 12, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(21, 'Applied Economics', 12, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(22, 'Immersion/Investigation/Inquiry', 12, 'General Academic Strand', '2nd Semester', '2023-2024'),
+(23, 'Business Finance', 12, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(24, 'Fundamentals of ABM 2', 12, 'Accountancy, Business, and Management', '1st Semester', '2023-2024'),
+(25, 'Business Marketing', 12, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(26, 'Applied Economics', 12, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(27, 'Enterprise Simulation', 12, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(28, 'Business Ethics', 12, 'Accountancy, Business, and Management', '2nd Semester', '2023-2024'),
+(29, 'Work Immersion', 12, 'Home Economics', '2nd Semester', '2023-2024'),
+(30, 'General Physics 1', 12, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(31, 'General Biology 1', 12, 'Science, Technology, Engineering, and Mathematics', '1st Semester', '2023-2024'),
+(32, 'General Physics 2', 12, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(33, 'General Biology 2', 12, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(34, 'General Chemistry 2', 12, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(35, 'Research/Capstone Project', 12, 'Science, Technology, Engineering, and Mathematics', '2nd Semester', '2023-2024'),
+(36, 'Computer Programming 1', 12, 'Information Communication Technology', '1st Semester', '2023-2024'),
+(37, 'Word Immersion', 12, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(38, 'Computer Programming 2', 12, 'Information Communication Technology', '2nd Semester', '2023-2024'),
+(39, 'Philippines Politics and Goverment', 12, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(40, 'Creative and Writing/Malikhang Pagsulat', 12, 'Humanities and Social Sciences', '1st Semester', '2023-2024'),
+(41, 'Culminating Activity', 12, 'Humanities and Social Sciences', '2nd Semester', '2023-2024'),
+(42, 'Creative nonfiction the Literary Essay ', 12, 'Humanities and Social Sciences', '2nd Semester', '2023-2024'),
+(43, 'Trends Network And Critical Thinking', 12, 'Humanities and Social Sciences', '2nd Semester', '2023-2024'),
+(44, 'Community Engangement Solidarity and Citizenship', 12, 'Humanities and Social Sciences', '2nd Semester', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -44394,7 +44599,16 @@ CREATE TABLE `specialized_sub_grades` (
 --
 
 INSERT INTO `specialized_sub_grades` (`ID`, `student_no`, `strand`, `grade_level`, `section`, `sem`, `subject_name`, `1st`, `status1`, `2nd`, `final`, `remarks`, `status`, `school_year`) VALUES
-(3, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Pre-Calculus', '96', 'Graded', '96', '96', 'PASSED', 'Graded', '2023-2024');
+(3, '05-2323', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Pre-Calculus', '96', 'Graded', '96', '96', 'PASSED', 'Graded', '2023-2024'),
+(7, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '1st Semester', 'Pre-Calculus', '', '', '', '', '', '', '2023-2024'),
+(8, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '2nd Semester', 'General Chemisty', '', '', '', '', '', '', '2023-2024'),
+(9, '05-2326', 'Science, Technology, Engineering, and Mathematics', 11, 'A', '2nd Semester', 'Basic Caculus', '', '', '', '', '', '', '2023-2024'),
+(10, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '1st Semester', 'General Physics 1', '', '', '', '', '', '', '2023-2024'),
+(11, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '1st Semester', 'General Biology 1', '', '', '', '', '', '', '2023-2024'),
+(12, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '2nd Semester', 'General Physics 2', '', '', '', '', '', '', '2023-2024'),
+(13, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '2nd Semester', 'General Biology 2', '', '', '', '', '', '', '2023-2024'),
+(14, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '2nd Semester', 'General Chemistry 2', '', '', '', '', '', '', '2023-2024'),
+(15, '05-2326', 'Science, Technology, Engineering, and Mathematics', 12, 'A', '2nd Semester', 'Research/Capstone Project', '', '', '', '', '', '', '2023-2024');
 
 -- --------------------------------------------------------
 
@@ -44538,7 +44752,7 @@ INSERT INTO `teachers_info` (`ID`, `employeenumber`, `fname`, `mname`, `lname`, 
 (2, '032654-789', 'Mark', '', 'Verzon', '', '1990-10-23', 33, 'Male', 'ko@kun.com', 2147483647, 'PAMPANGA', 'MABALACAT CITY', 'Camachiles', '125', ''),
 (3, '032656-984', 'jhuerom', 'g', 'bacani', '', '1990-12-03', 33, 'Male', 'je@b.com', 2147483647, 'PAMPANGA', 'MABALACAT CITY', 'Cacutud', '126', ''),
 (4, '789456-123', 'Carl', 'Malonzo', 'Reyes', '', '2003-04-16', 21, 'Male', 'c@r.com', 2147483647, 'PAMPANGA', 'MABALACAT CITY', 'Mamatitang', '123', ''),
-(5, '456789-123', 'Jero', '', 'Peligro', '', '1998-03-29', 26, 'Male', 'j@p.com', 2147483647, 'PAMPANGA', 'MABALACAT CITY', 'Dau', '023', '');
+(5, '456789-123', 'Jero', '', 'Peligro', '', '1998-03-29', 26, 'Male', 'j@p.com', 2147483647, 'PAMPANGA', 'MABALACAT CITY', 'Dau', '023', '2020-2021');
 
 -- --------------------------------------------------------
 
@@ -44745,25 +44959,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `applied_subjects`
 --
 ALTER TABLE `applied_subjects`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `applied_sub_grades`
 --
 ALTER TABLE `applied_sub_grades`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `core_subjects`
 --
 ALTER TABLE `core_subjects`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
 -- AUTO_INCREMENT for table `core_sub_grades`
 --
 ALTER TABLE `core_sub_grades`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `gender`
@@ -44775,7 +44989,7 @@ ALTER TABLE `gender`
 -- AUTO_INCREMENT for table `gen_aves`
 --
 ALTER TABLE `gen_aves`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `grade_level`
@@ -44793,7 +45007,7 @@ ALTER TABLE `grade_revision`
 -- AUTO_INCREMENT for table `guardian_info`
 --
 ALTER TABLE `guardian_info`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `other_subjects`
@@ -44805,7 +45019,7 @@ ALTER TABLE `other_subjects`
 -- AUTO_INCREMENT for table `other_sub_grades`
 --
 ALTER TABLE `other_sub_grades`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `refbrgy`
@@ -44841,7 +45055,7 @@ ALTER TABLE `revision_reason`
 -- AUTO_INCREMENT for table `school_year`
 --
 ALTER TABLE `school_year`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `section`
@@ -44853,25 +45067,25 @@ ALTER TABLE `section`
 -- AUTO_INCREMENT for table `specialized_subjects`
 --
 ALTER TABLE `specialized_subjects`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `specialized_sub_grades`
 --
 ALTER TABLE `specialized_sub_grades`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `strand`
 --
 ALTER TABLE `strand`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `student_info`
 --
 ALTER TABLE `student_info`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `subject_teachers`

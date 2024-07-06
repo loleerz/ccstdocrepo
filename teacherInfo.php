@@ -209,7 +209,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="Teachers.php" class="nav-link">
+                <a href="Teachers.php" class="nav-link active">
                   <i class="fas fa-user-tie nav-icon"></i>
                   <p>Teachers</p>
                 </a>
@@ -275,17 +275,12 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="subjectTeacher.php" class="nav-link active">
+                <a href="subjectTeacher.php" class="nav-link ">
                   <i class="fas fa-user-tie nav-icon"></i>
                   <p>Subject Teacher</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="addcoordinator.php" class="nav-link">
-                  <i class="fas fa-user-tie nav-icon"></i>
-                  <p>Coordinator</p>
-                </a>
-              </li>
+              
             </ul>
           </li>
           <li class="nav-item">
