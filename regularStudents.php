@@ -370,6 +370,18 @@
               <div class="form-floating">
                 <select name="strand" class="form-select" id="strand">
                     <?php 
+                      $sql = "SELECT DISTINCT strand_name FROM strand";
+                      $stmt = $conn->prepare($sql);
+                      $stmt->execute();
+                      $result1 = $stmt->get_result();
+
+                      if($result->num_rows > 0)
+                      {
+                          while($strands = $result1->fetch_assoc())
+                          { ?>
+                              <option value="<?=$strands['strand_name']?>"><?=$strands['strand_name']?></option>
+                          <?php }
+                      }
                      ?>
                 </select>
                 <label for="strand">Choose Strand</label>
@@ -521,6 +533,13 @@
               var schoolYear = $(this).val();
               console.log("School year changed to: " + schoolYear);
               fetchStudents("search/searchBySchoolYearRS.php", {schoolYear: schoolYear});
+          });
+
+          $("#strand").change(function() {
+              var strand = $(this).val();
+              var schoolYear = $("#school_year").val();
+              console.log("Strand changed to: " + strand);
+              fetchStudents("search/searchBStrandRS.php", {strand: strand, schoolYear: schoolYear});
           });
         });
  

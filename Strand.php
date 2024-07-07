@@ -1108,17 +1108,6 @@
             </form>
             </div>
             <!-- col -->
-            <div class="col-4">
-              <div class="form-floating">
-                <select name="strand" class="form-select" id="strand">
-                    <?php 
-                     ?>
-                </select>
-                <label for="strand">Choose Strand</label>
-              </div>
-              <!-- form-floating -->
-            </div>
-            <!-- col -->
             <div class="col-4 justify-content-end">
               <div class="form-floating">
                 <!-- SEARCH BAR -->

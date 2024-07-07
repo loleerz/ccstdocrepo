@@ -6,30 +6,34 @@
         header("Location: index.php");
     }
     include ('connection.php');
+    
     // Function to get the school year based on start and end dates
     function getSchoolYear($startDate, $endDate) {
-        $currentDate = date('Y-m-d'); // Get current date
-        
-        if ($currentDate >= $startDate && $currentDate <= $endDate) {
-            return date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate)); // Format as "YYYY-YYYY"
-        } else {
-            return false; // Return false if not within a school year
-        }
+      $currentDate = date('Y-m-d'); // Get current date
+      
+      if ($currentDate >= $startDate && $currentDate <= $endDate) {
+          return date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate)); // Format as "YYYY-YYYY"
+      } else {
+          return false; // Return false if not within a school year
+      }
     }
 
     // Example usage:
     $startYear = 2016; // Starting year when school started accepting students
     $currentYear = date('Y'); // Current year
     $schoolYears = array();
+    $currentSchoolYear = false;
 
     for ($year = $startYear; $year <= $currentYear; $year++) {
         $startDate = $year . '-09-01'; // Start date of the school year
-        $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate))); // End date of the school year (1 year from start date)
+        $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate) - 1)); // End date of the school year (1 year from start date minus 1 day)
         
         $schoolYear = getSchoolYear($startDate, $endDate);
         if ($schoolYear) {
-            $schoolYears[] = $schoolYear;
+            $currentSchoolYear = $schoolYear;
         }
+        // Store all possible school years for the dropdown
+        $schoolYears[] = date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate));
     }
 
     //Fetching datas for outputting student infos
@@ -357,17 +361,6 @@
               </form>
             </div>
             <!-- col -->
-            <div class="col-4">
-              <div class="form-floating">
-                <select name="strand" class="form-select" id="strand">
-                    <?php 
-                     ?>
-                </select>
-                <label for="strand">Choose Strand</label>
-              </div>
-              <!-- form-floating -->
-            </div>
-            <!-- col -->
             <div class="col-4 text-end align-end">
               <div class="form-floating">
                 <!-- SEARCH BAR -->
@@ -387,10 +380,11 @@
                   <tr>
                     <th>Employee No.</th>
                     <th>Teacher Name</th>
+                    <th>School Year</th>
                     <th>Action</th>
                   </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="tbody">
                     <?php
                         while($row = $result->fetch_assoc())
                         {
@@ -404,6 +398,9 @@
                                 </td>
                                 <td>
                                     <?=$row['lname']."".$row['suffix'].", ".$row['fname']." ".$minitial?>
+                                </td>
+                                <td>
+                                    <?=$row['school_year']?>
                                 </td>
                                 <td>
                                     <a href='teacherInfo.php?employee_no=<?=$row['employeenumber']?>' class="btn btn-primary">
@@ -477,26 +474,34 @@
                 
             });
 
-            $("#search").keyup(function(){
-                var input = $(this).val();
+            function fetchStudents(url, data) 
+            {
+              $.ajax({
+                  url: url,
+                  method: "POST",
+                  data: data,
+                  success: function(response) {
+                      $("#tbody").html(response);
+                      console.log('Students fetched successfully');
+                  },
+                  error: function(xhr, status, error) {
+                      console.error("AJAX error: ", status, error);
+                  }
+              });
+          }
 
-                // if(input != "")
-                // {
-                    $.ajax({
-                        url: "searchdata.php",
-                        method: "POST",
-                        data: {input:input},
+          $("#search").keyup(function() {
+              var input = $(this).val();
+              var schoolYear = $("#school_year").val();
+              console.log(schoolYear);
+              fetchStudents("search/searchTeacher.php", {input: input, schoolYear: schoolYear});
+          });
 
-                        success:function(data){
-                            $("#tbody").html(data);
-                        }
-                    });
-                // }
-                // else
-                // {
-                //     $("#tbody").css("display", "block");
-                // }
-            });
+          $("#school_year").change(function() {
+              var schoolYear = $(this).val();
+              console.log("School year changed to: " + schoolYear);
+              fetchStudents("search/searchBSYTeacher.php", {schoolYear: schoolYear});
+          });
         });
  
     </script>

@@ -369,6 +369,9 @@
               $stmt2->bind_param("ss", $strandsui['strand_name'], $currentSchoolYear);
               $stmt2->execute();
               $result2 = $stmt2->get_result();
+              $abbre = $strandsui['abbreviation'];
+
+              $imgsrc = "a/".$abbre.".png"
             ?>
             
 
@@ -377,11 +380,11 @@
                       <div class="card card-widget widget-user">
                         <!-- Add the bg color to the header using any of the bg-* classes -->
                         <div class="widget-user-header bg-gradient-info px-0">
-                          <h3 class="widget-user-username fw-bold fs-4"><?=$strandsui['abbreviation']?></h3>
+                          <h3 class="widget-user-username fw-bold fs-4"><?=$abbre?></h3>
                           <figcaption class="" style="font-size: 9pt;"><?=$strandsui['strand_name']?></figcaption>
                         </div>
                         <div class="widget-user-image">
-                          <img class="img-circle elevation-2" src="a/stem.png" alt="User Avatar">
+                          <img class="img-circle elevation-2" src="<?=$imgsrc?>" alt="User Avatar">
                         </div>
                         <div class="card-footer">
                           <div class="row">
@@ -454,6 +457,9 @@
               $stmt2->bind_param("ss", $strandsui['strand_name'], $currentSchoolYear);
               $stmt2->execute();
               $result2 = $stmt2->get_result();
+              $abbre = $strandsui['abbreviation'];
+
+              $imgsrc = "a/".$abbre.".png"
             ?>
             
 
@@ -462,11 +468,11 @@
                       <div class="card card-widget widget-user">
                         <!-- Add the bg color to the header using any of the bg-* classes -->
                         <div class="widget-user-header bg-gradient-info px-0">
-                          <h3 class="widget-user-username fw-bold fs-4"><?=$strandsui['abbreviation']?></h3>
+                          <h3 class="widget-user-username fw-bold fs-4"><?=$abbre?></h3>
                           <figcaption class="" style="font-size: 9pt;"><?=$strandsui['strand_name']?></figcaption>
                         </div>
                         <div class="widget-user-image">
-                          <img class="img-circle elevation-2" src="a/stem.png" alt="User Avatar">
+                          <img class="img-circle elevation-2" src="<?=$imgsrc?>" alt="User Avatar">
                         </div>
                         <div class="card-footer">
                           <div class="row">

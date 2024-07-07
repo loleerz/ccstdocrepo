@@ -6,6 +6,7 @@
         header("Location: index.php");
     }
     include ('connection.php');
+    
 
     $employee_no = $_GET['employee_no'];
     //Fetching datas for outputting student infos
@@ -186,7 +187,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link active">
+                <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-users"></i>
                   <p>
                     Students
@@ -195,7 +196,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="regularStudents.php" class="nav-link active">
+                    <a href="regularStudents.php" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Regular</p>
                     </a>
