@@ -7,6 +7,35 @@
     }
     include ('connection.php');
 
+    // Function to get the school year based on start and end dates
+    function getSchoolYear($startDate, $endDate) {
+      $currentDate = date('Y-m-d'); // Get current date
+      
+      if ($currentDate >= $startDate && $currentDate <= $endDate) {
+          return date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate)); // Format as "YYYY-YYYY"
+      } else {
+          return false; // Return false if not within a school year
+      }
+  }
+
+  // Example usage:
+  $startYear = 2016; // Starting year when school started accepting students
+  $currentYear = date('Y'); // Current year
+  $schoolYears = array();
+  $currentSchoolYear = false;
+
+  for ($year = $startYear; $year <= $currentYear; $year++) {
+      $startDate = $year . '-09-01'; // Start date of the school year
+      $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate) - 1)); // End date of the school year (1 year from start date minus 1 day)
+      
+      $schoolYear = getSchoolYear($startDate, $endDate);
+      if ($schoolYear) {
+          $currentSchoolYear = $schoolYear;
+      }
+      // Store all possible school years for the dropdown
+      $schoolYears[] = date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate));
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -176,7 +205,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="Teachers.php" class="nav-link">
                   <i class="fas fa-user-tie nav-icon"></i>
                   <p>Teachers</p>
                 </a>
@@ -201,7 +230,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="generateForm137.php" class="nav-link">
                   <i class="fas fa-file nav-icon"></i>
                   <p>Form 137</p>
                 </a>
@@ -342,7 +371,7 @@
           </div>
 
           <!-- IMPORT MODAL START -->
-           <form action="importStudent.php" method="post" enctype="multipart/form-data">
+           <form action="import/importStudent.php" method="post" enctype="multipart/form-data">
               <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -351,6 +380,8 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                      <a href="downloadTemplate.php?download=Student" class="btn btn-success">Download Template</a>
+                      <br> <br> 
                       <label for="studsExcel" class="form-label">Select Excel File:</label>
                       <input type="file" name="studsExcel" id="studsExcel" required>
                     </div>
@@ -583,10 +614,10 @@
                                   </div>
                                   <div class="col-md-3">
                                       <label for="school_year" class="form-label">School Year <span class="text-danger">*</span></label>
-                                      <select name="school_year" id="school_year" class="form-select" required>
-                                          <option disabled selected>Select School year </option>
-                                          <option>2023-2024</option>
-                                          <option>2024-2025</option>
+                                      <select name="school_year" class="form-select" id="school_year" required>
+                                          <?php foreach ($schoolYears as $year) { ?>
+                                              <option selected value="<?=$year?>"><?=$year?></option>
+                                          <?php } ?>
                                       </select>
                                       <!-- HIDDEN FIELD FOR SCHOOL YEAR -->
                                       <input type="hidden" name="selected_schoolYear" id="selected_schoolYear">

@@ -124,7 +124,7 @@
           <img src="a/blankprofile.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block text-decoration-none text-secondary">Registrar</a>
+          <a href="#" class="d-block text-decoration-none text-secondary">Adviser</a>
         </div>
       </div>
 

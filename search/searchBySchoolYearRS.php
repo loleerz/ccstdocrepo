@@ -1,15 +1,15 @@
 <?php
-    include ('connection.php');
+    include __DIR__ . '/../connection.php';
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //CODE FOR SEARCH
-    if(isset($_POST['input']))
+    if(isset($_POST['schoolYear']))
     {
-        $input = $_POST['input'];
+        $schoolYear = $_POST['schoolYear'];
 
         
         // Prepare the SQL statement with a placeholder for the input
-        $sql = "SELECT * FROM student_info WHERE Lname LIKE ? OR Fname LIKE ? OR Mname LIKE ? OR strand LIKE ?";
+        $sql = "SELECT * FROM student_info WHERE school_year = ?";
 
         // Prepare the statement
         $stmt = $conn->prepare($sql);
@@ -19,8 +19,7 @@
         }
 
         // Bind parameters
-        $searchParam = "%". $input . "%"; // Add '%' wildcard to search for values starting with the input
-        $stmt->bind_param("ssss", $searchParam, $searchParam, $searchParam, $searchParam); // Assuming all columns are strings, adjust "sss" accordingly
+        $stmt->bind_param("s", $schoolYear); // Assuming all columns are strings, adjust "sss" accordingly
 
         // Execute the statement
         $stmt->execute();
@@ -47,7 +46,10 @@
                         ".$row['strand']." - ".$row['grade_level'].$row['section']."
                     </td>
                     <td>
-                        <a href='studentGrades.php' class='btn btn-primary'>
+                        ".$row['school_year']."
+                    </td>
+                    <td>
+                        <a href='studentInfo.php?student_no=".$row['student_no']."' class='btn btn-primary'>
                             View
                         </a>
                     </td>
@@ -57,7 +59,13 @@
         }
         else
         {
-            echo "<h6 style='color:red;'>No Records Found!</h6>";
+            echo "
+                <tr>
+                    <td colspan='5'>
+                        <h6 style='color:red;'>No Records Found on Academic Year ".$schoolYear."!</h6>
+                    </td>
+                </tr>
+            ";
         }
     }
 ?>

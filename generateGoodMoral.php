@@ -387,6 +387,7 @@
                     <th>Student No.</th>
                     <th>Student Name</th>
                     <th>Section</th>
+                    <th>School Year</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -408,6 +409,9 @@
                                 </td>
                                 <td>
                                     <?=$row['strand']." - ".$row['section']?>
+                                </td>
+                                <td>
+                                    <?=$row['school_year']?>
                                 </td>
                                 <td>
                                   <button class="btn btn-success generate-btn" data-student-no="<?= $row['student_no'] ?>" data-bs-toggle="modal" data-bs-target="#exampleModal">Generate</button>
@@ -506,83 +510,83 @@
 <script>
     $(document).ready(function() 
     {
-      $('.generate-btn').on('click', function() {
-          var studentNo = $(this).data('student-no');
+      // Use event delegation for dynamically created elements
+$(document).on('click', '.generate-btn', function() {
+    var studentNo = $(this).data('student-no');
 
-          // Update iframe src with the student number
-          $('#f137F').attr('src', 'goodMoralinfo.php?student_no=' + studentNo);
+    // Update iframe src with the student number
+    $('#f137F').attr('src', 'goodMoralinfo.php?student_no=' + studentNo);
 
-          // Show loading spinner
-          $('#loading').show();
+    // Show loading spinner
+    $('#loading').show();
 
-          // Show the exampleModal after updating the iframe src
-          // $('#exampleModal').modal('show');
+    // Handle load event of the iframe
+    $('#f137F').on('load', function() {
+        // Hide loading spinner
+        $('#loading').hide();
+        // Show the iframe (in this case, we don't show it yet as it will be moved to the preview modal)
+    });
 
-          // Handle load event of the iframe
-          $('#f137F').on('load', function() {
-              // Hide loading spinner
-              $('#loading').hide();
-              // Show the iframe (in this case, we don't show it yet as it will be moved to the preview modal)
-          });
+    // Handle error loading iframe
+    $('#f137F').on('error', function() {
+        // Hide loading spinner and show error message
+        $('#loading').hide();
+        alert('Failed to load the document.');
+    });
 
-          // Handle error loading iframe
-          $('#f137F').on('error', function() {
-              // Hide loading spinner and show error message
-              $('#loading').hide();
-              alert('Failed to load the document.');
-          });
-          // Show the SweetAlert2 modal
-          Swal.fire({
-              title: 'Good Moral Certificate',
-              text: 'Document Generated Successfully!',
-              icon: 'success',
-              showCancelButton: false,
-              showConfirmButton: true,
-              confirmButtonText: 'View',
-              allowOutsideClick: false,
-              allowEscapeKey: false
-          }).then((result) => {
-              if (result.isConfirmed) {
-                $('#view').click();
-              }
-          });
-      });
+    // Show the SweetAlert2 modal
+    Swal.fire({
+        title: 'Good Moral Certificate',
+        text: 'Document Generated Successfully!',
+        icon: 'success',
+        showCancelButton: false,
+        showConfirmButton: true,
+        confirmButtonText: 'View',
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $('#view').click();
+        }
+    });
+});
 
-      $('#view').on('click', function() {
-          const iframe = document.getElementById('f137F');
+$('#view').on('click', function() {
+    const iframe = document.getElementById('f137F');
 
-          // Ensure the iframe is loaded before showing the preview modal
-          if (iframe.getAttribute('src') !== '') {
-              $('#exampleModal').modal('hide'); // Hide the exampleModal
+    // Ensure the iframe is loaded before showing the preview modal
+    if (iframe.getAttribute('src') !== '') {
+        $('#exampleModal').modal('hide'); // Hide the exampleModal
 
-              // Move the iframe to the preview modal body
-              $('#previewModalBody').append(iframe);
-              $(iframe).show(); // Show the iframe
+        // Move the iframe to the preview modal body
+        $('#previewModalBody').append(iframe);
+        $(iframe).show(); // Show the iframe
 
-              // Ensure the iframe has 100% height and width
-              iframe.style.height = '100%';
-              iframe.style.width = '100%';
+        // Ensure the iframe has 100% height and width
+        iframe.style.height = '100%';
+        iframe.style.width = '100%';
 
-              console.log(iframe); // Log the iframe element for debugging
-              $('#previewModal').modal('show'); // Show the previewModal
-          } else {
-              alert('Please wait for the document to be generated.');
-          }
-      });
+        console.log(iframe); // Log the iframe element for debugging
+        $('#previewModal').modal('show'); // Show the previewModal
+    } else {
+        alert('Please wait for the document to be generated.');
+    }
+});
 
-      function printIframeContent(iframeId) {
-          const iframe = document.getElementById(iframeId);
-          const iframeWindow = iframe.contentWindow;
+function printIframeContent(iframeId) {
+    const iframe = document.getElementById(iframeId);
+    const iframeWindow = iframe.contentWindow;
 
-          // Print the content
-          iframeWindow.focus();
-          iframeWindow.print();
-      }
 
-      $('#printORsave').on('click', function() {
-          // Call the function with the id of the iframe
-          printIframeContent('f137F');
-      });
+    // Print the content
+    iframeWindow.focus();
+    iframeWindow.print();
+}
+
+$('#printORsave').on('click', function() {
+    // Call the function with the id of the iframe
+    printIframeContent('f137F');
+});
 
       $('#cancel').on('click', function() {
           // Your cancel logic here (if any)
