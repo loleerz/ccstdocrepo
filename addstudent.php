@@ -371,7 +371,7 @@
           </div>
 
           <!-- IMPORT MODAL START -->
-           <form action="importStudent.php" method="post" enctype="multipart/form-data">
+           <form action="import/importStudent.php" method="post" enctype="multipart/form-data">
               <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -380,6 +380,8 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                      <a href="downloadTemplate.php?download=Student" class="btn btn-success">Download Template</a>
+                      <br> <br> 
                       <label for="studsExcel" class="form-label">Select Excel File:</label>
                       <input type="file" name="studsExcel" id="studsExcel" required>
                     </div>

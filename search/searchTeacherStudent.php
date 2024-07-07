@@ -15,7 +15,7 @@ if (isset($_POST['input'])) {
                 FROM student_info 
                 CROSS JOIN (SELECT @row_number := 0) AS init 
                 WHERE (strand = ? AND grade_level = ? AND section = ?)
-                AND (Lname LIKE ? OR Fname LIKE ? OR Mname LIKE ? OR strand LIKE ?)";
+                AND (student_no LIKE ? OR Lname LIKE ? OR Fname LIKE ? OR Mname LIKE ? OR strand LIKE ? OR grade_level LIKE ? OR section LIKE ?)";
 
         // Prepare the statement
         $stmt = $conn->prepare($sql);
@@ -26,7 +26,7 @@ if (isset($_POST['input'])) {
 
         // Bind parameters
         $searchParam = "%" . $input . "%"; // Add '%' wildcard to search for values containing the input
-        $stmt->bind_param("sssssss", $strand, $gradeLevel, $section, $searchParam, $searchParam, $searchParam, $searchParam);
+        $stmt->bind_param("ssssssssss", $strand, $gradeLevel, $section, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam);
 
         // Execute the statement
         if ($stmt->execute()) {

@@ -1,12 +1,15 @@
 <?php
-include('connection.php');
-include('vendor/autoload.php');
+include __DIR__ . '/../connection.php';
+include __DIR__ . '/../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 // Check if the form is submitted
 if (isset($_POST['importStuds'])) 
 {
+    // Start output buffering
+    ob_start();
+
     $file = $_FILES['studsExcel']['tmp_name'];
     $spreadsheet = IOFactory::load($file);
 
@@ -22,8 +25,39 @@ if (isset($_POST['importStuds']))
         foreach ($row->getCellIterator() as $cell) 
         {
             $value = $cell->getValue();
-            $data[] = empty($value) ? "" : $value;
+            // Convert specific columns to proper date format
+            switch ($cell->getColumn()) {
+                case 'G': // Example: birthday column
+                    $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value);
+                    $data[] = $date->format('Y-m-d');
+                    break;
+                case 'Q': // Example: shs_admission_date column
+                    $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value);
+                    $data[] = $date->format('Y-m-d');
+                    break;
+                case 'AB': // Example: graduation_date column
+                    $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value);
+                    $data[] = $date->format('Y-m-d');
+                    break;
+                // Add cases for other date columns as needed
+                default:
+                    $data[] = empty($value) ? "" : $value;
+            }
         }
+
+        // Check if student_no already exists
+        $checkQuery = "SELECT student_no FROM student_info WHERE student_no = ?";
+        $stmt = $conn->prepare($checkQuery);
+        $stmt->bind_param("s", $data[1]);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            // If student_no exists, skip this iteration
+            $stmt->close();
+            continue;
+        }
+        $stmt->close();
 
         // Insert data into the database
         $sql1 = "INSERT INTO student_info (student_no, Lname, Fname, Mname, Suffix, LRN, birthday, age, Gender, contact_num, email, status, house_num, brgy_name, citymun_name, prov_name, shs_admission_date, HScompleter, HS_genave, JHScompleter, JHS_genave, graduation_date, school_name, school_address, PEPTpasser, PEPT_rating, ALSpasser, ALS_rating, OTHERSpasser, OTHERSspecify, date_examination, address_learning_center, school_year, grade_level, track, strand, section) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -108,10 +142,13 @@ if (isset($_POST['importStuds']))
         }
     }
 
-    // Display a message indicating whether all data has been imported successfully
+    // End output buffering
+    ob_end_flush();
+
+    // Redirect after processing
     if ($numSuccess == $numRows - 1) 
     {
-        header('Location: addstudent.php?status=success');
+        header('Location: ../addstudent.php?status=success');
         exit();
     } 
     else 

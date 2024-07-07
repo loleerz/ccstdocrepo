@@ -833,7 +833,25 @@
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
             $fQuarter = $row['1st'];
-            $sQuarter = $row['2nd'];
+
+            if ($row['1st'] == "")
+            {
+                $fQuarter = 0;
+            }
+            else
+            {
+                $fQuarter = $row['1st'];
+            }
+
+            if ($row['2nd'] == "")
+            {
+                $sQuarter = 0;
+            }
+            else
+            {
+                $sQuarter = $row['2nd'];
+            }
+            
             $newFinal = ($fQuarter + $sQuarter)/2;
             $nFinal = number_format($newFinal);
             $stmt->close();
@@ -862,7 +880,7 @@
                 
                 while ($row = $result->fetch_assoc()) 
                 {
-                    if($row['final'] == "INC")
+                    if(($row['final'] == "INC") || $row['final'] == "")
                     {
                         $row['final'] = 0;
                     }

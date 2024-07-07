@@ -3,13 +3,14 @@
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //CODE FOR SEARCH
-    if(isset($_POST['input']))
+    if(isset($_POST['input']) && isset($_POST['schoolYear']))
     {
         $input = $_POST['input'];
+        $schoolYear = $_POST['schoolYear'];
 
         
         // Prepare the SQL statement with a placeholder for the input
-        $sql = "SELECT * FROM student_info WHERE student_no LIKE ? OR Lname LIKE ? OR Fname LIKE ? OR Mname LIKE ? OR strand LIKE ? OR grade_level LIKE ? OR section LIKE ? OR school_year LIKE ?";
+        $sql = "SELECT * FROM student_info WHERE school_year = ? AND (student_no LIKE ? OR Lname LIKE ? OR Fname LIKE ? OR Mname LIKE ? OR strand LIKE ? OR grade_level LIKE ? OR section LIKE ? OR school_year LIKE ?)";
 
         // Prepare the statement
         $stmt = $conn->prepare($sql);
@@ -20,7 +21,7 @@
 
         // Bind parameters
         $searchParam = "%". $input . "%"; // Add '%' wildcard to search for values starting with the input
-        $stmt->bind_param("ssssssss", $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam); // Assuming all columns are strings, adjust "sss" accordingly
+        $stmt->bind_param("sssssssss", $schoolYear, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam); // Assuming all columns are strings, adjust "sss" accordingly
 
         // Execute the statement
         $stmt->execute();

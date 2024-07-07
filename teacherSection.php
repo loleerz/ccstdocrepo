@@ -239,18 +239,6 @@ $conn->close();
         <div class="card col-10">
           <div class="card-header">
             <div class="row justify-content-end">
-              <div class="col-4">
-                <div class="form-floating">
-                  <select name="school_year" class="form-select col-7" id="school_year">
-                    <?php foreach ($schoolYears as $year) { ?>
-                      <option value="<?= htmlspecialchars($year) ?>"><?= htmlspecialchars($year) ?></option>
-                    <?php } ?>
-                  </select>
-                  <label for="school_year">School Year</label>
-                </div>
-                <!-- form-floating -->
-              </div>
-              <!-- col -->
               <div class="col-4 justify-content-end">
                 <div class="form-floating">
                   <!-- SEARCH BAR -->

@@ -577,26 +577,6 @@ function printIframeContent(iframeId) {
     const iframe = document.getElementById(iframeId);
     const iframeWindow = iframe.contentWindow;
 
-    // Set the print settings (optional styling example)
-    iframeWindow.document.write(`
-        <html>
-        <head>
-            <style>
-            @page {
-                size: legal;
-                margin: 1cm;
-            }
-            body {
-                background-image: inherit;
-                background-color: inherit;
-            }
-            </style>
-        </head>
-        <body>
-            ${iframeWindow.document.body.innerHTML}
-        </body>
-        </html>
-    `);
 
     // Print the content
     iframeWindow.focus();

@@ -169,7 +169,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="adminIndex.php" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -494,29 +494,34 @@
                 
             });
 
-            $("#search").keyup(function(){
-                var input = $(this).val();
-                var schoolYear = $("#school_year").val();
-                console.log(schoolYear);
+            function fetchStudents(url, data) 
+            {
+              $.ajax({
+                  url: url,
+                  method: "POST",
+                  data: data,
+                  success: function(response) {
+                      $("#tbody").html(response);
+                      console.log('Students fetched successfully');
+                  },
+                  error: function(xhr, status, error) {
+                      console.error("AJAX error: ", status, error);
+                  }
+              });
+          }
 
-                // if(input != "")
-                // {
-                    $.ajax({
-                        url: "search/searchRegularStudent.php",
-                        method: "POST",
-                        data: {input:input},
+          $("#search").keyup(function() {
+              var input = $(this).val();
+              var schoolYear = $("#school_year").val();
+              console.log(schoolYear);
+              fetchStudents("search/searchRegularStudent.php", {input: input, schoolYear: schoolYear});
+          });
 
-                        success:function(data){
-                            $("#tbody").html(data);
-                            console.log('Nakasearch');
-                        }
-                    });
-                // }
-                // else
-                // {
-                //     $("#tbody").css("display", "block");
-                // }
-            });
+          $("#school_year").change(function() {
+              var schoolYear = $(this).val();
+              console.log("School year changed to: " + schoolYear);
+              fetchStudents("search/searchBySchoolYearRS.php", {schoolYear: schoolYear});
+          });
         });
  
     </script>
