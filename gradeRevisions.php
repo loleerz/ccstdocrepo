@@ -510,6 +510,19 @@
                     </script>
                     ";
                 }
+                elseif(isset($_GET['revisionreq_rej']))
+                {
+                    echo "
+                    <script src='plugins/sweetalert2/sweetalert2.min.js'></script>
+                    <script>
+                        Swal.fire({
+                        title: 'Rejected!',
+                        text: 'Revision request rejected!',
+                        icon: 'success'
+                      });
+                    </script>
+                    ";
+                }
             ?>
 
             <div class="card col-10">
@@ -517,17 +530,6 @@
                     <div class="row">
                         <div class="col-2">
                             <h4 class="card-title fs-4 fw-semibold">Students</h4>
-                        </div>
-                        <div class="col-4">
-                            <select name="school_year" class="form-select col-4" id="">
-                                <?php foreach ($schoolYears as $year) { ?>
-                                    <option value="<?=$year?>"><?=$year?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="col-6 text-end">
-                            <!-- SEARCH BAR -->
-                            <input type="text" name="search" id="search" class="form-control col-3" placeholder="Search" style="align: right; border: 1px solid black">
                         </div>
                     </div>
                 </div>
@@ -726,7 +728,8 @@
                                 
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <input type="submit" name="reject" class="btn btn-danger" value="Reject">
+                    <input type="button" name="reject" id="reject" class="btn btn-danger" value="Reject">
+                    <input type="submit" name="rejected" id="rejected" class="btn btn-danger d-none" value="Reject">
                     <input type="submit" name="approve" class="btn btn-success" value="Approve">
                 </div>
                 </form>
@@ -928,26 +931,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 
             });
 
-            $("#search").keyup(function(){
-                var input = $(this).val();
-
-                // if(input != "")
-                // {
-                    $.ajax({
-                        url: "searchdata.php",
-                        method: "POST",
-                        data: {input:input},
-
-                        success:function(data){
-                            $("#tbody").html(data);
-                        }
-                    });
-                // }
-                // else
-                // {
-                //     $("#tbody").css("display", "block");
-                // }
+            //REJECT BUTTON FUNCTION
+          $("#reject").click(function() {
+              Swal.fire({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, reject it!"
+            }).then((result) => {
+              if (result.isConfirmed) {
+                $("#rejected").click();
+              }
             });
+          });
         });
  
     </script>

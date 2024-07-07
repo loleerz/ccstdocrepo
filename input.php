@@ -980,9 +980,65 @@
         }
     }
  }
- elseif(isset($_POST['reject']))
+ elseif(isset($_POST['rejected']))
  {
+    $today = date("Y-m-d");
+    $rstudent_no = $_POST['rstudent_no'];
+    $grade_level = $_POST['grade_levelH'];
+    $quarter = $_POST['quarterH'];
+    $semester = $_POST['semesterH'];
+    $subject_name = $_POST['subject_nameH'];
+    $subject_category = $_POST['subject_category'];
+    $school_year = $_POST['school_yearH'];
+    $initialGrade = $_POST['initialGradeH'];
+    $revisedGrade = $_POST['revisedGradeH'];
+    $subjTeacher = $_POST['subjTeacherH'];
+    $reason = $_POST['reasonH'];
+    $status = "Rejected";
 
+    $query1 = "INSERT INTO revision_history (student_no, grade_level, quarter, sem, subject_name, subject_category, initial_grade, revised_grade, date_revision, subject_teacher, reason, status, school_year) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($query1);
+        $stmt->bind_param("sisssssisssss", $rstudent_no, $grade_level, $quarter, $semester, $subject_name, $subject_category, $initialGrade, $revisedGrade, $today, $subjTeacher, $reason, $status, $school_year);
+        if ($stmt->execute()) 
+        {
+            $stmt->close();
+            // Fetch the image details from the database
+            $sql = "SELECT * FROM grade_revision WHERE student_no = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $rstudent_no);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) 
+            {
+                $row = $result->fetch_assoc();
+
+                // Delete the image file from the local folder
+                if (file_exists($row['proof'])) {
+                    unlink($row['proof']);
+                }
+
+                // Delete the image record from the database
+                $sql = "DELETE FROM grade_revision WHERE student_no = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("s", $rstudent_no);
+
+                if ($stmt->execute()) 
+                {
+                    header('Location: gradeRevisions.php?revisionreq_rej');
+                } else {
+                    echo "Error: " . $sql . "<br>" . $conn->error;
+                }
+            } 
+            else 
+            {
+                echo "No image found with the given ID.";
+            }
+        } 
+        else 
+        {
+            echo "Error: " . $stmt->error;
+        }
  }
 
 
