@@ -8,8 +8,7 @@
     include ('connection.php');
 
     // Function to get the school year based on start and end dates
-    function getSchoolYear($startDate, $endDate) 
-    {
+    function getSchoolYear($startDate, $endDate) {
       $currentDate = date('Y-m-d'); // Get current date
       
       if ($currentDate >= $startDate && $currentDate <= $endDate) {
@@ -23,16 +22,18 @@
     $startYear = 2016; // Starting year when school started accepting students
     $currentYear = date('Y'); // Current year
     $schoolYears = array();
+    $currentSchoolYear = false;
 
-    for ($year = $startYear; $year <= $currentYear; $year++) 
-    {
+    for ($year = $startYear; $year <= $currentYear; $year++) {
         $startDate = $year . '-09-01'; // Start date of the school year
-        $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate))); // End date of the school year (1 year from start date)
+        $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate) - 1)); // End date of the school year (1 year from start date minus 1 day)
         
         $schoolYear = getSchoolYear($startDate, $endDate);
         if ($schoolYear) {
-            $schoolYears[] = $schoolYear;
+            $currentSchoolYear = $schoolYear;
         }
+        // Store all possible school years for the dropdown
+        $schoolYears[] = date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate));
     }
 ?>
 <!DOCTYPE html>
@@ -1094,10 +1095,10 @@
 
         <div class="card mt-3">
         <div class="card-header">
-          <div class="row justify-content-end">
+          <div class="row">
             <div class="col-4">
               <div class="form-floating">
-                <select name="school_year" class="form-select col-7" id="school_year">
+                <select name="school_year" class="form-select col-7" id="school_years">
                     <?php foreach ($schoolYears as $year) { ?>
                         <option selected value="<?=$year?>"><?=$year?></option>
                     <?php } ?>
@@ -1105,13 +1106,13 @@
                 <label for="school_year">School Year</label>
               </div>
               <!-- form-floating -->
-            </form>
+              </form>
             </div>
             <!-- col -->
-            <div class="col-4 justify-content-end">
+            <div class="col-4 text-end align-end">
               <div class="form-floating">
                 <!-- SEARCH BAR -->
-                <input type="text" name="search" id="search" class="form-control col-7" placeholder="Search">
+                <input type="text" name="search" id="search" class="form-control col-7" placeholder="Search" style="align: right;">
                 <label for="search">Search</label>
               </div>
               <!-- form-floating -->
@@ -1131,7 +1132,7 @@
               <th>Action</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody">
               <?php
               //Fetching datas for outputting strands
               $sql6 = "SELECT (@row_number := @row_number + 1) AS row_number, strand.* 
@@ -1236,17 +1237,33 @@
       // Add your cancel action here
     });
 
-    $("#search").keyup(function() {
-      var input = $(this).val();
-
+    function fetchStudents(url, data) 
+    {
       $.ajax({
-        url: "searchdata.php",
-        method: "POST",
-        data: { input: input },
-        success: function(data) {
-          $("#tbody").html(data);
-        }
+          url: url,
+          method: "POST",
+          data: data,
+          success: function(response) {
+              $("#tbody").html(response);
+              console.log('Students fetched successfully');
+          },
+          error: function(xhr, status, error) {
+              console.error("AJAX error: ", status, error);
+          }
       });
+    }
+
+    $("#search").keyup(function() {
+        var input = $(this).val();
+        var schoolYear = $("#school_years").val();
+        console.log(schoolYear);
+        fetchStudents("search/searchStrand.php", {input: input, schoolYear: schoolYear});
+    });
+
+    $("#school_years").change(function() {
+        var schoolYear = $(this).val();
+        console.log("School year changed to: " + schoolYear);
+        fetchStudents("search/searchBSYStrand.php", {schoolYear: schoolYear});
     });
   });
 </script>

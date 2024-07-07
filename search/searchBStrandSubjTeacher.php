@@ -3,8 +3,8 @@ include __DIR__ . '/../connection.php';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CODE FOR SEARCH
-if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
-    $input = $_POST['input'];
+if (isset($_POST['strand']) && isset($_POST['schoolYear'])) {
+    $strand = $_POST['strand'];
     $schoolYear = $_POST['schoolYear'];
 
     // Prepare the SQL statement with placeholders for the input
@@ -26,16 +26,7 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
             subject_teachers.subj_teacher = teachers_info.employeenumber 
         WHERE 
             subject_teachers.school_year = ? 
-            AND (
-                subject_teachers.subj_teacher LIKE ? 
-                OR teachers_info.lname LIKE ? 
-                OR teachers_info.fname LIKE ? 
-                OR teachers_info.mname LIKE ? 
-                OR subject_teachers.school_year LIKE ?
-                OR subject_teachers.strand LIKE ?
-                OR subject_teachers.grade_level LIKE ?
-                OR subject_teachers.section LIKE ?
-            )
+            AND subject_teachers.strand = ?
         ORDER BY 
             subject_teachers.subj_teacher;
     ";
@@ -48,8 +39,7 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
     }
 
     // Bind parameters
-    $searchParam = "%" . $input . "%"; // Add '%' wildcard to search for values containing the input
-    $stmt->bind_param("sssssssss", $schoolYear, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam);
+    $stmt->bind_param("ss", $schoolYear, $strand);
 
     // Execute the statement
     $stmt->execute();
@@ -65,24 +55,12 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
             // Output table rows with retrieved data
             echo "
             <tr>
-                <td>
-                    " . htmlspecialchars($row['row_number']) . "
-                </td>
-                <td>
-                    " . htmlspecialchars($row['lname'] . $row['suffix'] . ", " . $row['fname'] . " " . $minitial) . "
-                </td>
-                <td>
-                    " . htmlspecialchars($row['subject_name']) . "
-                </td>
-                <td>
-                    " . htmlspecialchars($row['strand'] . "-" . $row['grade_level'] . $row['section']) . "
-                </td>
-                <td>
-                    " . htmlspecialchars($row['semester']) . "
-                </td>
-                <td>
-                    " . htmlspecialchars($row['school_year']) . "
-                </td>
+                <td>" . htmlspecialchars($row['row_number']) . "</td>
+                <td>" . htmlspecialchars($row['lname'] . $row['suffix'] . ", " . $row['fname'] . " " . $minitial) . "</td>
+                <td>" . htmlspecialchars($row['subject_name']) . "</td>
+                <td>" . htmlspecialchars($row['strand'] . " - " . $row['grade_level'] . $row['section']) . "</td>
+                <td>" . htmlspecialchars($row['semester']) . "</td>
+                <td>" . htmlspecialchars($row['school_year']) . "</td>
                 <td>
                     <a href='' class='btn btn-primary'>
                         Edit
@@ -91,7 +69,13 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
             </tr>";
         }
     } else {
-        echo "<h6 style='color:red;'>No Records Found!</h6>";
+        echo "
+            <tr>
+                <td colspan='7'>
+                    <h6 style='color:red;'>No Records Found for the strand '" . htmlspecialchars($strand) . "' in Academic Year " . htmlspecialchars($schoolYear) . "!</h6>
+                </td>
+            </tr>
+        ";
     }
 }
 ?>

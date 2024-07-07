@@ -3,41 +3,30 @@ include __DIR__ . '/../connection.php';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CODE FOR SEARCH
-if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
-    $input = $_POST['input'];
+if (isset($_POST['schoolYear'])) {
     $schoolYear = $_POST['schoolYear'];
 
-    // Prepare the SQL statement with placeholders for the input
+    // Prepare the SQL statement with a placeholder for the school year
     $sql = "
         SELECT 
             (@row_number := @row_number + 1) AS row_number, 
-            subject_teachers.*, 
+            section.*, 
             teachers_info.lname, 
             teachers_info.suffix, 
             teachers_info.fname, 
             teachers_info.mname 
         FROM 
-            subject_teachers 
+            section 
         CROSS JOIN 
             (SELECT @row_number := 0) AS init 
         LEFT JOIN 
             teachers_info 
         ON 
-            subject_teachers.subj_teacher = teachers_info.employeenumber 
+            section.adviser = teachers_info.employeenumber 
         WHERE 
-            subject_teachers.school_year = ? 
-            AND (
-                subject_teachers.subj_teacher LIKE ? 
-                OR teachers_info.lname LIKE ? 
-                OR teachers_info.fname LIKE ? 
-                OR teachers_info.mname LIKE ? 
-                OR subject_teachers.school_year LIKE ?
-                OR subject_teachers.strand LIKE ?
-                OR subject_teachers.grade_level LIKE ?
-                OR subject_teachers.section LIKE ?
-            )
+            section.school_year = ?
         ORDER BY 
-            subject_teachers.subj_teacher;
+            section.adviser;
     ";
 
     // Prepare the statement
@@ -47,9 +36,8 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
         die("Error in preparing statement: " . $conn->error);
     }
 
-    // Bind parameters
-    $searchParam = "%" . $input . "%"; // Add '%' wildcard to search for values containing the input
-    $stmt->bind_param("sssssssss", $schoolYear, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam);
+    // Bind parameter
+    $stmt->bind_param("s", $schoolYear);
 
     // Execute the statement
     $stmt->execute();
@@ -69,16 +57,10 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
                     " . htmlspecialchars($row['row_number']) . "
                 </td>
                 <td>
-                    " . htmlspecialchars($row['lname'] . $row['suffix'] . ", " . $row['fname'] . " " . $minitial) . "
-                </td>
-                <td>
-                    " . htmlspecialchars($row['subject_name']) . "
-                </td>
-                <td>
                     " . htmlspecialchars($row['strand'] . "-" . $row['grade_level'] . $row['section']) . "
                 </td>
                 <td>
-                    " . htmlspecialchars($row['semester']) . "
+                    " . htmlspecialchars($row['lname'] . $row['suffix'] . ", " . $row['fname'] . " " . $minitial) . "
                 </td>
                 <td>
                     " . htmlspecialchars($row['school_year']) . "
@@ -91,7 +73,7 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
             </tr>";
         }
     } else {
-        echo "<h6 style='color:red;'>No Records Found!</h6>";
+        echo "<tr><td colspan='5'><h6 style='color:red;'>No Records Found for Academic Year " . htmlspecialchars($schoolYear) . "!</h6></td></tr>";
     }
 }
 ?>

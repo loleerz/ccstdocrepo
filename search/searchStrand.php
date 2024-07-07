@@ -11,33 +11,20 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
     $sql = "
         SELECT 
             (@row_number := @row_number + 1) AS row_number, 
-            subject_teachers.*, 
-            teachers_info.lname, 
-            teachers_info.suffix, 
-            teachers_info.fname, 
-            teachers_info.mname 
+            strand.* 
         FROM 
-            subject_teachers 
+            strand 
         CROSS JOIN 
             (SELECT @row_number := 0) AS init 
-        LEFT JOIN 
-            teachers_info 
-        ON 
-            subject_teachers.subj_teacher = teachers_info.employeenumber 
         WHERE 
-            subject_teachers.school_year = ? 
+            strand.school_year = ? 
             AND (
-                subject_teachers.subj_teacher LIKE ? 
-                OR teachers_info.lname LIKE ? 
-                OR teachers_info.fname LIKE ? 
-                OR teachers_info.mname LIKE ? 
-                OR subject_teachers.school_year LIKE ?
-                OR subject_teachers.strand LIKE ?
-                OR subject_teachers.grade_level LIKE ?
-                OR subject_teachers.section LIKE ?
+                strand.strand_name LIKE ? 
+                OR strand.track LIKE ? 
+                OR strand.school_year LIKE ? 
             )
         ORDER BY 
-            subject_teachers.subj_teacher;
+            strand.track;
     ";
 
     // Prepare the statement
@@ -49,7 +36,7 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
 
     // Bind parameters
     $searchParam = "%" . $input . "%"; // Add '%' wildcard to search for values containing the input
-    $stmt->bind_param("sssssssss", $schoolYear, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam);
+    $stmt->bind_param("ssss", $schoolYear, $searchParam, $searchParam, $searchParam);
 
     // Execute the statement
     $stmt->execute();
@@ -59,9 +46,6 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
 
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            $mname = $row['mname'];
-            $minitial = strtoupper(substr($mname, 0, 1));
-
             // Output table rows with retrieved data
             echo "
             <tr>
@@ -69,16 +53,10 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
                     " . htmlspecialchars($row['row_number']) . "
                 </td>
                 <td>
-                    " . htmlspecialchars($row['lname'] . $row['suffix'] . ", " . $row['fname'] . " " . $minitial) . "
+                    " . htmlspecialchars($row['strand_name']) . "
                 </td>
                 <td>
-                    " . htmlspecialchars($row['subject_name']) . "
-                </td>
-                <td>
-                    " . htmlspecialchars($row['strand'] . "-" . $row['grade_level'] . $row['section']) . "
-                </td>
-                <td>
-                    " . htmlspecialchars($row['semester']) . "
+                    " . htmlspecialchars($row['track']) . "
                 </td>
                 <td>
                     " . htmlspecialchars($row['school_year']) . "

@@ -11,33 +11,33 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
     $sql = "
         SELECT 
             (@row_number := @row_number + 1) AS row_number, 
-            subject_teachers.*, 
+            section.*, 
             teachers_info.lname, 
             teachers_info.suffix, 
             teachers_info.fname, 
             teachers_info.mname 
         FROM 
-            subject_teachers 
+            section 
         CROSS JOIN 
             (SELECT @row_number := 0) AS init 
         LEFT JOIN 
             teachers_info 
         ON 
-            subject_teachers.subj_teacher = teachers_info.employeenumber 
+            section.adviser = teachers_info.employeenumber 
         WHERE 
-            subject_teachers.school_year = ? 
+            section.school_year = ? 
             AND (
-                subject_teachers.subj_teacher LIKE ? 
+                section.adviser LIKE ? 
                 OR teachers_info.lname LIKE ? 
                 OR teachers_info.fname LIKE ? 
                 OR teachers_info.mname LIKE ? 
-                OR subject_teachers.school_year LIKE ?
-                OR subject_teachers.strand LIKE ?
-                OR subject_teachers.grade_level LIKE ?
-                OR subject_teachers.section LIKE ?
+                OR section.school_year LIKE ?
+                OR section.strand LIKE ?
+                OR section.grade_level LIKE ?
+                OR section.section LIKE ?
             )
         ORDER BY 
-            subject_teachers.subj_teacher;
+            section.adviser;
     ";
 
     // Prepare the statement
@@ -69,16 +69,10 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
                     " . htmlspecialchars($row['row_number']) . "
                 </td>
                 <td>
-                    " . htmlspecialchars($row['lname'] . $row['suffix'] . ", " . $row['fname'] . " " . $minitial) . "
-                </td>
-                <td>
-                    " . htmlspecialchars($row['subject_name']) . "
-                </td>
-                <td>
                     " . htmlspecialchars($row['strand'] . "-" . $row['grade_level'] . $row['section']) . "
                 </td>
                 <td>
-                    " . htmlspecialchars($row['semester']) . "
+                    " . htmlspecialchars($row['lname'] . $row['suffix'] . ", " . $row['fname'] . " " . $minitial) . "
                 </td>
                 <td>
                     " . htmlspecialchars($row['school_year']) . "

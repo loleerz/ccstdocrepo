@@ -369,6 +369,7 @@
             <div class="col-4">
               <div class="form-floating">
                 <select name="strand" class="form-select" id="strand">
+                    <option selected disabled></option>
                     <?php 
                       $sql = "SELECT DISTINCT strand_name FROM strand";
                       $stmt = $conn->prepare($sql);

@@ -376,6 +376,7 @@
                     <div class="col-4">
                         <div class="form-floating">
                             <select name="strand" class="form-select" id="strand">
+                              <option selected disabled></option>
                               <?php 
                                 $sql = "SELECT DISTINCT strand_name FROM strand";
                                 $stmt = $conn->prepare($sql);
@@ -641,27 +642,27 @@ $('#printORsave').on('click', function() {
                 console.error("AJAX error: ", status, error);
             }
         });
-    }
+      }
 
-    $("#search").keyup(function() {
-        var input = $(this).val();
-        var schoolYear = $("#school_year").val();
-        console.log(schoolYear);
-        fetchStudents("search/searchGenerateForm137.php", {input: input, schoolYear: schoolYear});
-    });
+      $("#search").keyup(function() {
+          var input = $(this).val();
+          var schoolYear = $("#school_year").val();
+          console.log(schoolYear);
+          fetchStudents("search/searchGenerateForm137.php", {input: input, schoolYear: schoolYear});
+      });
 
-    $("#school_year").change(function() {
-        var schoolYear = $(this).val();
-        console.log("School year changed to: " + schoolYear);
-        fetchStudents("search/searchBSYf137.php", {schoolYear: schoolYear});
-    });
-    $("#strand").change(function() {
-        var strand = $(this).val();
-        var schoolYear = $("#school_year").val();
-        console.log("Strand changed to: " + strand);
-        fetchStudents("search/searchBStrandf137.php", {strand: strand, schoolYear: schoolYear});
-    });
-        });
+      $("#school_year").change(function() {
+          var schoolYear = $(this).val();
+          console.log("School year changed to: " + schoolYear);
+          fetchStudents("search/searchBSYf137.php", {schoolYear: schoolYear});
+      });
+      $("#strand").change(function() {
+          var strand = $(this).val();
+          var schoolYear = $("#school_year").val();
+          console.log("Strand changed to: " + strand);
+          fetchStudents("search/searchBStrandf137.php", {strand: strand, schoolYear: schoolYear});
+      });
+          });
     </script>
     <!-- Page specific script -->
 <script>

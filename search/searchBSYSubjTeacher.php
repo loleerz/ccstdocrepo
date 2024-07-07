@@ -3,11 +3,10 @@ include __DIR__ . '/../connection.php';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CODE FOR SEARCH
-if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
-    $input = $_POST['input'];
+if (isset($_POST['schoolYear'])) {
     $schoolYear = $_POST['schoolYear'];
 
-    // Prepare the SQL statement with placeholders for the input
+    // Prepare the SQL statement with a placeholder for the input
     $sql = "
         SELECT 
             (@row_number := @row_number + 1) AS row_number, 
@@ -25,17 +24,7 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
         ON 
             subject_teachers.subj_teacher = teachers_info.employeenumber 
         WHERE 
-            subject_teachers.school_year = ? 
-            AND (
-                subject_teachers.subj_teacher LIKE ? 
-                OR teachers_info.lname LIKE ? 
-                OR teachers_info.fname LIKE ? 
-                OR teachers_info.mname LIKE ? 
-                OR subject_teachers.school_year LIKE ?
-                OR subject_teachers.strand LIKE ?
-                OR subject_teachers.grade_level LIKE ?
-                OR subject_teachers.section LIKE ?
-            )
+            subject_teachers.school_year = ?
         ORDER BY 
             subject_teachers.subj_teacher;
     ";
@@ -48,8 +37,7 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
     }
 
     // Bind parameters
-    $searchParam = "%" . $input . "%"; // Add '%' wildcard to search for values containing the input
-    $stmt->bind_param("sssssssss", $schoolYear, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam, $searchParam);
+    $stmt->bind_param("s", $schoolYear);
 
     // Execute the statement
     $stmt->execute();
@@ -91,7 +79,13 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
             </tr>";
         }
     } else {
-        echo "<h6 style='color:red;'>No Records Found!</h6>";
+        echo "
+        <tr>
+            <td colspan='7'>
+                <h6 style='color:red;'>No Records Found on Academic Year " . htmlspecialchars($schoolYear) . "!</h6>
+            </td>
+        </tr>
+        ";
     }
 }
 ?>
