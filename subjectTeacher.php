@@ -553,8 +553,20 @@
             <div class="col-4">
               <div class="form-floating">
                 <select name="strand" class="form-select" id="strand">
-                    <?php 
-                     ?>
+                  <?php 
+                    $sql = "SELECT DISTINCT strand_name FROM strand";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->execute();
+                    $result1 = $stmt->get_result();
+
+                    if($result->num_rows > 0)
+                    {
+                        while($strands = $result1->fetch_assoc())
+                        { ?>
+                            <option value="<?=$strands['strand_name']?>"><?=$strands['strand_name']?></option>
+                        <?php }
+                    }
+                  ?>
                 </select>
                 <label for="strand">Choose Strand</label>
               </div>
@@ -694,6 +706,41 @@
 <script>
         $(document).ready(function() 
         {
+          function fetchStudents(url, data) 
+          {
+            $.ajax({
+                url: url,
+                method: "POST",
+                data: data,
+                success: function(response) {
+                    $("#tbody").html(response);
+                    console.log('Students fetched successfully');
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX error: ", status, error);
+                }
+            });
+        }
+
+        $("#search").keyup(function() {
+            var input = $(this).val();
+            var schoolYear = $("#school_year").val();
+            console.log(schoolYear);
+            fetchStudents("search/searchSubjTeacher.php", {input: input, schoolYear: schoolYear});
+        });
+
+        $("#school_year").change(function() {
+            var schoolYear = $(this).val();
+            console.log("School year changed to: " + schoolYear);
+            fetchStudents("search/searchBSYf137.php", {schoolYear: schoolYear});
+        });
+        $("#strand").change(function() {
+            var strand = $(this).val();
+            var schoolYear = $("#school_year").val();
+            console.log("Strand changed to: " + strand);
+            fetchStudents("search/searchBStrandf137.php", {strand: strand, schoolYear: schoolYear});
+        });
+
             $('#cancel').on('click', function() {
                 
             });

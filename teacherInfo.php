@@ -15,7 +15,7 @@
     $stmt->bind_param("s", $employee_no);
     $stmt->execute();
     $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
+    $teacher = $result->fetch_assoc();
 
     //Fetching datas for outputting guardian infos
     $sql1 = "SELECT * FROM guardian_info WHERE student_employee_no = ?";
@@ -25,7 +25,7 @@
     $result1 = $stmt1->get_result();
     $row1 = $result1->fetch_assoc();
     
-    $mname = $row['mname'];
+    $mname = $teacher['mname'];
     $minitial = strtoupper(substr($mname, 0, 1)); 
 ?>
 
@@ -383,14 +383,14 @@
                                     
                                     <img class="img-account-profile rounded-circle mb-2" src="a/blankprofile.jpg" style="height:70pt; width:70pt;" alt="">
                                     <span class="ms-2">
-                                    <div class="fs-4 text-start fw-semibold"><?=$row['lname']."".$row['suffix'].", ".$row['fname']." ".$minitial."."?></div>
-                                    <figcaption class="fw-bold"><?=$row['employeenumber']?></figcaption>
+                                    <div class="fs-4 text-start fw-semibold"><?=$teacher['lname']."".$teacher['suffix'].", ".$teacher['fname']." ".$minitial."."?></div>
+                                    <figcaption class="fw-bold"><?=$teacher['employeenumber']?></figcaption>
                                     </span>
                                 </div>
                                 <div class="card-body text-start text-primary">
                                     <div class="col">
                                         <span><i class="bi bi-caret-right-fill me-2"></i></span>
-                                        <strong class="text-uppercase fs-6"><?=" ACADEMIC YEAR ".$row['school_year']?></strong>
+                                        <strong class="text-uppercase fs-6"><?=" ACADEMIC YEAR ".$teacher['school_year']?></strong>
                                     </div>
                                 </div>
                             </div>
@@ -405,20 +405,20 @@
                                         <div class="row mb-3">
                                             <div class="col-md-3">
                                                 <label class="small mb-1" for="inputFirstName">First Name</label>
-                                                <input class="form-control" id="inputFirstName" type="text" value="<?=$row['fname']?>" disabled>
+                                                <input class="form-control" id="inputFirstName" type="text" value="<?=$teacher['fname']?>" disabled>
                                             </div>
                                             <!-- Form Group (last name)-->
                                             <div class="col-md-3">
                                                 <label class="small mb-1" for="inputLastName">Middle Name</label>
-                                                <input class="form-control" id="inputLastName" type="text" value="<?=$row['mname']?>" disabled>
+                                                <input class="form-control" id="inputLastName" type="text" value="<?=$teacher['mname']?>" disabled>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="small mb-1" for="inputLastName">Last Name</label>
-                                                <input class="form-control" id="inputLastName" type="text" value="<?=$row['lname']?>" disabled>
+                                                <input class="form-control" id="inputLastName" type="text" value="<?=$teacher['lname']?>" disabled>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="small mb-1" for="inputLastName">Suffix</label>
-                                                <input class="form-control" id="inputLastName" type="text" value="<?=$row['suffix']?>" disabled>
+                                                <input class="form-control" id="inputLastName" type="text" value="<?=$teacher['suffix']?>" disabled>
                                             </div>
                                         </div>
                                         <!-- Form Row-->
@@ -426,16 +426,16 @@
                                             <!-- Form Group (first name)-->
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="inputFirstName">Birthday</label>
-                                                <input class="form-control" id="inputFirstName" type="date" value="<?=$row['bdate']?>" disabled>
+                                                <input class="form-control" id="inputFirstName" type="date" value="<?=$teacher['bdate']?>" disabled>
                                             </div>
                                             <!-- Form Group (last name)-->
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="inputLastName">Age</label>
-                                                <input class="form-control" id="inputLastName" type="number" value="<?=$row['age']?>" disabled>
+                                                <input class="form-control" id="inputLastName" type="number" value="<?=$teacher['age']?>" disabled>
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="inputLastName">Sex</label>
-                                                <input class="form-control" id="inputLastName" type="text" value="<?=$row['sex']?>" disabled>
+                                                <input class="form-control" id="inputLastName" type="text" value="<?=$teacher['sex']?>" disabled>
                                             </div>
                                         </div>
                                         <!-- Form Row        -->
@@ -443,18 +443,18 @@
                                             <!-- Form Group (organization name)-->
                                             <div class="col-md-6">
                                                 <label class="small mb-1" for="inputOrgName">Email</label>
-                                                <input class="form-control" id="inputOrgName" type="email" value="<?=$row['email']?>" disabled>
+                                                <input class="form-control" id="inputOrgName" type="email" value="<?=$teacher['email']?>" disabled>
                                             </div>
                                             <!-- Form Group (location)-->
                                             <div class="col-md-6">
                                                 <label class="small mb-1" for="inputLocation">Contact Number</label>
-                                                <input class="form-control" id="inputLocation" type="number" value="<?=$row['contactnumber']?>" disabled>
+                                                <input class="form-control" id="inputLocation" type="number" value="<?=$teacher['contactnumber']?>" disabled>
                                             </div>
                                         </div>
                                         <!-- Form Group (email address)-->
                                         <div class="mb-3">
                                             <label class="small mb-1" for="inputEmailAddress">Address</label>
-                                            <input class="form-control" id="inputEmailAddress" type="text" placeholder="Enter your email address" value="<?=$row['street']." ".$row['barangay'].", ".$row['city'].", ".$row['province']?>" disabled>
+                                            <input class="form-control" id="inputEmailAddress" type="text" placeholder="Enter your email address" value="<?=$teacher['street']." ".$teacher['barangay'].", ".$teacher['city'].", ".$teacher['province']?>" disabled>
                                         </div>
                                         <div class="d-flex justify-content-end">
                                             <button class="btn btn-primary" type="button">Update</button>
@@ -474,169 +474,255 @@
                   <!-- CONTENT -->
                   <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
                     <div class="row">
-                            <div class="col-xl-5">
-                                <!-- Profile picture card-->
-                                <div class="card mb-3 mb-xl-0">
-                                    <div class="card-header d-flex align-items-center">
-                                        
-                                        <img class="img-account-profile rounded-circle mb-2" src="a/blankprofile.jpg" style="height:70pt; width:70pt;" alt="">
-                                        <span class="ms-2">
-                                        <div class="fs-4 text-start fw-semibold"><?=$row['lname']."".$row['suffix'].", ".$row['fname']." ".$minitial."."?></div>
-                                        <figcaption class="fw-bold"><?=$row['employeenumber']?></figcaption>
-                                        </span>
-                                    </div>
-                                    <div class="card-body text-start text-primary">
-                                        <div class="col">
-                                            <span><i class="bi bi-caret-right-fill me-2"></i></span>
-                                            <strong class="text-uppercase fs-6"><?=" ACADEMIC YEAR ".$row['school_year']?></strong>
+                        <div class="col-xl-5">
+                          <!-- Profile picture card-->
+                          <div class="card mb-3 mb-xl-0">
+                              <div class="card-header d-flex align-items-center">
+                                  
+                                  <img class="img-account-profile rounded-circle mb-2" src="a/blankprofile.jpg" style="height:70pt; width:70pt;" alt="">
+                                  <span class="ms-2">
+                                  <div class="fs-4 text-start fw-semibold"><?=$teacher['lname']."".$teacher['suffix'].", ".$teacher['fname']." ".$minitial."."?></div>
+                                  <figcaption class="fw-bold"><?=$teacher['employeenumber']?></figcaption>
+                                  </span>
+                              </div>
+                              <div class="card-body text-start text-primary">
+                                  <div class="col">
+                                      <span><i class="bi bi-caret-right-fill me-2"></i></span>
+                                      <strong class="text-uppercase fs-6"><?=" ACADEMIC YEAR ".$teacher['school_year']?></strong>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-7">
+                            <!-- Account details card-->
+                            <div class="card mb-4">
+                                <div class="card-header fw-bold">Guardian Information</div>
+                                <div class="card-body">
+                                    <form action="update.php" method="post">
+                                        <!-- Form Group (username)-->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="inputFirstName">Guardian Name</label>
+                                                <input class="form-control" id="inputFirstName" type="text" value="<?=$row1['g_name']?>" disabled>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-7">
-                                <!-- Account details card-->
-                                <div class="card mb-4">
-                                    <div class="card-header fw-bold">Guardian Information</div>
-                                    <div class="card-body">
-                                        <form action="update.php" method="post">
-                                            <!-- Form Group (username)-->
-                                            <div class="row mb-3">
-                                                <div class="col-md-6">
-                                                    <label class="small mb-1" for="inputFirstName">Guardian Name</label>
-                                                    <input class="form-control" id="inputFirstName" type="text" value="<?=$row1['g_name']?>" disabled>
-                                                </div>
+                                        <!-- Form Row        -->
+                                        <div class="row gx-3 mb-3">
+                                            <!-- Form Group (location)-->
+                                            <div class="col-md-3">
+                                                <label class="small mb-1" for="inputLocation">Contact Number</label>
+                                                <input class="form-control" id="inputLocation" type="number" value="<?=$row1['g_contact_no']?>" disabled>
                                             </div>
-                                            <!-- Form Row        -->
-                                            <div class="row gx-3 mb-3">
-                                                <!-- Form Group (location)-->
-                                                <div class="col-md-3">
-                                                    <label class="small mb-1" for="inputLocation">Contact Number</label>
-                                                    <input class="form-control" id="inputLocation" type="number" value="<?=$row1['g_contact_no']?>" disabled>
-                                                </div>
-                                            </div>
-                                            <!-- Form Group (email address)-->
-                                            <div class="mb-3">
-                                                <label class="small mb-1" for="inputEmailAddress">Address</label>
-                                                <input class="form-control" id="inputEmailAddress" type="text" placeholder="Enter your email address" value="<?=$row1['g_house_num']." ".$row1['g_brgyname'].", ".$row1['g_citymunname'].", ".$row1['g_provname']?>" disabled>
-                                            </div>
-                                            <div class="d-flex justify-content-end">
-                                                <button class="btn btn-primary" type="button">Update</button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                        <!-- Form Group (email address)-->
+                                        <div class="mb-3">
+                                            <label class="small mb-1" for="inputEmailAddress">Address</label>
+                                            <input class="form-control" id="inputEmailAddress" type="text" placeholder="Enter your email address" value="<?=$row1['g_house_num']." ".$row1['g_brgyname'].", ".$row1['g_citymunname'].", ".$row1['g_provname']?>" disabled>
+                                        </div>
+                                        <div class="d-flex justify-content-end">
+                                            <button class="btn btn-primary" type="button">Update</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+                  </div>
                   <!-- CONTENT -->
                   <!-- GUARDIAN INFO -->
 
                   <!-- ADVISORIES RECORDS -->
                   <!-- CONTENT -->
                   <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
+                    
                     <div class="row">
                         <div class="col-xl-5">
-                            <!-- Profile picture card-->
-                                <div class="card mb-3 mb-xl-0">
-                                    <div class="card-header d-flex align-items-center">
-                                        
-                                        <img class="img-account-profile rounded-circle mb-2" src="a/blankprofile.jpg" style="height:70pt; width:70pt;" alt="">
-                                        <span class="ms-2">
-                                        <div class="fs-4 text-start fw-semibold"><?=$row['lname']."".$row['suffix'].", ".$row['fname']." ".$minitial."."?></div>
-                                        <figcaption class="fw-bold"><?=$row['employeenumber']?></figcaption>
-                                        </span>
-                                    </div>
-                                    <div class="card-body text-start text-primary">
-                                        <div class="col">
-                                            <span><i class="bi bi-caret-right-fill me-2"></i></span>
-                                            <strong class="text-uppercase fs-6"><?=" ACADEMIC YEAR ".$row['school_year']?></strong>
-                                        </div>
-                                    </div>
-                                </div>
-                            <div class="col-xl-7">
-                                <!-- Account details card-->
-                                <div class="card mb-4">
-                                    <div class="card-header fw-bold">Advisories Records</div>
-                                    <div class="card-body">
-                                    <table cellspacing="0" class="table table-sm table-bordered table-striped text-center align-middle">
-                                    <thead>
-                                        <tr>
-                                            <th>Strand</th>
-                                            <th>Grade Level</th>
-                                            <th>Section</th>
-                                            <th>School Year</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- CORE SUBJECTS -->
-                                        <?php
-                                        $query = "SELECT * FROM section WHERE adviser = ?";
-                                        $stmt = $conn->prepare($query);
-                                        $stmt->bind_param("s", $employee_no);
-                                        $stmt->execute();
-                                        $result = $stmt->get_result();
+                          <!-- Profile picture card-->
+                          <div class="card mb-3 mb-xl-0">
+                              <div class="card-header d-flex align-items-center">
+                                  
+                                  <img class="img-account-profile rounded-circle mb-2" src="a/blankprofile.jpg" style="height:70pt; width:70pt;" alt="">
+                                  <span class="ms-2">
+                                  <div class="fs-4 text-start fw-semibold"><?=$teacher['lname']."".$teacher['suffix'].", ".$teacher['fname']." ".$minitial."."?></div>
+                                  <figcaption class="fw-bold"><?=$teacher['employeenumber']?></figcaption>
+                                  </span>
+                              </div>
+                              <div class="card-body text-start text-primary">
+                                  <div class="col">
+                                      <span><i class="bi bi-caret-right-fill me-2"></i></span>
+                                      <strong class="text-uppercase fs-6"><?=" ACADEMIC YEAR ".$teacher['school_year']?></strong>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-7">
+                            <!-- Account details card-->
+                            <div class="card mb-4">
+                                <div class="card-header fw-bold">Advisories</div>
+                                <div class="card-body">
+                                    <form action="update.php" method="post">
+                                        <table cellspacing="0" class="table table-sm table-bordered table-striped text-center align-middle">
+                                          <thead>
+                                              <tr>
+                                                  <th>Strand</th>
+                                                  <th>Grade Level</th>
+                                                  <th>Section</th>
+                                                  <th>School Year</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                            <!-- ADVISORIES -->
+                                            <?php
+                                            $query = "SELECT * FROM section WHERE adviser = ?";
+                                            $stmt = $conn->prepare($query);
+                                            $stmt->bind_param("s", $employee_no);
+                                            $stmt->execute();
+                                            $result = $stmt->get_result();
 
-                                        if($result->num_rows > 0)
-                                        {
-                                            while($row = $result->fetch_assoc())
-                                            { ?>
-                                            
-                                                <tr>
-                                                    <td>
-                                                        <p class="text-danger"><?=$row['strand']?></p>
-                                                    </td>
-                                                    <td>
-                                                        <p class="text-danger"><?=$row['grade_level']?></p>
-                                                    </td>
-                                                    <td>
-                                                        <p class="text-danger"><?=$row['section']?></p>
-                                                    </td>
-                                                    <td>
-                                                        <p class="text-danger"><?=$row['school_year']?></p>
-                                                    </td>
-                                                </tr>
+                                            if($result->num_rows > 0)
+                                            {
+                                                while($row = $result->fetch_assoc())
+                                                { ?>
                                                 
-                                        <?php }
-                                        }
-                                        else
-                                        {?>
-                                            
-                                                <tr>
-                                                    <td>
-                                                        Student has no Core Subject to take!
-                                                    </td>
-                                                </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <p><?=$row['strand']?></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><?=$row['grade_level']?></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><?=$row['section']?></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><?=$row['school_year']?></p>
+                                                        </td>
+                                                    </tr>
+                                                    
+                                            <?php }
+                                            }
+                                            else
+                                            {?>
                                                 
-                                        <?php  }
-                                        ?>
-                                            <button class="btn btn-primary mt-2" type="button">Save changes</button>
-                                        </form>
-                                    </div>
+                                                  <tr>
+                                                      <td>
+                                                          This teacher has no advisory class!
+                                                      </td>
+                                                  </tr>
+                                                    
+                                            <?php  }
+                                            ?>
+                                          </tbody>
+                                        </table>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                  </div>
                   <!-- CONTENT -->
                   <!-- SCHOLASTIC RECORDS -->
 
 
-                  <!-- GRADES -->
+                  <!-- SUBJECTS -->
                   <!-- CONTENT -->
                   <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
-                    <div class="row">
-                        <div class="col">
-
-
-
-
-                        </div>
-                        <!-- col -->
-                    </div>
                     
+                  <div class="row">
+                        <div class="col-xl-5">
+                          <!-- Profile picture card-->
+                          <div class="card mb-3 mb-xl-0">
+                              <div class="card-header d-flex align-items-center">
+                                  
+                                  <img class="img-account-profile rounded-circle mb-2" src="a/blankprofile.jpg" style="height:70pt; width:70pt;" alt="">
+                                  <span class="ms-2">
+                                  <div class="fs-4 text-start fw-semibold"><?=$teacher['lname']."".$teacher['suffix'].", ".$teacher['fname']." ".$minitial."."?></div>
+                                  <figcaption class="fw-bold"><?=$teacher['employeenumber']?></figcaption>
+                                  </span>
+                              </div>
+                              <div class="card-body text-start text-primary">
+                                  <div class="col">
+                                      <span><i class="bi bi-caret-right-fill me-2"></i></span>
+                                      <strong class="text-uppercase fs-6"><?=" ACADEMIC YEAR ".$teacher['school_year']?></strong>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="col-xl-7">
+                            <!-- Account details card-->
+                            <div class="card mb-4">
+                                <div class="card-header fw-bold">Advisories</div>
+                                <div class="card-body">
+                                    <form action="update.php" method="post">
+                                        <table cellspacing="0" class="table table-sm table-bordered table-striped text-center align-middle">
+                                          <thead>
+                                              <tr>
+                                                  <th>Strand</th>
+                                                  <th>Grade Level</th>
+                                                  <th>Section</th>
+                                                  <th>School Year</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                            <!-- ADVISORIES -->
+                                            <?php
+                                            $query = "SELECT * FROM subject_teachers WHERE subj_teacher = ?";
+                                            $stmt = $conn->prepare($query);
+                                            $stmt->bind_param("s", $employee_no);
+                                            $stmt->execute();
+                                            $result = $stmt->get_result();
+
+                                            if($result->num_rows > 0)
+                                            {
+                                                while($row = $result->fetch_assoc())
+                                                { ?>
+                                                
+                                                    <tr>
+                                                        <td>
+                                                            <p><?=$row['subject_name']?></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><?=$row['strand']?></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><?=$row['grade_level']?></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><?=$row['section']?></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><?=$row['semester']?></p>
+                                                        </td>
+                                                        <td>
+                                                            <p><?=$row['school_year']?></p>
+                                                        </td>
+                                                    </tr>
+                                                    
+                                            <?php }
+                                            }
+                                            else
+                                            {?>
+                                                
+                                                  <tr>
+                                                      <td>
+                                                          This teacher has no advisory class!
+                                                      </td>
+                                                  </tr>
+                                                    
+                                            <?php  }
+                                            ?>
+                                          </tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                   </div>
                 <!-- CONTENT -->
-                <!-- GRADES -->
+                <!-- SUBJECTS -->
                 </div>
               </div>
               <!-- /.card -->
