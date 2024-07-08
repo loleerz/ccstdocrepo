@@ -8,29 +8,32 @@
     include ('connection.php');
     // Function to get the school year based on start and end dates
     function getSchoolYear($startDate, $endDate) {
-        $currentDate = date('Y-m-d'); // Get current date
-        
-        if ($currentDate >= $startDate && $currentDate <= $endDate) {
-            return date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate)); // Format as "YYYY-YYYY"
-        } else {
-            return false; // Return false if not within a school year
-        }
-    }
+      $currentDate = date('Y-m-d'); // Get current date
+      
+      if ($currentDate >= $startDate && $currentDate <= $endDate) {
+          return date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate)); // Format as "YYYY-YYYY"
+      } else {
+          return false; // Return false if not within a school year
+      }
+  }
 
-    // Example usage:
-    $startYear = 2016; // Starting year when school started accepting students
-    $currentYear = date('Y'); // Current year
-    $schoolYears = array();
+  // Example usage:
+  $startYear = 2016; // Starting year when school started accepting students
+  $currentYear = date('Y'); // Current year
+  $schoolYears = array();
+  $currentSchoolYear = false;
 
-    for ($year = $startYear; $year <= $currentYear; $year++) {
-        $startDate = $year . '-09-01'; // Start date of the school year
-        $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate))); // End date of the school year (1 year from start date)
-        
-        $schoolYear = getSchoolYear($startDate, $endDate);
-        if ($schoolYear) {
-            $schoolYears[] = $schoolYear;
-        }
-    }
+  for ($year = $startYear; $year <= $currentYear; $year++) {
+      $startDate = $year . '-09-01'; // Start date of the school year
+      $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate) - 1)); // End date of the school year (1 year from start date minus 1 day)
+      
+      $schoolYear = getSchoolYear($startDate, $endDate);
+      if ($schoolYear) {
+          $currentSchoolYear = $schoolYear;
+      }
+      // Store all possible school years for the dropdown
+      $schoolYears[] = date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate));
+  }
 
     //Fetching datas for outputting student infos
     $sql = "SELECT * FROM student_info";
@@ -93,7 +96,7 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      
+     
     </ul>
 
     <!-- Right navbar links -->
@@ -117,7 +120,7 @@
           <img src="a/blankprofile.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block text-decoration-none text-secondary">Registrar</a>
+          <a href="adminIndex.php" class="d-block text-decoration-none text-secondary">Registrar</a>
         </div>
       </div>
 
@@ -239,6 +242,7 @@
                   <p>Subject Teacher</p>
                 </a>
               </li>
+              
             </ul>
           </li>
           <li class="nav-item">
@@ -304,24 +308,57 @@
         <div class="row">
           <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-2">
-                            <h3 class="card-title fs-4 fw-semibold">Students</h3>
-                        </div>
-                        <div class="col-4">
-                            <select name="school_year" class="form-select col-4" id="">
-                                <?php foreach ($schoolYears as $year) { ?>
-                                    <option value="<?=$year?>"><?=$year?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div class="col-6 text-end">
-                            <!-- SEARCH BAR -->
-                            <input type="text" name="search" id="search" class="form-control col-3" placeholder="Search" style="align: right; border: 1px solid black">
-                        </div>
-                    </div>
-                </div>
+            <div class="card-header">
+          <div class="row">
+            <div class="col-4">
+              <div class="form-floating">
+                <select name="school_year" class="form-select col-7" id="school_year">
+                    <?php foreach ($schoolYears as $year) { ?>
+                        <option selected value="<?=$year?>"><?=$year?></option>
+                    <?php } ?>
+                </select>
+                <label for="school_year">School Year</label>
+              </div>
+              <!-- form-floating -->
+              </form>
+            </div>
+            <!-- col -->
+            <div class="col-4">
+              <div class="form-floating">
+                <select name="strand" class="form-select" id="strand">
+                    <option selected disabled></option>
+                    <?php 
+                      $sql = "SELECT DISTINCT strand_name FROM strand";
+                      $stmt = $conn->prepare($sql);
+                      $stmt->execute();
+                      $result1 = $stmt->get_result();
+
+                      if($result->num_rows > 0)
+                      {
+                          while($strands = $result1->fetch_assoc())
+                          { ?>
+                              <option value="<?=$strands['strand_name']?>"><?=$strands['strand_name']?></option>
+                          <?php }
+                      }
+                     ?>
+                </select>
+                <label for="strand">Choose Strand</label>
+              </div>
+              <!-- form-floating -->
+            </div>
+            <!-- col -->
+            <div class="col-4 text-end align-end">
+              <div class="form-floating">
+                <!-- SEARCH BAR -->
+                <input type="text" name="search" id="search" class="form-control col-7" placeholder="Search" style="align: right;">
+                <label for="search">Search</label>
+              </div>
+              <!-- form-floating -->
+            </div>
+            <!-- col -->
+          </div>
+          <!-- row -->
+        </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="example2" class="table table-bordered table-hover table-striped">
@@ -330,36 +367,43 @@
                     <th>Student No.</th>
                     <th>Student Name</th>
                     <th>Section</th>
+                    <th>School Year</th>
                     <th>Action</th>
                   </tr>
                   </thead>
-                  <tbody>
-                    <?php
-                        while($row = $result->fetch_assoc())
-                        {
-                            $mname = $row['Mname'];
-                            $minitial = strtoupper(substr($mname, 0, 1)); ?>
-
-                            
-                            <tr>
-                                <td>
-                                    <?=$row['student_no']?>
-                                </td>
-                                <td>
-                                    <?=$row['Lname']."".$row['Suffix'].", ".$row['Fname']." ".$minitial?>
-                                </td>
-                                <td>
-                                    <?=$row['strand']." - ".$row['grade_level'].$row['section']?>
-                                </td>
-                                <td>
-                                    <a href='studentInfo.php?student_no=<?=$row['student_no']?>' class="btn btn-primary">
-                                        View
-                                    </a>
-                                </td>
-                            </tr>
-                     <?php
-                        }
-                    ?>
+                  <tbody id="tbody">
+                      <?php
+                          while($row = $result->fetch_assoc())
+                          {
+                              $mname = $row['Mname'];
+                              $minitial = strtoupper(substr($mname, 0, 1)); ?>
+                              
+                              <tr>
+                                  <td>
+                                      <?=$row['student_no']?>
+                                      <input type="hidden" name="tagongStudent_no" class="student_num" value="<?=$row['student_no']?>">
+                                  </td>
+                                  <td>
+                                      <?=$row['Lname']."".$row['Suffix'].", ".$row['Fname']." ".$minitial?>
+                                  </td>
+                                  <td>
+                                      <?=$row['strand']." - ".$row['grade_level'].$row['section']?>
+                                  </td>
+                                  <td>
+                                      <?=$row['school_year']?>
+                                  </td>
+                                  <td>
+                                      <a href='studentInfo.php?student_no=<?=$row['student_no']?>' class="btn btn-primary">
+                                          View
+                                      </a>
+                                      <a class="btn btn-danger delete-button">
+                                          Delete
+                                      </a>
+                                  </td>
+                              </tr>
+                      <?php
+                          }
+                      ?>
                   </tbody>
                 </table>
               </div>
@@ -403,6 +447,8 @@
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="plugins/sweetalert2/sweetalert2.all.min.js"></script>
 <!-- DataTables  & Plugins -->
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -423,26 +469,61 @@
                 
             });
 
-            $("#search").keyup(function(){
-                var input = $(this).val();
-
-                // if(input != "")
-                // {
-                    $.ajax({
-                        url: "searchdata.php",
-                        method: "POST",
-                        data: {input:input},
-
-                        success:function(data){
-                            $("#tbody").html(data);
-                        }
-                    });
-                // }
-                // else
-                // {
-                //     $("#tbody").css("display", "block");
-                // }
+            $(".delete-button").on('click', function() {
+                var student_no = $(this).closest('tr').find('.student_num').val(); // Get the student number from the hidden input within the same row
+                console.log(student_no);
+                console.log('delete clicked!');
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "delete.php?student_no=" + encodeURIComponent(student_no);
+                    }
+                });
             });
+
+
+            function fetchStudents(url, data) 
+            {
+              $.ajax({
+                  url: url,
+                  method: "POST",
+                  data: data,
+                  success: function(response) {
+                      $("#tbody").html(response);
+                      console.log('Students fetched successfully');
+                  },
+                  error: function(xhr, status, error) {
+                      console.error("AJAX error: ", status, error);
+                  }
+              });
+          }
+
+          $("#search").keyup(function() {
+              var input = $(this).val();
+              var schoolYear = $("#school_year").val();
+              console.log(schoolYear);
+              fetchStudents("search/searchRegularStudent.php", {input: input, schoolYear: schoolYear});
+          });
+
+          $("#school_year").change(function() {
+              var schoolYear = $(this).val();
+              console.log("School year changed to: " + schoolYear);
+              fetchStudents("search/searchBySchoolYearRS.php", {schoolYear: schoolYear});
+          });
+
+          $("#strand").change(function() {
+              var strand = $(this).val();
+              var schoolYear = $("#school_year").val();
+              console.log("Strand changed to: " + strand);
+              fetchStudents("search/searchBStrandRS.php", {strand: strand, schoolYear: schoolYear});
+          });
         });
  
     </script>
