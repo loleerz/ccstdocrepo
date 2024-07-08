@@ -686,7 +686,7 @@
                                                 <input type="text" class="form-control" id="school_address" name="school_address" placeholder="<?=$row['school_address']?>" disabled>
                                             </div>
                                         </div>
-                                            <button class="btn btn-primary mt-2" type="button">Save changes</button>
+                                            <button class="btn btn-primary mt-2" type="button">Update</button>
                                         </form>
                                     </div>
                                 </div>
@@ -3861,6 +3861,9 @@
             </div>
           </div>
 
+          <!-- HIDDEN INPUT FOR STUDENT_NO -->
+           <input type="hidden" name="student_num" id="student_num" value="<?=$student_no?>">
+
           <div>
             <br> <br> <br> <br><br><br><br><br> <br>
           </div>
@@ -3957,10 +3960,18 @@
             </div>\
         ";
 
-        var newButton = "<input type='submit' value='Update Profile' name='updateProfile' class='btn btn-primary'>";
+        var newButton = " <button class = 'btn btn-secondary' id='cancelID' >Cancel</button>&nbsp;&nbsp;<input type='submit' value='Update Profile' name='updateProfile' class='btn btn-primary'>";
+        var studNum = $('#student_num').val();
 
         $('#updatePdiv').html(newButton);
         $('#addressDiv').html(newAddress);
+        // jQuery function to handle the cancel button click event
+        $('#cancelID').click(function() {
+            // Perform any necessary actions when the cancel button is clicked
+            console.log("Cancel button clicked");
+            window.location.href = "studentInfo.php?student_no=" + studNum;
+            // For example, you might want to reset a form, hide a modal, or redirect the user
+        });
 
         // Load address data from JSON file
         $.getJSON('refaddress.json', function(data) {
