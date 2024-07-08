@@ -96,49 +96,11 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>
+     
     </ul>
 
     <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <!-- Navbar Search -->
-      <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-          <i class="fas fa-search"></i>
-        </a>
-        <div class="navbar-search-block">
-          <form class="form-inline">
-            <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-              <div class="input-group-append">
-                <button class="btn btn-navbar" type="submit">
-                  <i class="fas fa-search"></i>
-                </button>
-                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </li>
-
-      <li cSlass="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-          <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
-    </ul>
+    
   </nav>
   <!-- /.navbar -->
 
@@ -158,7 +120,7 @@
           <img src="a/blankprofile.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block text-decoration-none text-secondary">Registrar</a>
+          <a href="adminIndex.php" class="d-block text-decoration-none text-secondary">Registrar</a>
         </div>
       </div>
 
@@ -209,7 +171,7 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="Teachers.php" class="nav-link">
                   <i class="fas fa-user-tie nav-icon"></i>
                   <p>Teachers</p>
                 </a>
@@ -280,12 +242,7 @@
                   <p>Subject Teacher</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="addcoordinator.php" class="nav-link">
-                  <i class="fas fa-user-tie nav-icon"></i>
-                  <p>Coordinator</p>
-                </a>
-              </li>
+              
             </ul>
           </li>
           <li class="nav-item">
@@ -415,35 +372,38 @@
                   </tr>
                   </thead>
                   <tbody id="tbody">
-                    <?php
-                        while($row = $result->fetch_assoc())
-                        {
-                            $mname = $row['Mname'];
-                            $minitial = strtoupper(substr($mname, 0, 1)); ?>
-
-                            
-                            <tr>
-                                <td>
-                                    <?=$row['student_no']?>
-                                </td>
-                                <td>
-                                    <?=$row['Lname']."".$row['Suffix'].", ".$row['Fname']." ".$minitial?>
-                                </td>
-                                <td>
-                                    <?=$row['strand']." - ".$row['grade_level'].$row['section']?>
-                                </td>
-                                <td>
-                                    <?=$row['school_year']?>
-                                </td>
-                                <td>
-                                    <a href='studentInfo.php?student_no=<?=$row['student_no']?>' class="btn btn-primary">
-                                        View
-                                    </a>
-                                </td>
-                            </tr>
-                     <?php
-                        }
-                    ?>
+                      <?php
+                          while($row = $result->fetch_assoc())
+                          {
+                              $mname = $row['Mname'];
+                              $minitial = strtoupper(substr($mname, 0, 1)); ?>
+                              
+                              <tr>
+                                  <td>
+                                      <?=$row['student_no']?>
+                                      <input type="hidden" name="tagongStudent_no" class="student_num" value="<?=$row['student_no']?>">
+                                  </td>
+                                  <td>
+                                      <?=$row['Lname']."".$row['Suffix'].", ".$row['Fname']." ".$minitial?>
+                                  </td>
+                                  <td>
+                                      <?=$row['strand']." - ".$row['grade_level'].$row['section']?>
+                                  </td>
+                                  <td>
+                                      <?=$row['school_year']?>
+                                  </td>
+                                  <td>
+                                      <a href='studentInfo.php?student_no=<?=$row['student_no']?>' class="btn btn-primary">
+                                          View
+                                      </a>
+                                      <a class="btn btn-danger delete-button">
+                                          Delete
+                                      </a>
+                                  </td>
+                              </tr>
+                      <?php
+                          }
+                      ?>
                   </tbody>
                 </table>
               </div>
@@ -487,6 +447,8 @@
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="plugins/sweetalert2/sweetalert2.all.min.js"></script>
 <!-- DataTables  & Plugins -->
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -506,6 +468,26 @@
             $('#cancel').on('click', function() {
                 
             });
+
+            $(".delete-button").on('click', function() {
+                var student_no = $(this).closest('tr').find('.student_num').val(); // Get the student number from the hidden input within the same row
+                console.log(student_no);
+                console.log('delete clicked!');
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "delete.php?student_no=" + encodeURIComponent(student_no);
+                    }
+                });
+            });
+
 
             function fetchStudents(url, data) 
             {
