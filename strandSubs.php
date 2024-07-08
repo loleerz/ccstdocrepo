@@ -465,16 +465,8 @@
         <div class="card mt-3">
         <div class="card-header">
           <div class="row">
-            <div class="col-4">
-              <div class="form-floating">
-                <select name="school_year" class="form-select col-7" id="school_year">
-                    <?php foreach ($schoolYears as $year) { ?>
-                        <option selected value="<?=$year?>"><?=$year?></option>
-                    <?php } ?>
-                </select>
-                <label for="school_year">School Year</label>
-              </div>
-              <!-- form-floating -->
+            <div class="col-12">
+              <h5><?=$strand?> Subjects</h5>
               </form>
             </div>
             <!-- col -->
@@ -491,7 +483,6 @@
                 <th>Grade Level</th>
                 <th>Semester</th>
                 <th>School Year</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -518,18 +509,13 @@
                     <p class="s8">Core</p>
                     </td>
                     <td>
-                        <p class="text-danger"><?=$row['grade_level']?></p>
+                        <p><?=$row['grade_level']?></p>
                     </td>
                     <td>
-                        <p class="text-danger"><?=$row['semester']?></p>
+                        <p><?=$row['semester']?></p>
                     </td>
                     <td>
-                        <p class="text-danger"><?=$row['school_year']?></p>
-                    </td>
-                    <td>
-                        <a href='' class="btn btn-primary">
-                            View
-                        </a>
+                        <p><?=$row['school_year']?></p>
                     </td>
                 </tr>
                 
@@ -568,18 +554,13 @@
                     <p class="s8">Applied</p>
                     </td>
                     <td>
-                        <p class="text-danger"><?=$row['grade_level']?></p>
+                        <p><?=$row['grade_level']?></p>
                     </td>
                     <td>
-                        <p class="text-danger"><?=$row['semester']?></p>
+                        <p><?=$row['semester']?></p>
                     </td>
                     <td>
-                        <p class="text-danger"><?=$row['school_year']?></p>
-                    </td>
-                    <td>
-                        <a href='' class="btn btn-primary">
-                            View
-                        </a>
+                        <p><?=$row['school_year']?></p>
                     </td>
                 </tr>
                 
@@ -618,18 +599,13 @@
                     <p class="s8">Specialized</p>
                     </td>
                     <td>
-                        <p class="text-danger"><?=$row['grade_level']?></p>
+                        <p><?=$row['grade_level']?></p>
                     </td>
                     <td>
-                        <p class="text-danger"><?=$row['semester']?></p>
+                        <p><?=$row['semester']?></p>
                     </td>
                     <td>
-                        <p class="text-danger"><?=$row['school_year']?></p>
-                    </td>
-                    <td>
-                        <a href='' class="btn btn-primary">
-                            View
-                        </a>
+                        <p><?=$row['school_year']?></p>
                     </td>
                 </tr>
                 
@@ -668,18 +644,13 @@
                     <p class="s8">Other Subject</p>
                     </td>
                     <td>
-                        <p class="text-danger"><?=$row['grade_level']?></p>
+                        <p><?=$row['grade_level']?></p>
                     </td>
                     <td>
-                        <p class="text-danger"><?=$row['semester']?></p>
+                        <p><?=$row['semester']?></p>
                     </td>
                     <td>
-                        <p class="text-danger"><?=$row['school_year']?></p>
-                    </td>
-                    <td>
-                        <a href='' class="btn btn-primary">
-                            View
-                        </a>
+                        <p><?=$row['school_year']?></p>
                     </td>
                 </tr>
                 

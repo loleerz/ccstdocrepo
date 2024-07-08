@@ -2720,7 +2720,7 @@
     </table></td>
     </tr>
     </table>
-    <p style="padding-left: 5pt;text-indent: 0pt;text-align: left;">
+    <!-- <p style="padding-left: 5pt;text-indent: 0pt;text-align: left;">
       <span style=" color: black; font-family:&quot;Times New Roman&quot;, serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 10pt;">
       </span>
     </p>
@@ -2807,8 +2807,7 @@
           </p>
         </td>
       </tr>
-    </table>
-    <p style="text-indent: 0pt;text-align: left;"/>
+    </table> -->
     <p class="s16" style="text-indent: 0pt;text-align: right;">
       SHS General Average:
     </p>
@@ -2839,11 +2838,11 @@
           </p>
         </td>
         <td style="width:218pt">
-          <p style="padding-left: 147pt;text-indent: 0pt;line-height: 1pt;text-align: left;">
+          <!-- <p style="padding-left: 147pt;text-indent: 0pt;line-height: 1pt;text-align: left;">
             <span>
             <img width="47" height="1" alt="image" src="F9-ABM-2024_files/Image_003.png"/>
             </span>
-          </p>
+          </p> -->
           <p style="padding-top: 1pt;text-indent: 0pt;text-align: left;">
             <br/>
           </p>

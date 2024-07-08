@@ -1,15 +1,15 @@
 <?php
-    include ('connection.php');
+    include __DIR__ . '/../connection.php';
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //CODE FOR SEARCH
-    if(isset($_POST['input']))
+    if(isset($_POST['schoolYear']))
     {
-        $input = $_POST['input'];
+        $schoolYear = $_POST['schoolYear'];
 
         
         // Prepare the SQL statement with a placeholder for the input
-        $sql = "SELECT * FROM student_info WHERE Lname LIKE ? OR Fname LIKE ? OR Mname LIKE ? OR strand LIKE ?";
+        $sql = "SELECT * FROM teachers_info WHERE school_year = ?";
 
         // Prepare the statement
         $stmt = $conn->prepare($sql);
@@ -19,8 +19,7 @@
         }
 
         // Bind parameters
-        $searchParam = "%". $input . "%"; // Add '%' wildcard to search for values starting with the input
-        $stmt->bind_param("ssss", $searchParam, $searchParam, $searchParam, $searchParam); // Assuming all columns are strings, adjust "sss" accordingly
+        $stmt->bind_param("s", $schoolYear); // Assuming all columns are strings, adjust "sss" accordingly
 
         // Execute the statement
         $stmt->execute();
@@ -30,34 +29,39 @@
 
         if($result->num_rows > 0)
         {
-            while($row = $result->fetch_assoc())
-            {
-                $mname = $row['Mname'];
+            while($row = $result->fetch_assoc()) {
+                $mname = $row['mname'];
                 $minitial = strtoupper(substr($mname, 0, 1));
-
+    
+                // Output table rows with retrieved data
                 echo "
                 <tr>
                     <td>
-                        ".$row['student_no']."
+                        ".$row['employeenumber']."
                     </td>
                     <td>
-                        ".$row['Lname']."".$row['Suffix'].", ".$row['Fname']." ".$minitial.".
+                        ".$row['lname']." ".$row['suffix'].", ".$row['fname']." ".$minitial."
                     </td>
                     <td>
-                        ".$row['strand']." - ".$row['grade_level'].$row['section']."
+                        ".$row['school_year']."
                     </td>
                     <td>
-                        <a href='studentGrades.php' class='btn btn-primary'>
+                        <a href='teacherInfo.php?employee_no=".$row['employeenumber']."' class='btn btn-primary'>
                             View
                         </a>
                     </td>
-                </tr>
-                ";
-            }
+                </tr>";
+              }
         }
         else
         {
-            echo "<h6 style='color:red;'>No Records Found!</h6>";
+            echo "
+                <tr>
+                    <td colspan='5'>
+                        <h6 style='color:red;'>No Records Found on Academic Year ".$schoolYear."!</h6>
+                    </td>
+                </tr>
+            ";
         }
     }
 ?>

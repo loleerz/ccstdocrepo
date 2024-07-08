@@ -23,6 +23,11 @@
     $stmt1->execute();
     $result1 = $stmt1->get_result();
     $row1 = $result1->fetch_assoc();
+
+    if($row1['subj_teacher'] = "")
+    {
+        $row1['subj_teacher'] = "No Assigned Subject Teacher";
+    }
     
     $mname = $row['Mname'];
     $minitial = strtoupper(substr($mname, 0, 1)); 

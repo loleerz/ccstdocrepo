@@ -7,6 +7,34 @@
     }
     include ('connection.php');
 
+    // Function to get the school year based on start and end dates
+    function getSchoolYear($startDate, $endDate) {
+      $currentDate = date('Y-m-d'); // Get current date
+      
+      if ($currentDate >= $startDate && $currentDate <= $endDate) {
+          return date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate)); // Format as "YYYY-YYYY"
+      } else {
+          return false; // Return false if not within a school year
+      }
+    }
+
+    // Example usage:
+    $startYear = 2016; // Starting year when school started accepting students
+    $currentYear = date('Y'); // Current year
+    $schoolYears = array();
+    $currentSchoolYear = false;
+
+    for ($year = $startYear; $year <= $currentYear; $year++) {
+      $startDate = $year . '-09-01'; // Start date of the school year
+      $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate) - 1)); // End date of the school year (1 year from start date minus 1 day)
+      
+      $schoolYear = getSchoolYear($startDate, $endDate);
+      if ($schoolYear) {
+          $currentSchoolYear = $schoolYear;
+      }
+      // Store all possible school years for the dropdown
+      $schoolYears[] = date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate));
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -279,181 +307,79 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-2 card ms-4 me-4">
-            <!-- Widget: user widget style 1 -->
-            <div class="card card-widget widget-user">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header bg-gradient-info px-0">
-                <h3 class="widget-user-username fw-bold fs-4">STEM</h3>
-                <figcaption class="" style="font-size: 9pt;">Science Technology Engineering and Mathematics</figcaption>
-              </div>
-              <div class="widget-user-image">
-                <img class="img-circle elevation-2" src="a/stem.png" alt="User Avatar">
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-sm-4 ">
-                    <div class="description-block">
-                      <h5 class="description-header"></h5>
-                      <span class="description-text"></span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-sm-4 ">
-                    <div class="description-block">
-                      <h5 class="description-header">13,000</h5>
-                      <span class="" style="font-size: 9pt;">Students</span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-sm-4">
-                    <div class="description-block">
-                      <h5 class="description-header"></h5>
-                      <span class="description-text"></span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                </div>
-                <!-- /.row -->
-              </div>
-            </div>
-            <!-- /.widget-user -->
-          </div>
 
-          <div class="col-2 card me-4">
-            <!-- Widget: user widget style 1 -->
-            <div class="card card-widget widget-user">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header bg-gradient-info px-0">
-                <h3 class="widget-user-username fw-bold fs-4">ABM</h3>
-                <figcaption class="" style="font-size: 9pt;">Accountancy and Business Management</figcaption>
-              </div>
-              <div class="widget-user-image">
-                <img class="img-circle elevation-2" src="a/abm.png" alt="User Avatar">
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-sm-4 ">
-                    <div class="description-block">
-                      <h5 class="description-header"></h5>
-                      <span class="description-text"></span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-sm-4 ">
-                    <div class="description-block">
-                      <h5 class="description-header">13,000</h5>
-                      <span class="" style="font-size: 9pt;">Students</span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-sm-4">
-                    <div class="description-block">
-                      <h5 class="description-header"></h5>
-                      <span class="description-text"></span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                </div>
-                <!-- /.row -->
-              </div>
-            </div>
-            <!-- /.widget-user -->
-          </div>
+          <?php
 
-          <div class="col-2 card me-4">
-            <!-- Widget: user widget style 1 -->
-            <div class="card card-widget widget-user">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header bg-gradient-info px-0">
-                <h3 class="widget-user-username fw-bold fs-4">HUMSS</h3>
-                <figcaption class="" style="font-size: 9pt;">Humanities and Social Sciences</figcaption>
-              </div>
-              <div class="widget-user-image">
-                <img class="img-circle elevation-2" src="a/humss.png" alt="User Avatar">
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-sm-4 ">
-                    <div class="description-block">
-                      <h5 class="description-header"></h5>
-                      <span class="description-text"></span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-sm-4 ">
-                    <div class="description-block">
-                      <h5 class="description-header">13,000</h5>
-                      <span class="" style="font-size: 9pt;">Students</span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-sm-4">
-                    <div class="description-block">
-                      <h5 class="description-header"></h5>
-                      <span class="description-text"></span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                </div>
-                <!-- /.row -->
-              </div>
-            </div>
-            <!-- /.widget-user -->
-          </div>
+          //QUERY FOR FETCHING STRANDS INFO
+          $sql = "SELECT * FROM strand WHERE track = 'Academic' AND school_year = '$currentSchoolYear'";
+          $stmt = $conn->prepare($sql);
+          $stmt->execute();
+          $result = $stmt->get_result();
 
-          <div class="col-2 card me-4">
-            <!-- Widget: user widget style 1 -->
-            <div class="card card-widget widget-user">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header bg-gradient-info px-0">
-                <h3 class="widget-user-username fw-bold fs-4">GAS</h3>
-                <figcaption class="" style="font-size: 9pt;">General Academic Strand</figcaption>
-              </div>
-              <div class="widget-user-image">
-                <img class="img-circle elevation-2" src="a/gas.png" alt="User Avatar">
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-sm-4 ">
-                    <div class="description-block">
-                      <h5 class="description-header"></h5>
-                      <span class="description-text"></span>
+
+          if($result->num_rows > 0)
+          {
+            while($strandsui = $result->fetch_assoc())
+            {
+              $sql2 = "SELECT * FROM student_info WHERE strand = ? AND school_year = ?";
+              $stmt2 = $conn->prepare($sql2);
+              $stmt2->bind_param("ss", $strandsui['strand_name'], $currentSchoolYear);
+              $stmt2->execute();
+              $result2 = $stmt2->get_result();
+              $abbre = $strandsui['abbreviation'];
+
+              $imgsrc = "a/".$abbre.".png"
+            ?>
+            
+
+                    <div class="col-2 card ms-4 me-4">
+                      <!-- Widget: user widget style 1 -->
+                      <div class="card card-widget widget-user">
+                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                        <div class="widget-user-header bg-gradient-info px-0">
+                          <h3 class="widget-user-username fw-bold fs-4"><?=$abbre?></h3>
+                          <figcaption class="" style="font-size: 9pt;"><?=$strandsui['strand_name']?></figcaption>
+                        </div>
+                        <div class="widget-user-image">
+                          <img class="img-circle elevation-2" src="<?=$imgsrc?>" alt="User Avatar">
+                        </div>
+                        <div class="card-footer">
+                          <div class="row">
+                            <div class="col-sm-4 ">
+                              <div class="description-block">
+                                <h5 class="description-header"></h5>
+                                <span class="description-text"></span>
+                              </div>
+                              <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-4 ">
+                              <div class="description-block">
+                                <h5 class="description-header"><?=$result2->num_rows?></h5>
+                                <span class="" style="font-size: 9pt;">Students</span>
+                              </div>
+                              <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-4">
+                              <div class="description-block">
+                                <h5 class="description-header"></h5>
+                                <span class="description-text"></span>
+                              </div>
+                              <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                          </div>
+                          <!-- /.row -->
+                        </div>
+                      </div>
+                      <!-- /.widget-user -->
                     </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-sm-4 ">
-                    <div class="description-block">
-                      <h5 class="description-header">13,000</h5>
-                      <span class="" style="font-size: 9pt;">Students</span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-sm-4">
-                    <div class="description-block">
-                      <h5 class="description-header"></h5>
-                      <span class="description-text"></span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                </div>
-                <!-- /.row -->
-              </div>
-            </div>
-            <!-- /.widget-user -->
-          </div>
+
+            <?php
+            }
+          }
+          ?>
         </div>
         
         <!-- Content Header (Page header) -->
@@ -469,93 +395,80 @@
         </div>
         <!-- /.content-header -->
         <div class="row">
-          <div class="col-2 card ms-4 me-4">
-            <!-- Widget: user widget style 1 -->
-            <div class="card card-widget widget-user">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header bg-gradient-info px-0">
-                <h3 class="widget-user-username fw-bold fs-4">ICT</h3>
-                <figcaption class="" style="font-size: 9pt;">Information Communication Technology</figcaption>
-              </div>
-              <div class="widget-user-image">
-                <img class="img-circle elevation-2" src="a/ict.png" alt="User Avatar">
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-sm-4 ">
-                    <div class="description-block">
-                      <h5 class="description-header"></h5>
-                      <span class="description-text"></span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-sm-4 ">
-                    <div class="description-block">
-                      <h5 class="description-header">13,000</h5>
-                      <span class="" style="font-size: 9pt;">Students</span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-sm-4">
-                    <div class="description-block">
-                      <h5 class="description-header"></h5>
-                      <span class="description-text"></span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                </div>
-                <!-- /.row -->
-              </div>
-            </div>
-            <!-- /.widget-user -->
-          </div>
 
-          <div class="col-2 card me-4">
-            <!-- Widget: user widget style 1 -->
-            <div class="card card-widget widget-user">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header bg-gradient-info px-0">
-                <h3 class="widget-user-username fw-bold fs-4">HE</h3>
-                <figcaption class="" style="font-size: 9pt;">Home Economics</figcaption>
-              </div>
-              <div class="widget-user-image">
-                <img class="img-circle elevation-2" src="a/he.png" alt="User Avatar">
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-sm-4 ">
-                    <div class="description-block">
-                      <h5 class="description-header"></h5>
-                      <span class="description-text"></span>
+          <?php
+
+          //QUERY FOR FETCHING STRANDS INFO
+          $sql = "SELECT * FROM strand WHERE track = 'Technical Vocational Livelihood' AND school_year = '$currentSchoolYear'";
+          $stmt = $conn->prepare($sql);
+          $stmt->execute();
+          $result = $stmt->get_result();
+
+
+          if($result->num_rows > 0)
+          {
+            while($strandsui = $result->fetch_assoc())
+            {
+              $sql2 = "SELECT * FROM student_info WHERE strand = ? AND school_year = ?";
+              $stmt2 = $conn->prepare($sql2);
+              $stmt2->bind_param("ss", $strandsui['strand_name'], $currentSchoolYear);
+              $stmt2->execute();
+              $result2 = $stmt2->get_result();
+              $abbre = $strandsui['abbreviation'];
+
+              $imgsrc = "a/".$abbre.".png"
+            ?>
+            
+
+                    <div class="col-2 card ms-4 me-4">
+                      <!-- Widget: user widget style 1 -->
+                      <div class="card card-widget widget-user">
+                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                        <div class="widget-user-header bg-gradient-info px-0">
+                          <h3 class="widget-user-username fw-bold fs-4"><?=$abbre?></h3>
+                          <figcaption class="" style="font-size: 9pt;"><?=$strandsui['strand_name']?></figcaption>
+                        </div>
+                        <div class="widget-user-image">
+                          <img class="img-circle elevation-2" src="<?=$imgsrc?>" alt="User Avatar">
+                        </div>
+                        <div class="card-footer">
+                          <div class="row">
+                            <div class="col-sm-4 ">
+                              <div class="description-block">
+                                <h5 class="description-header"></h5>
+                                <span class="description-text"></span>
+                              </div>
+                              <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-4 ">
+                              <div class="description-block">
+                                <h5 class="description-header"><?=$result2->num_rows?></h5>
+                                <span class="" style="font-size: 9pt;">Students</span>
+                              </div>
+                              <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-4">
+                              <div class="description-block">
+                                <h5 class="description-header"></h5>
+                                <span class="description-text"></span>
+                              </div>
+                              <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                          </div>
+                          <!-- /.row -->
+                        </div>
+                      </div>
+                      <!-- /.widget-user -->
                     </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-sm-4 ">
-                    <div class="description-block">
-                      <h5 class="description-header">13,000</h5>
-                      <span class="" style="font-size: 9pt;">Students</span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-sm-4">
-                    <div class="description-block">
-                      <h5 class="description-header"></h5>
-                      <span class="description-text"></span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                </div>
-                <!-- /.row -->
-              </div>
-            </div>
-            <!-- /.widget-user -->
-          </div>
+
+            <?php
+            }
+          }
+          ?>
+
         </div>
       </div>
     </div>

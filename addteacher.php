@@ -303,6 +303,21 @@
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
+
+      <?php
+            //TEACHER ADDED
+            if (isset($_GET['status'])) {
+              echo "
+                <script src='plugins/sweetalert2/sweetalert2.min.js'></script>
+                <script>
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Teacher Added Successfully!',
+                  });
+                </script>
+              ";
+            }
+          ?>
         
                 <div class="row">
                     <div class="col mb-3">
@@ -310,9 +325,6 @@
                     </div>
                 </div>
                   <form action="input.php" method="post">
-                  <?php
-                      $currentSchoolYear = "2023-2024";
-                  ?>
 
                   <input type="hidden" value="<?=$currentSchoolYear?>" name="school_year">
 
@@ -368,6 +380,29 @@
                             <label for="age" class="form-label">Age</label>
                             <input type="number" name="age" id="age" class="form-control" placeholder="Enter Age" required>
                         </div>
+
+                        <script>
+                          document.getElementById('birthday').addEventListener('input', function() {
+                              const birthday = new Date(this.value);
+                              const ageInput = document.getElementById('age');
+
+                              if (!isNaN(birthday.getTime())) {
+                                  const today = new Date();
+                                  let age = today.getFullYear() - birthday.getFullYear();
+                                  const monthDiff = today.getMonth() - birthday.getMonth();
+                                  const dayDiff = today.getDate() - birthday.getDate();
+
+                                  if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                                      age--;
+                                  }
+
+                                  ageInput.value = age;
+                              } else {
+                                  ageInput.value = '';
+                              }
+                          });
+                        </script>
+
                         <div class="col-md-2">
                             <label for="sex" class="form-label">Sex</label>
                             <select name="sex" id="sex" class="form-select" required>
@@ -637,21 +672,21 @@
 
             // Submit form data to PHP script
             // Get selected values and send as POST variables
-            $('form').on('submit', function(event) {
-                event.preventDefault();
-                var formData = new FormData($('form')[1]);
-                $.ajax({
-                    type: 'POST',
-                    url: 'input.php',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(data) {
-                        console.log('Address Added Successfully!');
-                        // $('.content').html(data);
-                    }
-                });
-            });
+            // $('form').on('submit', function(event) {
+            //     event.preventDefault();
+            //     var formData = new FormData($('form')[1]);
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: 'input.php',
+            //         data: formData,
+            //         contentType: false,
+            //         processData: false,
+            //         success: function(data) {
+            //             console.log('Address Added Successfully!');
+            //             // $('.content').html(data);
+            //         }
+            //     });
+            // });
         });
  
     </script>

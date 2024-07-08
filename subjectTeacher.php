@@ -344,9 +344,6 @@
                           <div class="container-fluid">
 
                               <form action="input.php" method="post">
-                                    <?php
-                                        $currentSchoolYear = "2023-2024";
-                                    ?>
 
                                   <input type="hidden" value="<?=$currentSchoolYear?>" id = "school_year" name="school_year">
 
@@ -501,12 +498,12 @@
           <div class="row">
             <div class="col-4">
               <div class="form-floating">
-                <select name="school_year" class="form-select col-7" id="school_year">
+                <select name="school_year" class="form-select col-7" id="school_years">
                     <?php foreach ($schoolYears as $year) { ?>
                         <option selected value="<?=$year?>"><?=$year?></option>
                     <?php } ?>
                 </select>
-                <label for="school_year">School Year</label>
+                <label for="school_years">School Year</label>
               </div>
               <!-- form-floating -->
               </form>
@@ -515,8 +512,21 @@
             <div class="col-4">
               <div class="form-floating">
                 <select name="strand" class="form-select" id="strand">
-                    <?php 
-                     ?>
+                  <option selected disabled></option>
+                  <?php 
+                    $sql = "SELECT DISTINCT strand_name FROM strand";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->execute();
+                    $result1 = $stmt->get_result();
+
+                    if($result->num_rows > 0)
+                    {
+                        while($strands = $result1->fetch_assoc())
+                        { ?>
+                            <option value="<?=$strands['strand_name']?>"><?=$strands['strand_name']?></option>
+                        <?php }
+                    }
+                  ?>
                 </select>
                 <label for="strand">Choose Strand</label>
               </div>
@@ -548,7 +558,7 @@
               <th>Action</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody">
               <?php
               //Fetching datas for outputting strands
               $sql6 = "SELECT (@row_number := @row_number + 1) AS row_number, subject_teachers.* 
@@ -656,6 +666,41 @@
 <script>
         $(document).ready(function() 
         {
+          function fetchStudents(url, data) 
+          {
+            $.ajax({
+                url: url,
+                method: "POST",
+                data: data,
+                success: function(response) {
+                    $("#tbody").html(response);
+                    console.log('Students fetched successfully');
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX error: ", status, error);
+                }
+            });
+        }
+
+        $("#search").keyup(function() {
+            var input = $(this).val();
+            var schoolYear = $("#school_years").val();
+            console.log(schoolYear);
+            fetchStudents("search/searchSubjTeacher.php", {input: input, schoolYear: schoolYear});
+        });
+
+        $("#school_years").change(function() {
+            var schoolYear = $(this).val();
+            console.log("School year changed to: " + schoolYear);
+            fetchStudents("search/searchBSYSubjTeacher.php", {schoolYear: schoolYear});
+        });
+        $("#strand").change(function() {
+            var strand = $(this).val();
+            var schoolYear = $("#school_years").val();
+            console.log("Strand changed to: " + strand);
+            fetchStudents("search/searchBStrandSubjTeacher.php", {strand: strand, schoolYear: schoolYear});
+        });
+
             $('#cancel').on('click', function() {
                 
             });

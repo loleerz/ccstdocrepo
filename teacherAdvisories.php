@@ -163,11 +163,6 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 fw-bold fs-4">Regular Students</h1>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -178,38 +173,9 @@
 
             <div class="card col-10">
             <div class="card-header">
-            <div class="row justify-content-end">
+            <div class="row">
                 <div class="col-4">
-                <div class="form-floating">
-                    <select name="school_year" class="form-select col-7" id="school_year">
-                        <?php foreach ($schoolYears as $year) { ?>
-                            <option value="<?=$year?>"><?=$year?></option>
-                        <?php } ?>
-                    </select>
-                    <label for="school_year">School Year</label>
-                </div>
-                <!-- form-floating -->
-                    
-                </div>
-                <!-- col -->
-                <div class="col-4">
-                <div class="form-floating">
-                    <select name="strand" class="form-select" id="strand">
-                        <?php 
-                        ?>
-                    </select>
-                    <label for="strand">Choose Advisory</label>
-                </div>
-                <!-- form-floating -->
-                </div>
-                <!-- col -->
-                <div class="col-4 justify-content-end">
-                <div class="form-floating">
-                    <!-- SEARCH BAR -->
-                    <input type="text" name="search" id="search" class="form-control col-7" placeholder="Search">
-                    <label for="search">Search</label>
-                </div>
-                <!-- form-floating -->
+                  <h5>Advisory Sections</h5>
                 </div>
                 <!-- col -->
             </div>
@@ -317,7 +283,7 @@
                 // if(input != "")
                 // {
                     $.ajax({
-                        url: "searchdata.php",
+                        url: "search/searchTeacherStudent.php",
                         method: "POST",
                         data: {input:input},
 

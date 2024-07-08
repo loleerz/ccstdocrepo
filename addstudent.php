@@ -7,6 +7,35 @@
     }
     include ('connection.php');
 
+    // Function to get the school year based on start and end dates
+    function getSchoolYear($startDate, $endDate) {
+      $currentDate = date('Y-m-d'); // Get current date
+      
+      if ($currentDate >= $startDate && $currentDate <= $endDate) {
+          return date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate)); // Format as "YYYY-YYYY"
+      } else {
+          return false; // Return false if not within a school year
+      }
+  }
+
+  // Example usage:
+  $startYear = 2016; // Starting year when school started accepting students
+  $currentYear = date('Y'); // Current year
+  $schoolYears = array();
+  $currentSchoolYear = false;
+
+  for ($year = $startYear; $year <= $currentYear; $year++) {
+      $startDate = $year . '-09-01'; // Start date of the school year
+      $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate) - 1)); // End date of the school year (1 year from start date minus 1 day)
+      
+      $schoolYear = getSchoolYear($startDate, $endDate);
+      if ($schoolYear) {
+          $currentSchoolYear = $schoolYear;
+      }
+      // Store all possible school years for the dropdown
+      $schoolYears[] = date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate));
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -163,7 +192,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="generateForm137.php" class="nav-link">
                   <i class="fas fa-file nav-icon"></i>
                   <p>Form 137</p>
                 </a>
@@ -299,7 +328,7 @@
           </div>
 
           <!-- IMPORT MODAL START -->
-           <form action="importStudent.php" method="post" enctype="multipart/form-data">
+           <form action="import/importStudent.php" method="post" enctype="multipart/form-data">
               <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -308,6 +337,8 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                      <a href="downloadTemplate.php?download=Student" class="btn btn-success">Download Template</a>
+                      <br> <br> 
                       <label for="studsExcel" class="form-label">Select Excel File:</label>
                       <input type="file" name="studsExcel" id="studsExcel" required>
                     </div>
@@ -351,7 +382,7 @@
 
                   <!-- LEARNER'S INFORMATION START -->
                   <div class="card slide current-slide">
-                    <div class="card-header fw-bold">Learner's Information</div>
+                    <div class="card-header fw-bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Learner's Information</div>
                     <div class="card-body">
                               <div class="row g-3">
                                   <div class="col-md-3">
@@ -448,6 +479,19 @@
                                       <label for="contact_no" class="form-label">Contact Number <span class="text-danger">*</span></label>
                                       <input type="number" name="contact_no" id="contact_no" class="form-control" placeholder="Enter your Contact Number" minlength="11" maxlength="11" required>
                                   </div>
+                                  <script>
+                                    document.getElementById('contact_no').addEventListener('input', function (e) {
+                                        const input = e.target;
+                                        const value = input.value.replace(/\D/g, ''); // Remove any non-digit characters
+
+                                        if (value.length > 11) {
+                                            input.value = value.slice(0, 11); // Limit to 11 digits
+                                        } else {
+                                            input.value = value;
+                                        }
+                                    });
+                                  </script>
+
                               </div>
                               <div class="row mt-2">
                                   <div class="col-md-3">
@@ -484,7 +528,7 @@
 
                   <!-- SCHOLASTIC RECORDS START -->
                   <div class="card slide">
-                    <div class="card-header fw-bold">Scholastic Records</div>
+                    <div class="card-header fw-bold">&nbsp;&nbsp;Scholastic Records</div>
                     <div class="card-body">
                     <div class="row">
                                   <div class="col-md-3">
@@ -540,10 +584,10 @@
                                   </div>
                                   <div class="col-md-3">
                                       <label for="school_year" class="form-label">School Year <span class="text-danger">*</span></label>
-                                      <select name="school_year" id="school_year" class="form-select" required>
-                                          <option disabled selected>Select School year </option>
-                                          <option>2023-2024</option>
-                                          <option>2024-2025</option>
+                                      <select name="school_year" class="form-select" id="school_year" required>
+                                          <?php foreach ($schoolYears as $year) { ?>
+                                              <option selected value="<?=$year?>"><?=$year?></option>
+                                          <?php } ?>
                                       </select>
                                       <!-- HIDDEN FIELD FOR SCHOOL YEAR -->
                                       <input type="hidden" name="selected_schoolYear" id="selected_schoolYear">
@@ -640,7 +684,7 @@
 
                   <!-- GUARDIAN INFO START -->
                   <div class="card slide">
-                    <div class="card-header fw-bold">Guardian Info</div>
+                    <div class="card-header fw-bold">&nbsp;&nbsp;Guardian Info</div>
                     <div class="card-body">
                               <div class="row mt-2">
                                   <div class="col-md-4">
@@ -741,7 +785,7 @@
 <script src="dist/js/pages/dashboard3.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
-<script src="progress.js"></script>
+<!-- <script src="progress.js"></script> -->
 <script>
         $(document).ready(function() 
         {
@@ -915,6 +959,188 @@
             });
         });
  
+    </script>
+    <script>
+    $(document).ready(function() { 
+    // Slides
+    var slides = $('.slide');
+    var currentSlideIndex = 0;
+    var stepItems = $('.step-item');
+    var inTransition = false;
+
+    /** Click functions **/
+    // Previous button
+    $('#prev-button').click(function(e) { 
+        if (inTransition) { return; }
+        
+        // Current & previous step
+        var current = $('.step-progress-bar').find('.current');
+        var prev = current.prev();
+        
+        // Refresh current step
+        if (current && prev && prev.length > 0) {
+            current.removeClass('current'); 
+            prev.removeClass('success');
+            prev.addClass('current'); 
+            
+            // Show prev slide
+            prevSlideFn();
+        }
+    });
+
+    // Next button
+    $('#next-button').click(function(e) {
+        if (inTransition) { return; }
+        
+        var current = $('.step-progress-bar').find('.current');
+        var next = current.next(); 
+        
+        // Validate current slide
+        if ($('#next-button').text() === 'Submit') {
+            if (validateCurrentSlide()) {
+                $('form').submit();
+            }
+        } else {
+            if (validateCurrentSlide()) {
+                // Current to success
+                current.removeClass('current');
+                // Timeout giving time to the animation to render
+                setTimeout(function() { current.addClass('success'); }, 0);
+                
+                // Disabled to current 
+                if (next && next.length > 0) {
+                    next.addClass('current'); 
+                    // Show next slide
+                    nextSlideFn();    
+                }
+            }
+        }
+    });
+    
+    function validateCurrentSlide() {
+        var currentSlide = slides.eq(currentSlideIndex);
+        var inputs = currentSlide.find('input[required], select[required], input[type="checkbox"][required]');
+        var valid = true;
+        
+        inputs.each(function() {
+            if ($(this).is('input[type="checkbox"]')) {
+                if (!$(this).prop('checked')) {
+                    valid = false;
+                    $(this).addClass('is-invalid');
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            } else if ($(this).is('select')) {
+                if (!$(this).val()) { // Check if no option is selected
+                    valid = false;
+                    $(this).addClass('is-invalid');
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            } else {
+                if (!$(this).val().trim()) {
+                    valid = false;
+                    $(this).addClass('is-invalid');
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            }
+        });
+        
+        return valid;
+    }
+    
+    function nextSlideFn() {  
+        inTransition = true;
+        var currentSlide = slides.eq(currentSlideIndex);
+        var nextSlide = slides.eq(currentSlideIndex + 1); 
+        
+        nextSlide.show(); 
+        currentSlide.animate({opacity: 0}, {
+            step: function(now, mix) {
+                var scale = 1 - (1 - now) * 0.2;
+                var left = (now * 100) + '%'; 
+                var opacity = 1 - now;
+                
+                currentSlide.css({
+                    '-webkit-transform': 'scale(' + scale + ')',
+                    '-ms-transform': 'scale(' + scale + ')',
+                    'transform': 'scale(' + scale + ')'
+                }); 
+                
+                nextSlide.css({
+                    '-webkit-transform': 'translateX(' + left + ')', 
+                    '-ms-transform': 'translateX(' + left + ')', 
+                    'transform': 'translateX(' + left + ')', 
+                    'opacity': opacity
+                });
+            },
+            duration: 250,
+            complete: function() { 
+                currentSlide.hide();
+                currentSlide.removeClass('current-slide'); 
+                nextSlide.addClass('current-slide'); 
+                nextSlide.css({'position': 'relative'});
+                inTransition = false;
+            },
+            easing: 'linear' 
+        });
+        
+        currentSlideIndex++;
+        updateNavigation();
+    }
+    
+    function prevSlideFn() {
+        inTransition = true;
+        var currentSlide = slides.eq(currentSlideIndex);
+        var prevSlide = slides.eq(currentSlideIndex - 1); 
+        
+        prevSlide.show(); 
+        currentSlide.css({'position': 'absolute'});
+        currentSlide.animate({opacity: 0}, {
+            step: function(now, mix) {
+                var scale = 0.8 + (1 - now) * 0.2; 
+                var left = ((1 - now) * 50) + '%';
+                var opacity = 1 - now;
+                
+                currentSlide.css({
+                    '-webkit-transform': 'translateX(' + left + ')',
+                    '-ms-transform': 'translateX(' + left + ')',
+                    'transform': 'translateX(' + left + ')'
+                });
+                
+                prevSlide.css({
+                    '-webkit-transform': 'scale(' + scale + ')', 
+                    '-ms-transform': 'scale(' + scale + ')', 
+                    'transform': 'scale(' + scale + ')', 
+                    'opacity': opacity
+                });
+            },
+            duration: 250,
+            complete: function() { 
+                currentSlide.hide();
+                currentSlide.removeClass('current-slide');
+                prevSlide.addClass('current-slide'); 
+                prevSlide.css({'position': 'relative'});
+                inTransition = false;
+            },
+            easing: 'linear'
+        });
+        
+        currentSlideIndex--;
+        updateNavigation();
+    }
+    
+    function updateNavigation() {
+        $('#prev-button').toggle(currentSlideIndex > 0);
+        $('#next-button').text(currentSlideIndex === slides.length - 1 ? 'Submit' : 'Next');
+        stepItems.removeClass('current success');
+        stepItems.eq(currentSlideIndex).addClass('current');
+        stepItems.slice(0, currentSlideIndex).addClass('success');
+    }
+    
+    updateNavigation();
+});
     </script>
 </body>
 </html>

@@ -6,30 +6,34 @@
         header("Location: index.php");
     }
     include ('connection.php');
+    
     // Function to get the school year based on start and end dates
     function getSchoolYear($startDate, $endDate) {
-        $currentDate = date('Y-m-d'); // Get current date
-        
-        if ($currentDate >= $startDate && $currentDate <= $endDate) {
-            return date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate)); // Format as "YYYY-YYYY"
-        } else {
-            return false; // Return false if not within a school year
-        }
+      $currentDate = date('Y-m-d'); // Get current date
+      
+      if ($currentDate >= $startDate && $currentDate <= $endDate) {
+          return date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate)); // Format as "YYYY-YYYY"
+      } else {
+          return false; // Return false if not within a school year
+      }
     }
 
     // Example usage:
     $startYear = 2016; // Starting year when school started accepting students
     $currentYear = date('Y'); // Current year
     $schoolYears = array();
+    $currentSchoolYear = false;
 
     for ($year = $startYear; $year <= $currentYear; $year++) {
         $startDate = $year . '-09-01'; // Start date of the school year
-        $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate))); // End date of the school year (1 year from start date)
+        $endDate = date('Y-m-d', strtotime('+1 year', strtotime($startDate) - 1)); // End date of the school year (1 year from start date minus 1 day)
         
         $schoolYear = getSchoolYear($startDate, $endDate);
         if ($schoolYear) {
-            $schoolYears[] = $schoolYear;
+            $currentSchoolYear = $schoolYear;
         }
+        // Store all possible school years for the dropdown
+        $schoolYears[] = date('Y', strtotime($startDate)) . '-' . date('Y', strtotime($endDate));
     }
 
     //Fetching datas for outputting student infos
@@ -308,107 +312,128 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <div class="content">
-        <div class="container-fluid">
-
-            <div class="card col-10">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-2">
-                            <h3 class="card-title fs-4 fw-semibold">Students</h3>
-                        </div>
-                        <div class="col-4">
-                            <select name="school_year" class="form-select col-4" id="">
+<div class="content">
+    <div class="container-fluid">
+        <div class="card col-10">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-floating">
+                            <select name="school_year" class="form-select col-7" id="school_year">
                                 <?php foreach ($schoolYears as $year) { ?>
-                                    <option value="<?=$year?>"><?=$year?></option>
+                                    <option selected value="<?= $year ?>"><?= $year ?></option>
                                 <?php } ?>
                             </select>
+                            <label for="school_year">School Year</label>
                         </div>
-                        <div class="col-6 text-end">
-                            <!-- SEARCH BAR -->
-                            <input type="text" name="search" id="search" class="form-control col-3" placeholder="Search" style="align: right; border: 1px solid black">
-                        </div>
+                        <!-- /.form-floating -->
                     </div>
-                </div>
-              <!-- /.card-header -->
-              <div class="card-body p-0">
-              <table id="example2" class="table table-bordered table-hover table-striped">
-                <thead>
-                  <tr>
-                    <th>Student No.</th>
-                    <th>Student Name</th>
-                    <th>Section</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody id="tbody">
-                  
-                    <?php
-                        while($row = $result->fetch_assoc())
-                        {
-                            $mname = $row['Mname'];
-                            $minitial = strtoupper(substr($mname, 0, 1)); ?>
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <div class="form-floating">
+                            <select name="strand" class="form-select" id="strand">
+                              <option selected disabled></option>
+                              <?php 
+                                $sql = "SELECT DISTINCT strand_name FROM strand";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->execute();
+                                $result1 = $stmt->get_result();
 
-                            
+                                if($result->num_rows > 0)
+                                {
+                                    while($strands = $result1->fetch_assoc())
+                                    { ?>
+                                        <option value="<?=$strands['strand_name']?>"><?=$strands['strand_name']?></option>
+                                    <?php }
+                                }
+                              ?>
+                            </select>
+                            <label for="strand">Choose Strand</label>
+                        </div>
+                        <!-- /.form-floating -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4 text-end align-end">
+                        <div class="form-floating">
+                            <!-- SEARCH BAR -->
+                            <input type="text" name="search" id="search" class="form-control col-7" placeholder="Search" style="align: right;">
+                            <label for="search">Search</label>
+                        </div>
+                        <!-- /.form-floating -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+                <table id="example2" class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Student No.</th>
+                            <th>Student Name</th>
+                            <th>Section</th>
+                            <th>School Year</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        <?php
+                        // Loop through the $result to display student information
+                        while ($row = $result->fetch_assoc()) {
+                            $mname = $row['Mname'];
+                            $minitial = strtoupper(substr($mname, 0, 1));
+                        ?>
                             <tr>
+                                <td><?= $row['student_no'] ?></td>
+                                <td><?= $row['Lname'] . "" . $row['Suffix'] . ", " . $row['Fname'] . " " . $minitial ?></td>
+                                <td><?= $row['strand'] . " - " . $row['section'] ?></td>
+                                <td><?= $row['school_year'] ?></td>
                                 <td>
-                                    <?=$row['student_no']?>
-                                </td>
-                                <td>
-                                    <?=$row['Lname']."".$row['Suffix'].", ".$row['Fname']." ".$minitial?>
-                                </td>
-                                <td>
-                                    <?=$row['strand']." - ".$row['section']?>
-                                </td>
-                                <td>
-                                  <button class="btn btn-success generate-btn" data-student-no="<?= $row['student_no'] ?>" data-bs-toggle="modal" data-bs-target="#exampleModal">Generate</button>
+                                    <button class="btn btn-success generate-btn" id="generate" data-student-no="<?= $row['student_no'] ?>" data-bs-toggle="modal" data-bs-target="#exampleModal">Generate</button>
                                 </td>
                             </tr>
-                            
-                     <?php
-                        }
-                    ?>
-                </tbody>
-              </table>
-              </div>
-              <!-- /.card-body -->
+                        <?php } ?>
+                    </tbody>
+                </table>
             </div>
-            <!-- /.card -->
-          </div>
-
-          <!-- Modal -->
-          <button type="button" id="view" class="btn btn-primary d-none">View</button>
-          <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <h6 class="modal-title fs-4" id="previewModalLabel">Form 137 Preview</h6>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body" id="previewModalBody">
-                          <div id="loading" class="text-center" style="display:none;">
-                              <div class="spinner-border text-primary" role="status">
-                                  <span class="visually-hidden">Loading...</span>
-                              </div>
-                          </div>
-                          <!-- Iframe will be moved here -->
-                      </div>
-                      <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" id="printORsave" class="btn btn-primary">Print/Save</button>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <!-- MODAL -->
-
-          <!-- Hidden iframe initially -->
-          <iframe id="f137F" src="" frameborder="0" style="display:none; height:100%; width:100%; border:0;"></iframe>
-
+            <!-- /.card-body -->
         </div>
-        <!-- /.container-fluid -->
+        <!-- /.card -->
+
+        <!-- Modal -->
+        <button type="button" id="view" class="btn btn-primary d-none">View</button>
+        <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title fs-4" id="previewModalLabel">Form 137 Preview</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="previewModalBody">
+                        <div id="loading" class="text-center" style="display:none;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <!-- Iframe will be moved here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="printORsave" class="btn btn-primary">Print/Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal -->
+
+        <!-- Hidden iframe initially -->
+        <iframe id="f137F" src="" frameborder="0" style="display:none; height:100%; width:100%; border:0;"></iframe>
+
     </div>
-    <!-- /.content -->
+    <!-- /.container-fluid -->
+</div>
+<!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
 
@@ -457,122 +482,143 @@
 <script>
     $(document).ready(function() 
     {
-      $('.generate-btn').on('click', function() {
-          var studentNo = $(this).data('student-no');
+      // Use event delegation for dynamically created elements
+$(document).on('click', '.generate-btn', function() {
+    var studentNo = $(this).data('student-no');
 
-          // Update iframe src with the student number
-          $('#f137F').attr('src', 'f137info.php?student_no=' + studentNo);
+    // Update iframe src with the student number
+    $('#f137F').attr('src', 'f137info.php?student_no=' + studentNo);
 
-          // Show loading spinner
-          $('#loading').show();
+    // Show loading spinner
+    $('#loading').show();
 
-          // Show the exampleModal after updating the iframe src
-          // $('#exampleModal').modal('show');
+    // Handle load event of the iframe
+    $('#f137F').on('load', function() {
+        // Hide loading spinner
+        $('#loading').hide();
+        // Show the iframe (in this case, we don't show it yet as it will be moved to the preview modal)
+    });
 
-          // Handle load event of the iframe
-          $('#f137F').on('load', function() {
-              // Hide loading spinner
-              $('#loading').hide();
-              // Show the iframe (in this case, we don't show it yet as it will be moved to the preview modal)
-          });
+    // Handle error loading iframe
+    $('#f137F').on('error', function() {
+        // Hide loading spinner and show error message
+        $('#loading').hide();
+        alert('Failed to load the document.');
+    });
 
-          // Handle error loading iframe
-          $('#f137F').on('error', function() {
-              // Hide loading spinner and show error message
-              $('#loading').hide();
-              alert('Failed to load the document.');
-          });
-          // Show the SweetAlert2 modal
-          Swal.fire({
-              title: 'Form 137',
-              text: 'Document Generated Successfully!',
-              icon: 'success',
-              showCancelButton: false,
-              showConfirmButton: true,
-              confirmButtonText: 'View',
-              allowOutsideClick: false,
-              allowEscapeKey: false
-          }).then((result) => {
-              if (result.isConfirmed) {
-                $('#view').click();
-              }
-          });
-      });
+    // Show the SweetAlert2 modal
+    Swal.fire({
+        title: 'Form 137',
+        text: 'Document Generated Successfully!',
+        icon: 'success',
+        showCancelButton: false,
+        showConfirmButton: true,
+        confirmButtonText: 'View',
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $('#view').click();
+        }
+    });
+});
 
-      $('#view').on('click', function() {
-          const iframe = document.getElementById('f137F');
+$('#view').on('click', function() {
+    const iframe = document.getElementById('f137F');
 
-          // Ensure the iframe is loaded before showing the preview modal
-          if (iframe.getAttribute('src') !== '') {
-              $('#exampleModal').modal('hide'); // Hide the exampleModal
+    // Ensure the iframe is loaded before showing the preview modal
+    if (iframe.getAttribute('src') !== '') {
+        $('#exampleModal').modal('hide'); // Hide the exampleModal
 
-              // Move the iframe to the preview modal body
-              $('#previewModalBody').append(iframe);
-              $(iframe).show(); // Show the iframe
+        // Move the iframe to the preview modal body
+        $('#previewModalBody').append(iframe);
+        $(iframe).show(); // Show the iframe
 
-              // Ensure the iframe has 100% height and width
-              iframe.style.height = '100%';
-              iframe.style.width = '100%';
+        // Ensure the iframe has 100% height and width
+        iframe.style.height = '100%';
+        iframe.style.width = '100%';
 
-              console.log(iframe); // Log the iframe element for debugging
-              $('#previewModal').modal('show'); // Show the previewModal
-          } else {
-              alert('Please wait for the document to be generated.');
-          }
-      });
+        console.log(iframe); // Log the iframe element for debugging
+        $('#previewModal').modal('show'); // Show the previewModal
+    } else {
+        alert('Please wait for the document to be generated.');
+    }
+});
 
-      function printIframeContent(iframeId) {
-          const iframe = document.getElementById(iframeId);
-          const iframeWindow = iframe.contentWindow;
+function printIframeContent(iframeId) {
+    const iframe = document.getElementById(iframeId);
+    const iframeWindow = iframe.contentWindow;
 
-          // Set the print settings
-            iframeWindow.document.write(`
-              <html>
-                <head>
-                  <style>
-                    @page {
-                      size: legal;
-                      margin: 1cm;
-                    }
-                    body {
-                      background-image: inherit;
-                      background-color: inherit;
-                    }
-                  </style>
-                </head>
-                <body>
-                  ${iframeWindow.document.body.innerHTML}
-                </body>
-              </html>
-            `);
+    // Set the print settings
+    iframeWindow.document.write(`
+        <html>
+        <head>
+            <style>
+            @page {
+                size: legal;
+                margin: 1cm;
+            }
+            body {
+                background-image: inherit;
+                background-color: inherit;
+            }
+            </style>
+        </head>
+        <body>
+            ${iframeWindow.document.body.innerHTML}
+        </body>
+        </html>
+    `);
 
-          // Print the content
-          iframeWindow.focus();
-          iframeWindow.print();
-      }
+    // Print the content
+    iframeWindow.focus();
+    iframeWindow.print();
+}
 
-      $('#printORsave').on('click', function() {
-          // Call the function with the id of the iframe
-          printIframeContent('f137F');
-      });
+$('#printORsave').on('click', function() {
+    // Call the function with the id of the iframe
+    printIframeContent('f137F');
+});
 
       $('#cancel').on('click', function() {
           // Your cancel logic here (if any)
       });
 
+      function fetchStudents(url, data) 
+      {
+        $.ajax({
+            url: url,
+            method: "POST",
+            data: data,
+            success: function(response) {
+                $("#tbody").html(response);
+                console.log('Students fetched successfully');
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX error: ", status, error);
+            }
+        });
+      }
+
       $("#search").keyup(function() {
           var input = $(this).val();
-
-          $.ajax({
-              url: "searchdata.php",
-              method: "POST",
-              data: { input: input },
-              success: function(data) {
-                  $("#tbody").html(data);
-              }
-          });
+          var schoolYear = $("#school_year").val();
+          console.log(schoolYear);
+          fetchStudents("search/searchGenerateForm137.php", {input: input, schoolYear: schoolYear});
       });
-    });
+
+      $("#school_year").change(function() {
+          var schoolYear = $(this).val();
+          console.log("School year changed to: " + schoolYear);
+          fetchStudents("search/searchBSYf137.php", {schoolYear: schoolYear});
+      });
+      $("#strand").change(function() {
+          var strand = $(this).val();
+          var schoolYear = $("#school_year").val();
+          console.log("Strand changed to: " + strand);
+          fetchStudents("search/searchBStrandf137.php", {strand: strand, schoolYear: schoolYear});
+      });
+          });
     </script>
     <!-- Page specific script -->
 <script>

@@ -201,18 +201,6 @@ $conn->close();
         <div class="card col-10">
           <div class="card-header">
             <div class="row justify-content-end">
-              <div class="col-4">
-                <div class="form-floating">
-                  <select name="school_year" class="form-select col-7" id="school_year">
-                    <?php foreach ($schoolYears as $year) { ?>
-                      <option value="<?= htmlspecialchars($year) ?>"><?= htmlspecialchars($year) ?></option>
-                    <?php } ?>
-                  </select>
-                  <label for="school_year">School Year</label>
-                </div>
-                <!-- form-floating -->
-              </div>
-              <!-- col -->
               <div class="col-4 justify-content-end">
                 <div class="form-floating">
                   <!-- SEARCH BAR -->
@@ -240,7 +228,8 @@ $conn->close();
               <tbody id="tbody">
                 <?php
                 if ($result) {
-                    while ($row = $result->fetch_assoc()) {
+                    while ($row = $result->fetch_assoc()) 
+                    {
                         $minitial = !empty($row['Minitial']) ? $row['Minitial'] . '.' : '';
                         ?>
                         <tr>
@@ -318,11 +307,17 @@ $conn->close();
 
     $("#search").keyup(function() {
       var input = $(this).val();
+      var strand = "<?php echo addslashes($strand); ?>";
+      var gradeLevel = "<?php echo addslashes($gradeLevel); ?>";
+      var section = "<?php echo addslashes($section); ?>";
 
       $.ajax({
-        url: "searchdata.php",
+        url: "search/searchTeacherStudent.php",
         method: "POST",
-        data: { input: input },
+        data: { input: input,
+                strand: strand,
+                gradeLevel: gradeLevel,
+                section: section },
         success: function(data) {
           $("#tbody").html(data);
         }
