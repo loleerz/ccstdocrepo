@@ -524,11 +524,7 @@
                 else
                 {?>
 
-                <tr>
-                    <td>
-                        Student has no Core Subject to take!
-                    </td>
-                </tr>
+               
                 
                 <?php  }
                 ?>
@@ -569,11 +565,7 @@
                 else
                 {?>
 
-                <tr>
-                    <td>
-                        Student has no Applied Subject to take!
-                    </td>
-                </tr>
+               
                 
                 <?php  }
                 ?>
@@ -614,11 +606,7 @@
                 else
                 {?>
 
-                <tr>
-                    <td>
-                        Student has no Specialized Subject to take!
-                    </td>
-                </tr>
+               
                 
                 <?php  }
                 ?>
@@ -659,12 +647,7 @@
                 else
                 {?>
 
-                <tr>
-                    <td>
-                        Student has no Other Subject to take!
-                    </td>
-                </tr>
-                
+               
                 <?php  }
                 ?>
 
