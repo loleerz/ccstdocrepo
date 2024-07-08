@@ -555,7 +555,6 @@
               <th>Strand/Section</th>
               <th>Semester</th>
               <th>School Year</th>
-              <th>Action</th>
             </tr>
             </thead>
             <tbody id="tbody">
@@ -599,11 +598,6 @@
                           <td>
                               <?=$row1['school_year']?>
                           </td>
-                          <td>
-                              <a href='' class="btn btn-primary">
-                                  Edit
-                              </a>
-                          </td>
                       </tr>
                 <?php
                   }
@@ -614,6 +608,27 @@
         <!-- card body -->
       </div>
         
+
+        <!-- MODAL EDIT SUBJECT TEACHER START -->
+        <div class="modal fade" id="editSubjTeacher" tabindex="-1" aria-labelledby="editSubjTeacherLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editSubjTeacherLabel">Edit Subject Teacher</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                ...
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- MODAL EDIT SUBJECT TEACHER END -->
+
       </div>
       <!-- /.container-fluid -->
     </div>
