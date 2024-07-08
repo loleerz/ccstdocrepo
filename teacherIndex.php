@@ -215,6 +215,7 @@
                 }
 
                 $strand_abbre = $firstLetters;
+                 $imgsrc = "a/".$strand_abbre.".png"
               ?>
               
 
@@ -227,7 +228,7 @@
                             <figcaption class="" style="font-size: 9pt;"><?=$strandsui['strand']?></figcaption>
                           </div>
                           <div class="widget-user-image">
-                            <img class="img-circle elevation-2" src="a/stem.png" alt="User Avatar">
+                          <img class="img-circle elevation-2" src="<?=$imgsrc?>" alt="User Avatar">
                           </div>
                           <div class="card-footer">
                             <div class="row">
