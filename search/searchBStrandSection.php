@@ -59,11 +59,6 @@ if (isset($_POST['strand']) && isset($_POST['schoolYear'])) {
                 <td>" . htmlspecialchars($row['strand'] . "-" . $row['grade_level'] . $row['section']) . "</td>
                 <td>" . htmlspecialchars($row['lname'] . $row['suffix'] . ", " . $row['fname'] . " " . $minitial) . "</td>
                 <td>" . htmlspecialchars($row['school_year']) . "</td>
-                <td>
-                    <a href='' class='btn btn-primary'>
-                        Edit
-                    </a>
-                </td>
             </tr>";
         }
     } else {
