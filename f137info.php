@@ -570,8 +570,7 @@
                                             </span>
                                             <label for="JHSCompleter" class="checkbox__textwrapper">ALS A&E Passer***</label>
                                             <span style="margin-left:7pt;" class="label">Rating:</span>
-                                            <u style="color: #000000; font-weight:700;">
-                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                                            <u style="color: #000000; font-weight:700;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
                                             </u>
                                         </label>
                                     </div>
@@ -755,7 +754,11 @@
                             else
                             {?>
                                 
-                                   
+                                    <tr>
+                                        <td>
+                                            Student has no Core Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
                             ?>
@@ -812,7 +815,11 @@
                             else
                             {?>
                                 
-                                   
+                                    <tr>
+                                        <td>
+                                            Student has no Applied Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
                             ?>
@@ -869,7 +876,11 @@
                             else
                             {?>
                                 
-                                    
+                                    <tr>
+                                        <td>
+                                            Student has no Specialized Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
                             ?>
@@ -889,8 +900,7 @@
                             { 
                                 $rowCount3++;
                                 ?>                   
-                                <tr style="height:11pt">
-                                    <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                                <tr style="height:11pt"> <td style="width:71pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
                                         <p class="s8" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
                                             Other Subject
                                         </p>
@@ -926,7 +936,11 @@
                             else
                             {?>
                                 
-                                   
+                                    <tr>
+                                        <td>
+                                            Student has no Other Subject Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
 
@@ -1385,7 +1399,11 @@
                             else
                             {?>
                                 
-                                   
+                                    <tr>
+                                        <td>
+                                            Student has no Core Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
                             ?>
@@ -1442,7 +1460,11 @@
                             else
                             {?>
                                 
-                                   
+                                    <tr>
+                                        <td>
+                                            Student has no Applied Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
                             ?>
@@ -1499,7 +1521,11 @@
                             else
                             {?>
                                 
-                                    
+                                    <tr>
+                                        <td>
+                                            Student has no Specialized Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
                             ?>
@@ -1556,7 +1582,11 @@
                             else
                             {?>
                                 
-                                   
+                                    <tr>
+                                        <td>
+                                            Student has no Other Subject Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
 
@@ -1927,8 +1957,7 @@
                 <td style="width:71pt;border-top-style:solid;border-top-width:2pt;border-left-style:solid;border-left-width:2pt;border-bottom-style:solid;border-bottom-width:1pt border-right-style:solid;border-right-width:1pt" rowspan="2" bgcolor="#BEBEBE">
                     <p class="s2" style="padding-left: 1pt;text-indent: 0pt;line-height: 109%;text-align: center;">
                         Indicate if Subject is CORE, APPLIED, or
-                    </p>
-                    <p class="s2" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
+                    </p> <p class="s2" style="padding-left: 1pt;text-indent: 0pt;text-align: center;">
                         SPECIALIZED
                     </p>
                 </td>
@@ -2022,7 +2051,11 @@
                             else
                             {?>
                                 
-                                   
+                                    <tr>
+                                        <td>
+                                            Student has no Core Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
                             ?>
@@ -2079,7 +2112,11 @@
                             else
                             {?>
                                 
-                                   
+                                    <tr>
+                                        <td>
+                                            Student has no Applied Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
                             ?>
@@ -2136,7 +2173,11 @@
                             else
                             {?>
                                 
-                                    
+                                    <tr>
+                                        <td>
+                                            Student has no Specialized Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
                             ?>
@@ -2193,7 +2234,11 @@
                             else
                             {?>
                                 
-                                   
+                                    <tr>
+                                        <td>
+                                            Student has no Other Subject Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
 
@@ -2472,8 +2517,7 @@
                 &nbsp;12 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
             </u> 
             SY: 
-            <u>
-                <?=pad_text(strtoupper($new_school_year), 21)?> 
+            <u>   <?=pad_text(strtoupper($new_school_year), 21)?> 
             </u> 
             SEM: <u>&nbsp;2ND &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
         </p>
@@ -2588,7 +2632,11 @@
                             else
                             {?>
                                 
-                                   
+                                    <tr>
+                                        <td>
+                                            Student has no Core Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
                             ?>
@@ -2645,7 +2693,11 @@
                             else
                             {?>
                                 
-                                   
+                                    <tr>
+                                        <td>
+                                            Student has no Applied Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
                             ?>
@@ -2702,7 +2754,11 @@
                             else
                             {?>
                                 
-                                    
+                                    <tr>
+                                        <td>
+                                            Student has no Specialized Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
                             ?>
@@ -2759,7 +2815,11 @@
                             else
                             {?>
                                 
-                                   
+                                    <tr>
+                                        <td>
+                                            Student has no Other Subject Subject to take!
+                                        </td>
+                                    </tr>
                                     
                             <?php  }
 
@@ -2980,8 +3040,7 @@
                     </p>
                 </td>
                 <td style="width:330pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p style="text-indent: 0pt;text-align: left;">
-                        <br/>
+                    <p style="text-indent: 0pt;text-align: left;"><br/>
                     </p>
                 </td>
                 <td style="width:39pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
