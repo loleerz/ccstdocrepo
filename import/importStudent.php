@@ -153,9 +153,7 @@ if (isset($_POST['importStuds']))
     } 
     else 
     {
-        echo "<script>
-                alert('Some data failed to import. ' . ($numRows - $numSuccess) . ' rows were skipped.');
-              </script>";
+        header('Location: ../addstudent.php?status=imp_existing');
     }
 }
 ?>

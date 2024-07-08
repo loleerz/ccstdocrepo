@@ -614,15 +614,17 @@
                         <div class="col-xl-7">
                             <!-- Account details card-->
                             <div class="card mb-4">
-                                <div class="card-header fw-bold">Advisories</div>
+                                <div class="card-header fw-bold">Subjects</div>
                                 <div class="card-body">
                                     <form action="update.php" method="post">
                                         <table cellspacing="0" class="table table-sm table-bordered table-striped text-center align-middle">
                                           <thead>
                                               <tr>
+                                                  <th>Subject</th>
                                                   <th>Strand</th>
                                                   <th>Grade Level</th>
                                                   <th>Section</th>
+                                                  <th>Semester</th>
                                                   <th>School Year</th>
                                               </tr>
                                           </thead>
@@ -668,7 +670,7 @@
                                                 
                                                   <tr>
                                                       <td>
-                                                          This teacher has no advisory class!
+                                                          This teacher has no subject handled!
                                                       </td>
                                                   </tr>
                                                     

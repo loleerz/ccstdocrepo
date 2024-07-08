@@ -305,17 +305,32 @@
       <div class="container-fluid">
 
           <?php
-            //SUBJECT ADDED
+            //STUDENT ADDED
             if (isset($_GET['status'])) {
-              echo "
-                <script src='plugins/sweetalert2/sweetalert2.min.js'></script>
-                <script>
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Student Added Successfully!',
-                  });
-                </script>
-              ";
+              if($_GET['status'] == "success")
+              {
+                echo "
+                  <script src='plugins/sweetalert2/sweetalert2.min.js'></script>
+                  <script>
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Student Added Successfully!',
+                    });
+                  </script>
+                ";
+              }
+              elseif($_GET['status'] == "imp_existing")
+              {
+                echo "
+                  <script src='plugins/sweetalert2/sweetalert2.min.js'></script>
+                  <script>
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Student Already Exist!',
+                    });
+                  </script>
+                ";
+              }
             }
           ?>
 

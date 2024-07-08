@@ -9,6 +9,8 @@
 
     $adviser = $_SESSION['employee'];
 
+    echo "<script>console.log(".$adviser.")</script>";
+
     // Function to get the school year based on start and end dates
     function getSchoolYear($startDate, $endDate) {
       $currentDate = date('Y-m-d'); // Get current date
