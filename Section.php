@@ -536,7 +536,6 @@
               <th>Strand/Section</th>
               <th>Adviser</th>
               <th>School Year</th>
-              <th>Action</th>
             </tr>
             </thead>
             <tbody id="tbody">
@@ -573,11 +572,6 @@
                           </td>
                           <td>
                               <?=$row1['school_year']?>
-                          </td>
-                          <td>
-                              <a href='' class="btn btn-primary">
-                                  Edit
-                              </a>
                           </td>
                       </tr>
                 <?php

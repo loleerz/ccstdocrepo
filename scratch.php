@@ -1,196 +1,150 @@
-<?php
-
-    include ('connection.php');
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-    $student_no = $_GET['student_no'];
-
-    //CODE FOR UPDATING 1ST QUARTER GRADES
-    if (isset($_POST['1stSem1Quarter']))
-    {
-
-    // Collecting the data from the input fields
-    // Loop through the subjects' types and update each record in the respective tables
-    $subject_types = ['core', 'applied', 'specialized', 'other'];
-
-    // Loop through each subject type and update the respective tables
-    foreach ($subject_types as $subject_type) {
-    if (isset($_POST['marks'][$subject_type])) {
-    $marks = $_POST['marks'][$subject_type];
-    print_r($marks);
-
-    foreach ($marks as $subject_sem => $mark) {
-        // Extract subject_name and sem from the key $subject_sem
-        list($subject_name, $sem) = explode('__', $subject_sem);
-
-        if($mark == 0)
-        {
-            $mark = "INC";
-        }
-
-        $status = "Graded";
-
-        // Prepare the SQL query to update the data for the respective table
-        $sql = "UPDATE {$subject_type}_sub_grades SET 1st = ?, status1 = ? WHERE subject_name = ? AND sem = ? AND student_no = ?";
-
-        // Using prepared statements for security
-        if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("sssss", $mark, $status, $subject_name, $sem, $student_no);
-
-            // Execute the statement
-            if ($stmt->execute()) {
-                // echo "Marks updated successfully for $subject_type subject $subject_name in semester $sem.<br>";
-            } else {
-                echo "Error updating $subject_type marks: " . $stmt->error . "<br>";
-            }
-
-            $stmt->close();
-        } else {
-            echo "Error preparing $subject_type update: " . $conn->error . "<br>";
-        }
-    }
-    }
-    }
-
-    header('Location: teacherStudInfo.php?student_no='.$student_no.'');
-
-    // Close the database connection
-    $conn->close();
-    }
-
-    //CODE FOR UPDATING 2ND QUARTER GRADES
-    $total_g = 0;
-    $total_subs = 0;
-    if (isset($_POST['1stSem2Quarter']))
-    {
-
-    // Collecting the data from the input fields
-    // Loop through the subjects' types and update each record in the respective tables
-    $subject_types = ['core', 'applied', 'specialized', 'other'];
-
-    // Loop through each subject type and update the respective tables
-    foreach ($subject_types as $subject_type) {
-    if (isset($_POST['marks'][$subject_type])) {
-    $marks = $_POST['marks'][$subject_type];
-    // echo "<script>
-    //         console.log($marks)
-    // </script>";
-
-    foreach ($marks as $subject_sem => $mark) {
-        // Extract subject_name and sem from the key $subject_sem
-        list($subject_name, $sem) = explode('__', $subject_sem);
-        
-        if($mark == 0 )
-        {
-            $mark = "INC";
-        }
-
-        // Prepare the SQL query to update the data for the respective table
-        $sql = "UPDATE {$subject_type}_sub_grades SET 2nd = ? WHERE subject_name = ? AND sem = ? AND student_no = ?";
-
-        // Using prepared statements for security
-        if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param("ssss", $mark, $subject_name, $sem, $student_no);
-
-            // Execute the statement
-            if ($stmt->execute()) {
-                $stmt->close();
-
-                //CODE FOR COMPUTING GRADES
-                $query= "SELECT * FROM {$subject_type}_sub_grades WHERE student_no = ?";
-                $stmt2 = $conn->prepare($query);
-                $stmt2->bind_param("s", $student_no);
-                $stmt2->execute();
-                $result = $stmt2->get_result();
-                if($result->num_rows > 0)
-                {
-                    $row = $result->fetch_assoc();
-
-                    $fqmark = $row['1st'];
-
-                    if($fqmark == "INC" || $mark == "INC")
-                    {
-                        $fqmark = 0;
-                        $mark = 0;
-                    }
-
-                    //COMPUTE FINAL GRADE
-                    $final = ($fqmark + $mark)/2;
-                    $finalg = number_format($final);
-
-                    $total_g += $finalg;
-                    $total_subs ++;
-
-                    if ($finalg > 74)
-                    {
-                        $remarks = "PASSED";
-                        $status = "Graded";
-                    }
-                    else if ($finalg == 0)
-                    {
-                        $finalg = "INC";
-                        $remarks = "FAILED";
-                        $status = "Graded";
-                    }
-                    else
-                    {
-                        $remarks = "FAILED";
-                        $status = "Graded";
-                    }
-
-                    $query2 = "UPDATE {$subject_type}_sub_grades SET final = ?, remarks = ?, status = ?  WHERE subject_name = ? AND sem = ? AND student_no = ?";
-                    $stmt3 = $conn->prepare($query2);
-                    $stmt3->bind_param("ssssss", $finalg, $remarks, $status, $subject_name, $sem, $student_no);
-
-                    // Execute the statement
-                    if ($stmt3->execute()) {
-                        $stmt3->close(); // Close the third statement object
-                    } else {
-                        echo "Error updating $subject_type final grade and remarks: " . $stmt3->error . "<br>";
-                    }
 
 
+<div class="card">
+    <div class="card-header">
+        Subject Teacher Information
+    </div>
+    <div class="card-body">
+        <div class="row mb-2">
 
-                }
-                else
-                {
-                    echo "Student Does Not Exist!";
-                }
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
 
-                $stmt2->close(); // Close the second statement object
+                    <form action="input.php" method="post">
 
-            } else {
-                echo "Error updating $subject_type marks: " . $stmt->error . "<br>";
-            }
+                        <input type="hidden" value="<?=$currentSchoolYear?>" id = "school_year" name="school_year">
 
-        } else {
-            echo "Error preparing $subject_type update: " . $conn->error . "<br>";
-        }
-    }
-    }
-    }
+                        <div class="row">
+                            <div class="col col-8">
+                                <label for="subj_teacher" class="form-label">Subject Teacher</label>
+                                <select name="subj_teacher" id="subj_teacher" class="form-select" required>
+                                <option disabled selected>Select Subject Teacher</option>
+                                <?php
+                                    $sql = "SELECT * FROM teachers_info";
+                                    $stmt = $conn->prepare($sql);
+                                    // $stmt->bind_param("s", $schoolYear);
+                                    $stmt->execute();
+                                    $result = $stmt->get_result();
 
-    $ave = $total_g/$total_subs; 
-    $gen_ave = number_format($ave);
+                                    if($result->num_rows > 0)
+                                    {
+                                        while($row = $result->fetch_assoc())
+                                        {
+                                            $mname = $row['mname'];
+                                            $minitial = strtoupper(substr($mname, 0, 1));
 
-    if ($gen_ave > 74)
-    {
-    $ave_remarks = "PASSED";
-    }
-    else
-    {
-    $ave_remarks = "FAILED";
-    }
+                                            echo "
+                                                <option value='".$row['employeenumber']."'>".$row['lname']."".$row['suffix'].", ".$row['fname']." ".$minitial.".</option>
+                                            ";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        echo "
 
-    $query = "UPDATE gen_aves SET g11_1stSem = ?, g11_1remarks = ? WHERE student_no = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("sss", $gen_ave, $ave_remarks, $student_no);
-    $stmt->execute();
+                                                <option value=''>No Records Found!</option>
+                                            ";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <?php
+                            $query = "SELECT * FROM subj_teacher "
+                        ?>
+
+                        <div class="row">
+                            <div class="col-6 mt-3 mb-3">
+                                <span class="fs-5 fw-semibold">Subject Details</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="grade_level" class="form-label">Grade Level</label>
+                                <select name="grade_level" id="grade_level" class="form-select" readonly>
+                                    <option disabled selected>Select Grade Level</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="sem" class="form-label">Term</label>
+                                <select name="term" class="form-select" id="sem" required>
+                                    <option disabled selected>Select Term</option>
+                                    <option value="1st Semester">1st Semester</option>
+                                    <option value="2nd Semester">2nd Semester</option>
+                                </select>
+                            </div>  
+                            <div class="col-md-4">
+                                <label for="category" class="form-label">Subject Category</label>
+                                <select name="category" id="category" class="form-select" required>
+                                    <option disabled selected>Select Subject Category</option>
+                                    <<option value="core">Core</option>
+                                    <option value="applied">Applied</option>
+                                    <option value="specialized">Specialized</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>  
+
+                        <div class="row mt-2">
+                            <div class="col-md-8">
+                                <label for="subject" class="form-label">Subject Name</label>
+                                <select name="subject" id="subject" class="form-select" required>
+                                    <option disabled selected>Select Subject</option>
+                                    
+                                </select>
+                            </div>
+                        </div>  
+
+                        <div class="row">
+                            <div class="col-6 mt-3 mb-3">
+                                <span class="fs-5 fw-semibold">Select Sections to Handle</span>
+                            </div>
+                        </div>
+
+                        <!-- .row -->
+                        <div class="row mt-3 mb-3">
+                        <div class="col-md-9">
+                            <div class="card card-primary collapsed-card">
+                            <div class="card-header">
+                                <h3 class="card-title fw-semibold">Sections</h3>
+                                <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                                </button>
+                                </div>
+                                <!-- /.card-tools -->
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <!-- row -->
+                                <div class='row mb-2'>
+                                    <!-- checkbox -->
+                                        <div class='col-12' id = "sections">
+                                            <div class='input-group' id='input-group'>
+                                                
+                                            </div>
+                                        </div>
+                                        <!-- /.col-lg-6 -->
+                                    <!-- checkbox -->
+                                </div>
+                                <!-- .row -->
+                            </div>
+                            <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                        </div>
+                        <!-- .row -->
 
 
-    header('Location: teacherStudInfo.php?student_no='.$student_no.'');
+                </div>
+            </div>
+        </div>
 
-    // Close the database connection
-    $conn->close();
-    }
-?>
+    </div>
+</div>

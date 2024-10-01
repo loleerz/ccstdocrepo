@@ -83,11 +83,6 @@ if (isset($_POST['input']) && isset($_POST['schoolYear'])) {
                 <td>
                     " . htmlspecialchars($row['school_year']) . "
                 </td>
-                <td>
-                    <a href='' class='btn btn-primary'>
-                        Edit
-                    </a>
-                </td>
             </tr>";
         }
     } else {
